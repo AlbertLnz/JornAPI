@@ -2,16 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Services\Employee;
 
 use App\Jobs\SendRegistrNotification;
 use App\Models\User;
+use App\Services\User\RegisterUserService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class RegisterEmployeeService{
 
+    public function __construct(private RegisterUserService $registerUserService){}
     public function execute(string $name, string $email, string $password, float $normalHourlyRate, float $overtimeHourlyRate, float $nightHourlyRate, float $holidayHourlyRate, float $irpf,): void
     {
         $employee = [
@@ -25,10 +27,7 @@ class RegisterEmployeeService{
 
 
         DB::transaction(function () use ($name, $email, $password, $employee) {
-            $user = User::create([
-                'email' => $email,
-                'password' => Hash::make($password),
-            ]);
+           $user= $this->registerUserService->execute($email, $password);
             $user->assignRole('employee');
             $user->employee()->create($employee);
          SendRegistrNotification::dispatch($user);

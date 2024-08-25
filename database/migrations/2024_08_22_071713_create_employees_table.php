@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('night_hourly_rate', 8, 2)->nullable();    // Tarifa Nocturna
             $table->decimal('holiday_hourly_rate', 8, 2)->nullable();  // Tarifa Festivo
             $table->decimal('irpf', 5, 2)->nullable();  
-            $table->foreignUuid('user_id')->references('id')->on('users');
+            $table->foreignUuid('user_id')->references('id')->on('users')->onUpdate('cascade');
             $table->timestamps();
         });
     }
