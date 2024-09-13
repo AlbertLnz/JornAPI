@@ -3,11 +3,14 @@ declare(strict_types=1);
 
 namespace App\Services\Token;
 
+use App\Exceptions\InvalidTokenException;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Laravel\Passport\Exceptions\InvalidAuthTokenException;
 class TokenService
 {
     protected $secret;
@@ -23,7 +26,7 @@ class TokenService
             'sub' => $userId,
             'role' => $roles[0]['name'],
             'iat' => time(),
-            'exp' => time() + 1800, // Token válido por 30 minutos
+            'exp' => time() + 3600, // Token válido por 30 minutos
             'jti' => bin2hex(random_bytes(16)) // Genera un ID único para el token
         ];
     
@@ -33,7 +36,9 @@ class TokenService
     public function decodeToken($token): ?object
     {
         try {
-            return JWT::decode($token, new Key($this->secret, 'HS256'));
+             $tokenDecoded = JWT::decode($token, new Key($this->secret, 'HS256'));
+          
+             return $tokenDecoded;
         } catch (\Exception $e) {
             return null;
         }

@@ -3,13 +3,12 @@
 namespace App\Http\Middleware;
 
 use App\Exceptions\InvalidTokenException;
-use App\Exceptions\TokenNotProvidedException;
 use App\Services\Token\TokenService;
 use Closure;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Auth;
+
 
 class CheckTokenInRedis
 {
@@ -36,7 +35,10 @@ class CheckTokenInRedis
             if (!$cachedToken || $cachedToken !== $token) {
                 throw new InvalidTokenException();
             }
+            
+            
            
+            
             auth()->setUser($user);
     
             return $next($request);
