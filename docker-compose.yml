@@ -1,0 +1,79 @@
+
+services:
+  app:
+    build:
+      context: ./jorn_api
+      dockerfile: Dockerfile
+    container_name: jorn_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./jorn_api:/var/www/html
+      - ./jorn_api/entrypoint.sh:/root/entrypoint.sh
+    networks:
+      - app-network
+    command: ["root/entrypoint.sh"]
+
+  webserver:
+    image: nginx:latest
+    container_name: nginx_webserver
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - ./jorn_api:/var/www/html
+    depends_on:
+      - app
+    networks:
+      - app-network
+      
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    env_file:
+      - ./jorn_api/.env
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: jorn
+      MYSQL_DATABASE: jornalia
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - app-network
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: jorn
+      PMA_PASSWORD: password
+    networks:
+      - app-network
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
