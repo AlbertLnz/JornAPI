@@ -1,6 +1,6 @@
 <?php
+namespace App\Annotations\Swagger\User\ShowUser;
 
-namespace App\Annotations\Swagger\ShowUser;
 
 class ShowUserAnnotations{
     /**

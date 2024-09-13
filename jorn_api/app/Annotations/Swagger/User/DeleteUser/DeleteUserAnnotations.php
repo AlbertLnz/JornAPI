@@ -1,6 +1,6 @@
 <?php 
+namespace App\Annotations\Swagger\User\DeleteUser;
 
-namespace App\Annotations\Swagger\DeleteUser;
 
 class DeleteUserAnnotations
 {/**

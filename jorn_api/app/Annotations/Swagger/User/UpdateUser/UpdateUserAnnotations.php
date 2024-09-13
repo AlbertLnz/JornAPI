@@ -1,5 +1,5 @@
 <?php 
-namespace App\Annotations\Swagger\UpdateUser;
+namespace App\Annotations\Swagger\User\UpdateUser;
 
 class UpdateUserAnnotations
 {

@@ -1,7 +1,6 @@
 <?php 
 
-namespace App\Annotations\Swagger\RegisterEmployee;
-
+namespace App\Annotations\Swagger\Employee\RegisterEmployee;
 use OpenApi\Annotations as OA;
 
  final class RegisterEmployeeAnnotations

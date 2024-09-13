@@ -5,13 +5,9 @@ namespace App\Http\Controllers\v1\Auth;
 use App\Exceptions\UserNotFound;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use App\Models\User;
 use App\Services\Auth\AuthService;
-use App\Services\Token\TokenService;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Hash;
+
 use Illuminate\Validation\UnauthorizedException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 

@@ -1,6 +1,6 @@
 <?php 
+namespace App\Annotations\Swagger\Employee\UpdateEmployee;
 
-namespace App\Annotations\Swagger\UpdateEmployee;
 
 class UpdateEmployeeAnnotations{    
 /**

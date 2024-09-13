@@ -1,6 +1,6 @@
 <?php
+namespace App\Annotations\Swagger\Employee\ShowEmployee;
 
-namespace App\Annotations\Swagger\ShowEmployee;
 
 class ShowEmployeeAnnotations{
     /**
