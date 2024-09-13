@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace Tests\Unit\Controllers\Auth;
 use App\Http\Controllers\v1\Auth\LoginController;
+use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use App\Services\Auth\AuthService;
 use App\Services\Token\TokenService;
@@ -37,7 +38,7 @@ class LoginControllerTest extends TestCase{
     {
         $email = $this->user->email;
         $password = 'password';
-        $request = new Request();
+        $request = new LoginRequest();
         $request->email = $email;
         $request->password = $password;
         $data = ['token' => 'mocked-jwt-token',
@@ -58,7 +59,7 @@ class LoginControllerTest extends TestCase{
     {
         $email = $this->user->email;
         $password = 'password';
-        $request = new Request();
+        $request = new LoginRequest();
         $request->email = $email;
         $request->password = $password;
         $this->expectException(InvalidArgumentException::class);

@@ -5,6 +5,7 @@ namespace Tests\Unit\Controllers\User;
 
 use App\Exceptions\UserNotFound;
 use App\Http\Controllers\v1\User\UserUpdateController;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Services\Token\TokenService;
 use App\Services\User\UserUpdateService;
@@ -40,7 +41,7 @@ use DatabaseTransactions;
    
         $token = 'mocked-jwt-token';
         $decodedToken = (object) ['sub' => $userId];
-        $request = new Request();
+        $request = new UpdateUserRequest();
         $request->headers->set('Authorization', 'Bearer ' . $token);
         $this->tokenService->shouldReceive('decodeToken')
             ->once()

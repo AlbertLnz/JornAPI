@@ -45,7 +45,6 @@ class TokenServiceTest extends TestCase{
  public function testGetJti(){
     $token = $this->service->generateToken($this->user->id,$this->user->roles);
     $jti = $this->service->getJtiFromToken($token);
-    var_dump($jti);
     $this->assertNotEmpty($jti);
  }
 
