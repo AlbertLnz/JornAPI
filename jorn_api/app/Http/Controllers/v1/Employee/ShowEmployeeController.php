@@ -20,9 +20,7 @@ class ShowEmployeeController extends Controller
             $decode= $this->tokenService->decodeToken($request->bearerToken());
             $user= $this->findUserService->execute($decode->sub);
             $employee = $user->employee;
-            if(!$employee){
-                throw new UserNotFound();
-            }
+          
             return response()->json(['message' => 'Employee found successfully','employee'=>ShowEmployeeDTO::fromEmployee($employee)], 200);
         }catch(UserNotFound $e){
             throw new HttpResponseException(response()->json(['message' => $e->getMessage()], $e->getCode()));

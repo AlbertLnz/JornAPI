@@ -33,11 +33,16 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 # Instalar Composer globalmente
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+
 # Establecer el directorio de trabajo (subcarpeta auth-service dentro de html)
 WORKDIR /var/www/html/
 
 # Copiar el proyecto en la subcarpeta correspondiente
 COPY . /var/www/html/
+
+#COPY .env /var/www/html/.env.docker
+
+
 
 # Instalar las dependencias de Laravel
 RUN composer install --optimize-autoloader --no-dev
@@ -45,6 +50,15 @@ RUN composer install --optimize-autoloader --no-dev
 # Establecer permisos correctos
 RUN chown -R www-data:www-data /var/www/html/ \
     && chmod -R 755 /var/www/html/
+
+# Copia el archivo entrypoint.sh al contenedor
+COPY entrypoint.sh /root/entrypoint.sh
+
+# Establece los permisos de ejecución
+RUN chmod +x /root/entrypoint.sh
+
+# Establece el script de entrada
+ENTRYPOINT ["/root/entrypoint.sh"]
 
 # Exponer el puerto 9000 para PHP-FPM
 EXPOSE 9000

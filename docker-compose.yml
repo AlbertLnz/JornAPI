@@ -12,8 +12,10 @@ services:
       - redis
     volumes:
       - ./jorn_api:/var/www/html
+      - ./jorn_api/entrypoint.sh:/root/entrypoint.sh
     networks:
       - app-network
+    command: ["root/entrypoint.sh"]
 
   webserver:
     image: nginx:latest

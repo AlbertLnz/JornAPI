@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Services\User;
 
 use App\Exceptions\UserAlreadyExists;
+use App\Jobs\SendRegistrNotification;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -21,8 +22,12 @@ class RegisterUserService{
                 'email' => $email,
                 'password' => Hash::make($password),
             ]);
+            
             return $data;
         });
+        SendRegistrNotification::dispatch($user);
+      //  $user->sendEmailVerificationNotification();
+
       
        return $user;
     }

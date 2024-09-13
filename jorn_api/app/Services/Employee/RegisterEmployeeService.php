@@ -30,7 +30,7 @@ class RegisterEmployeeService{
            $user= $this->registerUserService->execute($email, $password);
             $user->assignRole('employee');
             $user->employee()->create($employee);
-         SendRegistrNotification::dispatch($user);
+      //   SendRegistrNotification::dispatch($user);
 
         });
     

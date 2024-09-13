@@ -23,12 +23,12 @@ class ShowEmployeeDTO{
     {
         return new self(
             $employee->name,
-            $employee->company_name,
-            $employee->normal_hourly_rate,
-            $employee->overtime_hourly_rate,
-            $employee->night_hourly_rate,
-            $employee->holiday_hourly_rate,
-            $employee->irpf
+            $employee->company_name??'',
+            (float)$employee->normal_hourly_rate,
+            (float)$employee->overtime_hourly_rate,
+            (float)$employee->night_hourly_rate??0.0,
+            (float)$employee->holiday_hourly_rate ?? 0.0,
+            (float)$employee->irpf??0.0
         );
     }
 }

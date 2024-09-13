@@ -1,0 +1,34 @@
+# Archivos y directorios temporales
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Dependencias de desarrollo
+node_modules/
+vendor/
+
+# Archivos de configuración local
+
+.env.local
+.env.docker
+
+# Archivos de control de versiones
+.git/
+.gitignore
+
+# Archivos de caché
+.cache/
+
+# Directorios de tests y documentación
+tests/
+docs/
+
+# Compilaciones y artefactos
+public/storage/
+storage/debugbar/
+storage/framework/sessions/
+storage/framework/views/
+storage/logs/
+storage/app/public/
+bootstrap/cache/

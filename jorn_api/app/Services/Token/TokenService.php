@@ -43,7 +43,6 @@ class TokenService
     {
         try {
             $decoded = JWT::decode($token, new Key($this->secret, 'HS256'));
-            var_dump($decoded->jti);
             return $decoded->jti;
         } catch (\Exception $e) {
             return null;

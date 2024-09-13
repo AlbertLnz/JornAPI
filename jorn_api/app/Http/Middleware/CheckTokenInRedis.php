@@ -25,9 +25,10 @@ class CheckTokenInRedis
     public function handle(Request $request, Closure $next)
     {
         try{
-            $token = $request->bearerToken();
+            $token = $request->attributes->get('token');
+            
  
-            $user = \App\Models\User::find($request->attributes->get('user_id'));
+            $user = $request->attributes->get('user');
             
             // Check the token in Redis
             $cachedToken = Cache::store('redis')->get("user:{$user->id}:token");
