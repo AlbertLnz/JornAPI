@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterEmployeeRequest;
 use App\Services\Employee\RegisterEmployeeService;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\Request;
 
 class RegisterEmployeeController extends Controller
 {

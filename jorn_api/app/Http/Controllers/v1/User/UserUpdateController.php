@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\Token\TokenService;
 use App\Services\User\UserUpdateService;
-use Illuminate\Http\Request;
 
 class UserUpdateController extends Controller
 {
