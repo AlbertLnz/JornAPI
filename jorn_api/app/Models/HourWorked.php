@@ -12,16 +12,15 @@ class HourWorked extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'employee_id',  
-        'date',
-        'start_time',
-        'end_time',
-        'planned_hours',
-        'is_holiday',
-        'is_overtime'
+        'hour_session_id',
+        'total_normal_hours',
+        'total_overtime_hours',
+        'total_night_hours',
+        'total_holiday_hours',
     ];
 
-    public function employee(): BelongsTo{
-        return $this->belongsTo(Employee::class);
+    public function hourSession(): BelongsTo{
+        return $this->belongsTo(HourSession::class);
     }
+
 }
