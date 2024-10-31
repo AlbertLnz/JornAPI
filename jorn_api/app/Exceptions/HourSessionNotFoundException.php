@@ -7,6 +7,6 @@ use Exception;
 class HourSessionNotFoundException extends Exception
 {
     public function __construct(){
-        parent::__construct("Hour worked not found", 404);
+        parent::__construct("Hour Session not found", 404);
     }
 }

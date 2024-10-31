@@ -29,7 +29,8 @@ trait ValidateTimeEntry
     {
         $today = Carbon::today();
         $date = Carbon::parse($date);
-        if ($date != $today) {
+      
+        if ($date > $today) {
             throw new TodayDateException();
         }
     }

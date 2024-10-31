@@ -11,7 +11,7 @@ use App\Services\HourSession\HourSessionRegisterService;
 
 class HourSessionRegisterController extends Controller
 {
-    public function  __construct(private HourSessionRegisterService $HourSessionRegisterService,){}
+    public function  __construct(private HourSessionRegisterService $hourSessionRegisterService,){}
 
     public function __invoke(HourSessionRegisterRequest $request)    {
 

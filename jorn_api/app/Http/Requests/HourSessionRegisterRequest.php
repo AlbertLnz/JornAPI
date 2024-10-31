@@ -24,7 +24,7 @@ class HourSessionRegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date' => 'required|date',
+            'date' => 'required|date|unique:hour_sessions,date',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
             'planned_hours' => 'required|integer|min:2',  
