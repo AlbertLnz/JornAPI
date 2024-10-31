@@ -3,6 +3,7 @@
 namespace App\Services\HourSession;
 
 use App\Exceptions\HourSessionNotFoundException;
+use App\Jobs\ProcessSalary;
 use App\Models\HourSession;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -13,11 +14,12 @@ class HourSessionDeleteService{
 
     public function execute(string $employeeId, string $date): void
     {
-        $HourSession = HourSession::where('employee_id', $employeeId)->where('date', $date)->first();
-        if(!$HourSession){
+        $hourSession = HourSession::where('employee_id', $employeeId)->where('date', $date)->first();
+        if(!$hourSession){
             throw new HourSessionNotFoundException();
         }
-        $HourSession->delete();
+        ProcessSalary::dispatch($employeeId, $date);
+        $hourSession->delete();
 
 
     }

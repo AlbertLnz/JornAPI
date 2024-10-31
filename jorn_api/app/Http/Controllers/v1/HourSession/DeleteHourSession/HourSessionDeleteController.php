@@ -10,14 +10,14 @@ use Illuminate\Http\Request;
 
 class HourSessionDeleteController extends Controller
 {
-    public function __construct(private HourSessionDeleteService $HourSessionDeleteService){}
+    public function __construct(private HourSessionDeleteService $hourSessionDeleteService){}
     public function __invoke(Request $request)
     {
         try{
             $query = $request->query('date');
             $user = $request->user();
             $employee = $user->employee;
-            $this->HourSessionDeleteService->execute($employee->id, $query);
+            $this->hourSessionDeleteService->execute($employee->id, $query);
             return response()->json(['message' => 'Hour worked deleted successfully'], 200);
 
         }catch(HourSessionNotFoundException $exception){
