@@ -2,62 +2,61 @@
 namespace App\Services\HourSession;
 
 use App\DTO\HourSession\HourSessionShowDTO;
+use App\Events\HourSessionUpdatedEvent;
 use App\Exceptions\HourSessionNotFoundException;
 use App\Models\HourSession;
 use App\Services\HourWorked\HourWorkedEntryService;
+use App\Services\HourWorked\HourWorkedUpdateService;
 use App\Traits\ValidateTimeEntry;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class HourSessionUpdateService{
     use ValidateTimeEntry;
 
-    public function __construct(private HourWorkedEntryService $hourWorkedEntryService){}
+    public function __construct(private HourWorkedUpdateService $hourWorkedEntryService){}
 
     public function execute(?string $employeeId, ?string $date, ?string $startTime, ?string $endTime, ?int $plannedHours, ?bool $isHoliday, ?bool $isOvertime): HourSessionShowDTO
     {
-        $HourSession = HourSession::where('employee_id', $employeeId)->where('date', $date)->first();
-        if(!$HourSession){
+       // $this->validateDateIsToday($date);
+        $carbon = new Carbon($date);
+        $hourSession = HourSession::where('employee_id', $employeeId)->where('date', $carbon->format('Y-m-d') )->first();
+        if(!$hourSession){
             
             throw new HourSessionNotFoundException();
         }
 
-
-         DB::transaction(function () use ($employeeId, $date, $startTime, $endTime, $plannedHours, $isHoliday, $isOvertime, $HourSession) {
+         DB::transaction(function () use ($employeeId, $startTime, $endTime, $plannedHours, $isHoliday, $isOvertime, $hourSession) {
         $this->validateTimeEntry($startTime, $endTime);
 
-        if($date != null){
-            $HourSession->date = $date;
-        }
+       
         if($startTime != null){
-            $HourSession->start_time = $startTime;
+            $hourSession->start_time = $startTime;
         }
         if($endTime != null){
-            $HourSession->end_time = $endTime;
+            $hourSession->end_time = $endTime;
         }
         if($plannedHours != null){
-            $HourSession->planned_hours = $plannedHours;
+            $hourSession->planned_hours = $plannedHours;
         }
         if($isHoliday != null){
-            $HourSession->is_holiday = $isHoliday;
+            $hourSession->is_holiday = $isHoliday;
         }
         if($isOvertime != null){
-            $HourSession->is_overtime = $isOvertime;
+            $hourSession->is_overtime = $isOvertime;
         }
         if($employeeId != null){
-            $HourSession->employee_id = $employeeId;
+            $hourSession->employee_id = $employeeId;
         }
-        $HourSession->save();
-        $this->hourWorkedEntryService->execute(
-            $HourSession->employee_id,
-            $HourSession->start_time,
-            $HourSession->end_time,
-            $HourSession->planned_hours, 
-            $HourSession->is_holiday, 
-            $HourSession->is_overtime
-        );
+        $hourSession->save();
+
+        $this->hourWorkedEntryService->execute($hourSession->id, $hourSession->start_time, $hourSession->end_time, $hourSession->planned_hours, $hourSession->is_holiday, $hourSession->is_overtime);
+  
         });
+
+        event(new HourSessionUpdatedEvent( $employeeId, $date));
     
 
-        return HourSessionShowDTO::fromHourSession($HourSession);
+        return HourSessionShowDTO::fromHourSession($hourSession);
     }
 }

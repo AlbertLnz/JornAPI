@@ -9,7 +9,7 @@ use App\Services\HourSession\HourSessionUpdateService;
 class HourSessionUpdateController{
 
 
-    public function __construct(private HourSessionUpdateService $HourSessionUpdateService){}
+    public function __construct(private HourSessionUpdateService $hourSessionUpdateService){}
 
     public function __invoke(HourSessionUpdateRequest $request)
     {
@@ -18,7 +18,7 @@ class HourSessionUpdateController{
         $user = $request->user();
 
         $employee = $user->employee;
-      $HourSession =  $this->HourSessionUpdateService->execute(
+      $hourSession =  $this->HourSessionUpdateService->execute(
         $employee->id,
         $request->query('date'),
         $request->start_time,
@@ -26,7 +26,7 @@ class HourSessionUpdateController{
         $request->planned_hours, 
         $request->is_holiday, 
         $request->is_overtime);
-        return response()->json(['message' => 'Hour worked updated successfully', 'HourSession' => $HourSession], 200);
+        return response()->json(['message' => 'Hour worked updated successfully', 'HourSession' => $hourSession], 200);
        }catch(HourSessionNotFoundException $exception){
 
         return response()->json(['message' => $exception->getMessage()], $exception->getCode());

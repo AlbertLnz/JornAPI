@@ -3,16 +3,15 @@
 use App\Http\Controllers\TimeEntryController;
 use App\Http\Controllers\v1\Auth\LoginController;
 use App\Http\Controllers\v1\Auth\LogOutController;
-use App\Http\Controllers\v1\Dashboard\DashboardController;
 use App\Http\Controllers\v1\Employee\ShowEmployeeController;
 use App\Http\Controllers\v1\Employee\UpdateEmployeeController;
 use App\Http\Controllers\v1\Employee\RegisterEmployeeController;
 use App\Http\Controllers\v1\HourSession\DeleteHourSession\HourSessionDeleteController;
 use App\Http\Controllers\v1\HourSession\RegisterHourSession\HourSessionRegisterController;
-use App\Http\Controllers\v1\HourSession\ShowHourSession\HourSessionShowAllController;
+use App\Http\Controllers\v1\HourSession\ShowHourSession\HourSessionByRangeController;
 use App\Http\Controllers\v1\HourSession\ShowHourSession\HourSessionShowController;
 use App\Http\Controllers\v1\HourSession\UpdateHourSession\HourSessionUpdateController;
-use App\Http\Controllers\v1\Salary\ShowSalaryController;
+use App\Http\Controllers\v1\Salary\ShowSalaryByMonthController;
 use App\Http\Controllers\v1\User\DeleteUserController;
 use App\Http\Controllers\v1\User\ShowUserController;
 use App\Http\Controllers\v1\User\UserUpdateController;
@@ -34,12 +33,12 @@ Route::middleware(['jwt.auth','token_redis', 'role:employee','is_active'])->grou
     Route::post('/hourSession', HourSessionRegisterController::class);
     Route::get('/hourSession', HourSessionShowController::class);
     Route::put('/hourSession', HourSessionUpdateController::class);
-    Route::get('/hourSession/all', HourSessionShowAllController::class);
+ //   Route::get('/hourSession/all', HourSessionByRangeController::class);
     Route::delete('/hourSession/delete', HourSessionDeleteController::class);
 
-    Route::get('/dashboard', DashboardController::class);
+   // Route::get('/dashboard', DashboardController::class);
 
-    Route::get('/salary', ShowSalaryController::class);
+   Route::get('/salary', ShowSalaryByMonthController::class);
 });
 
 Route::get('/hola', function(){
