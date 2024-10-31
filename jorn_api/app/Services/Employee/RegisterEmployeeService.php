@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services\Employee;
 
-use App\Jobs\SendRegistrNotification;
-use App\Models\User;
+
 use App\Services\User\RegisterUserService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+
 
 class RegisterEmployeeService{
 

@@ -8,7 +8,6 @@ use App\Services\Token\TokenService;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class LogOutController extends Controller
 {

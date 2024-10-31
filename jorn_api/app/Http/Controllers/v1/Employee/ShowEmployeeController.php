@@ -5,7 +5,6 @@ namespace App\Http\Controllers\v1\Employee;
 use App\DTO\Employee\ShowEmployeeDTO;
 use App\Exceptions\UserNotFound;
 use App\Http\Controllers\Controller;
-use App\Models\Employee;
 use App\Services\Token\TokenService;
 use App\Services\User\FindUserService;
 use Illuminate\Http\Exceptions\HttpResponseException;

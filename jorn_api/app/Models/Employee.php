@@ -25,4 +25,14 @@ class Employee extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function hourSessions()
+    {
+        return $this->hasMany(HourSession::class);
+    }
+
+    public function Salaries()
+    {
+        return $this->hasMany(Salary::class);
+    }
+
 }
