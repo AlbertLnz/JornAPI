@@ -17,16 +17,16 @@ class HourSessionShowDTO
 
     ){}
 
-    public static function fromHourSession(HourSession $HourSession): self
+    public static function fromHourSession(HourSession $hourSession): self
     {
         return new self(
-            $HourSession->employee_id,
-            $HourSession->date,
-            $HourSession->start_time,
-            $HourSession->end_time,
-            $HourSession->planned_hours,
-            $HourSession->is_holiday,
-            $HourSession->is_overtime
+            $hourSession->employee_id,
+            $hourSession->date,
+            $hourSession->start_time,
+            $hourSession->end_time,
+            $hourSession->planned_hours,
+            $hourSession->is_holiday,
+            $hourSession->is_overtime
         );
     }
 }

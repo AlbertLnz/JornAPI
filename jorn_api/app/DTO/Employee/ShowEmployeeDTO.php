@@ -6,7 +6,7 @@ namespace App\DTO\Employee;
 
 use App\Models\Employee;
 
-class ShowEmployeeDTO{
+class  ShowEmployeeDTO{
 
 
     public function __construct(

@@ -13,10 +13,10 @@ class HourSessionShowService{
 
     public function execute(string $employeeId, string $date): HourSessionShowDTO
     {
-        $HourSession = HourSession::where('employee_id', $employeeId)->where('date', $date)->first();
-        if(!$HourSession){
+        $hourSession = HourSession::where('employee_id', $employeeId)->where('date', $date)->select( 'date', 'start_time', 'end_time', 'planned_hours', 'is_holiday', 'is_overtime')->first();
+        if(!$hourSession){
             throw new HourSessionNotFoundException();
         }
-        return HourSessionShowDTO::fromHourSession($HourSession);
+        return HourSessionShowDTO::fromHourSession($hourSession);
     }
 }
