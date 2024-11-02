@@ -199,24 +199,80 @@
                 }
             }
         },
-        "/user/delete": {
-            "delete": {
+        "/dashboard": {
+            "get": {
                 "tags": [
-                    "User"
+                    "Dashboard"
                 ],
-                "summary": "Delete a user",
-                "description": "Deletes the user associated with the provided JWT token. The token must be valid and authorized to perform this action.",
-                "operationId": "502ad3540dba379de227bd0d8789f621",
+                "summary": "Retrieve User Dashboard",
+                "description": "Fetches the dashboard details for the authenticated user.",
+                "operationId": "f863f42a01b1a34842976156502a9992",
                 "responses": {
                     "200": {
-                        "description": "User deleted successfully",
+                        "description": "Dashboard retrieved successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "User deleted successfully"
+                                            "example": "Dashboard retrieved successfully"
+                                        },
+                                        "dashboardData": {
+                                            "properties": {
+                                                "totalHoursWorked": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 120.5
+                                                },
+                                                "currentMonthSalary": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 1000
+                                                },
+                                                "dailyWorkHours": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "date": {
+                                                                "type": "string",
+                                                                "format": "date",
+                                                                "example": "2023-11-02"
+                                                            },
+                                                            "startTime": {
+                                                                "type": "string",
+                                                                "format": "time",
+                                                                "example": "09:00:00"
+                                                            },
+                                                            "endTime": {
+                                                                "type": "string",
+                                                                "format": "time",
+                                                                "example": "17:00:00"
+                                                            },
+                                                            "plannedHours": {
+                                                                "type": "number",
+                                                                "format": "float",
+                                                                "example": 8
+                                                            },
+                                                            "actualHours": {
+                                                                "type": "number",
+                                                                "format": "float",
+                                                                "example": 7.5
+                                                            },
+                                                            "workType": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "NORMAL",
+                                                                    "OVERTIME",
+                                                                    "HOLIDAY"
+                                                                ]
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -225,36 +281,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthorized or invalid token",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthorized or invalid token"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Unauthorized access"
                     },
-                    "404": {
-                        "description": "User not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "User not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                    "500": {
+                        "description": "Internal server error"
                     }
                 },
                 "security": [
@@ -271,7 +301,7 @@
                 ],
                 "summary": "Register a new employee",
                 "description": "Registers a new employee with the provided details.",
-                "operationId": "9628b19870ecdbab3e05409f3f634781",
+                "operationId": "1861b3794d588d914c0bd87f7a8c69b0",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -371,7 +401,7 @@
                 ],
                 "summary": "Retrieve employee details",
                 "description": "Fetches the details of the employee associated with the authenticated user. The provided JWT token must belong to a user with the role of 'employee'.",
-                "operationId": "49f70fc2a8ff060a533f39050926d7e1",
+                "operationId": "9c53824ef69bf83004916677bbd128e5",
                 "responses": {
                     "200": {
                         "description": "Employee found successfully",
@@ -476,7 +506,7 @@
                 ],
                 "summary": "Update employee details",
                 "description": "Updates the details of the employee associated with the authenticated user. The provided JWT token must belong to a user with the role of 'employee'.",
-                "operationId": "5839e036473efd50982ce1bf47f6c942",
+                "operationId": "1ea162854cbdbb98ce7319e2f664af85",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -627,6 +657,546 @@
                 ]
             }
         },
+        "/HourSession/delete": {
+            "delete": {
+                "tags": [
+                    "HourSession"
+                ],
+                "summary": "Delete a hour worked",
+                "description": "Deletes the hour worked associated with the provided JWT token. The token must be valid and authorized to perform this action.",
+                "operationId": "24ca2955fb87029582de719d26105299",
+                "responses": {
+                    "200": {
+                        "description": "Hour worked deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Hour worked deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized or invalid token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized or invalid token"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Hour worked not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Hour worked not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/HourSession": {
+            "put": {
+                "tags": [
+                    "HourSession"
+                ],
+                "summary": "Update a hour worked",
+                "description": "Updates the details of the hour worked associated with the provided JWT token. The token must be valid and authorized.",
+                "operationId": "7749df21a863141de589146e0bbdd96d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "date",
+                                    "date",
+                                    "start_time",
+                                    "end_time",
+                                    "planned_hours",
+                                    "is_holiday",
+                                    "is_overtime"
+                                ],
+                                "properties": {
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2022-01-01"
+                                    },
+                                    "start_time": {
+                                        "type": "time",
+                                        "example": "08:00"
+                                    },
+                                    "end_time": {
+                                        "type": "time",
+                                        "example": "17:00"
+                                    },
+                                    "planned_hours": {
+                                        "type": "integer",
+                                        "example": 8
+                                    },
+                                    "is_holiday": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_overtime": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Hour worked updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Hour worked updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized or invalid token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized or invalid token"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Hour worked not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Hour worked not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "HourSession"
+                ],
+                "summary": "Register a new hour worked",
+                "description": "Registers a new hour worked with the provided details.",
+                "operationId": "d2dffbbe35336c9d56506d9f828cd9da",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "employee_id",
+                                    "date",
+                                    "start_time",
+                                    "end_time",
+                                    "planned_hours",
+                                    "is_holiday",
+                                    "is_overtime"
+                                ],
+                                "properties": {
+                                    "employee_id": {
+                                        "type": "uuid",
+                                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2022-01-01"
+                                    },
+                                    "start_time": {
+                                        "type": "time",
+                                        "example": "08:00"
+                                    },
+                                    "end_time": {
+                                        "type": "time",
+                                        "example": "17:00"
+                                    },
+                                    "planned_hours": {
+                                        "type": "integer",
+                                        "example": 8
+                                    },
+                                    "is_holiday": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_overtime": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Hour worked created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Hour worked created successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid input data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Validation failed"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/HourSession?date={date}": {
+            "get": {
+                "tags": [
+                    "HourSession"
+                ],
+                "summary": "Retrieve hour worked details",
+                "description": "Fetches the details of the hour worked associated with the provided JWT token. The token must be valid and authorized.",
+                "operationId": "4bdeb5f0befe87c2bd44b18bfc00feb4",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Hour worked found successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Hour worked found successfully"
+                                        },
+                                        "hour_worked": {
+                                            "properties": {
+                                                "date": {
+                                                    "type": "string",
+                                                    "example": "2020-01-01"
+                                                },
+                                                "normal_hours": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 8
+                                                },
+                                                "overtime_hours": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 4
+                                                },
+                                                "night_hours": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 0
+                                                },
+                                                "holiday_hours": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 0
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized or invalid token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized or invalid token"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Hour worked not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Hour worked not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/salary": {
+            "get": {
+                "tags": [
+                    "Salary"
+                ],
+                "summary": "Retrieve Salary by month",
+                "description": "Fetches the details of the salary associated with the provided JWT token. The token must be valid and authorized.",
+                "operationId": "114953af44d637ed7763d90319409b04",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "month": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "year": {
+                                        "type": "integer",
+                                        "example": 2020
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Salary found successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Salary found successfully"
+                                        },
+                                        "salary": {
+                                            "properties": {
+                                                "total_normal_hours": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 8
+                                                },
+                                                "total_overtime_hours": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 4
+                                                },
+                                                "total_holiday_hours": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 0
+                                                },
+                                                "total_gross_salary": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 120
+                                                },
+                                                "total_net_salary": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 108
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Salary not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Salary not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user/delete": {
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Delete a user",
+                "description": "Deletes the user associated with the provided JWT token. The token must be valid and authorized to perform this action.",
+                "operationId": "33209e070ebc14fa9a0970b96f8e0004",
+                "responses": {
+                    "200": {
+                        "description": "User deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized or invalid token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized or invalid token"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/user/show": {
             "get": {
                 "tags": [
@@ -634,7 +1204,7 @@
                 ],
                 "summary": "Retrieve user details",
                 "description": "Fetches the details of the user associated with the provided JWT token. The token must be valid and authorized.",
-                "operationId": "9b27f7e9a515d382ad589ac215d89e17",
+                "operationId": "97a91421f588a650132022a822f23645",
                 "responses": {
                     "200": {
                         "description": "User found successfully",
@@ -720,7 +1290,7 @@
                 ],
                 "summary": "Update user details",
                 "description": "Updates the details of the user associated with the provided JWT token. The token must be valid and authorized. Requires email and password to be provided in the request body.",
-                "operationId": "027503cfdb4a266161c7235f0b598e70",
+                "operationId": "b8f29e891daeca8d4736d7ba167fe645",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -858,12 +1428,24 @@
             "description": "Auth"
         },
         {
-            "name": "User",
-            "description": "User"
+            "name": "Dashboard",
+            "description": "Dashboard"
         },
         {
             "name": "Employee",
             "description": "Employee"
+        },
+        {
+            "name": "HourSession",
+            "description": "HourSession"
+        },
+        {
+            "name": "Salary",
+            "description": "Salary"
+        },
+        {
+            "name": "User",
+            "description": "User"
         }
     ]
 }

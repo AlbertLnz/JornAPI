@@ -34,7 +34,6 @@ class HourWorkedEntryService
         $this->validateTimeEntry($startTime, $endTime);
 
        $hoursList = $this->calculate($startTime, $endTime, $plannedHours, $workType );
-       var_dump($hoursList);
 
         DB::transaction(function () use ($hourSessionId, $hoursList)
         {

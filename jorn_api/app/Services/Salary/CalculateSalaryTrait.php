@@ -9,6 +9,7 @@ trait CalculateSalaryTrait
     public function calculateSalary(mixed $hoursWorkeds, Employee $employee): array
     {
      $hourCalculations = $this->calculateTotalHoursWorked($hoursWorkeds);
+    
    
      $grossSalary =  $this->calculateGrossSalary(
         $hourCalculations['total_normal_hours'], 
@@ -25,9 +26,9 @@ trait CalculateSalaryTrait
 
     private function calculateTotalHoursWorked(mixed $hoursWorkeds):array
     {
-        $totalNormalHours = $hoursWorkeds->sum('total_normal_hours');
-        $totalOvertimeHours = $hoursWorkeds->sum('total_overtime_hours');
-        $totalHolidayHours = $hoursWorkeds->sum('total_holiday_hours');
+        $totalNormalHours = $hoursWorkeds->sum('normal_hours');
+        $totalOvertimeHours = $hoursWorkeds->sum('overtime_hours');
+        $totalHolidayHours = $hoursWorkeds->sum('holiday_hours');
      
         return[
             'total_normal_hours' => $totalNormalHours,

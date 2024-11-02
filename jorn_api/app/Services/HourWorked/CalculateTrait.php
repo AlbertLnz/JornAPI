@@ -35,7 +35,6 @@ trait CalculateTrait{
           $regularOvertimeHours, 
           $workType);
 
-          var_dump("normal",$normalHours);
   
         return[
           'normalHours' => $normalHours,

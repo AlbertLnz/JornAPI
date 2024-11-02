@@ -29,6 +29,7 @@ class SalaryService implements  SalaryServiceInterface
         ->with('hourWorked')
         ->get();
 
+
         $salary = Salary::where('employee_id', $employeeId)
         ->whereBetween('start_date', [$startOfMonth, $endOfMonth])
         ->whereBetween('end_date', [$startOfMonth, $endOfMonth])
@@ -37,6 +38,8 @@ class SalaryService implements  SalaryServiceInterface
     // Agrupar los datos en una colección
     $hourWorkedCollection = $hourSessions->pluck('hourWorked');
        $dataSalary = $this->calculateSalary($hourWorkedCollection, $employee);
+       var_dump("data",$dataSalary);
+      
 
         // Ahora puedes usar la colección $hourWorkeds para cálculos adicionales o sumar sus valores
         if ($salary) {

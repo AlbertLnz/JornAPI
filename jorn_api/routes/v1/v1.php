@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\v1\Auth\LoginController;
 use App\Http\Controllers\v1\Auth\LogOutController;
+use App\Http\Controllers\v1\DashBoard\DashboardController;
 use App\Http\Controllers\v1\Employee\ShowEmployeeController;
 use App\Http\Controllers\v1\Employee\UpdateEmployeeController;
 use App\Http\Controllers\v1\Employee\RegisterEmployeeController;
@@ -35,7 +36,7 @@ Route::middleware(['jwt.auth','token_redis', 'role:employee','is_active'])->grou
     Route::put('/hourSession', HourSessionUpdateController::class);
     Route::delete('/hourSession/delete', HourSessionDeleteController::class);
 
-   // Route::get('/dashboard', DashboardController::class);
+    Route::get('/dashboard', DashboardController::class);
 
    //Salary Routes
    Route::get('/salary', ShowSalaryByMonthController::class);
