@@ -7,20 +7,26 @@ use App\Models\Employee;
 
 class HourSessionShowWeeklyHourWorkedService
 {
-    public function execute(string $employeeId)
+    /**
+     * Summary of execute
+     * @param string $employeeId
+     * @return array
+     */
+    public function execute(string $employeeId): array
     {
         $startDate = Carbon::now()->startOfWeek()->toDateString(); 
-        var_dump("start",$$startDate);// Lunes
         $endDate = Carbon::now()->endOfWeek()->toDateString();
-        $hourSessions = HourSession::where('employee_id', $employeeId)->whereBetween('date', [$startDate, $endDate])->get();
+        $hourSessions = HourSession::where('employee_id', $employeeId)
+        ->whereBetween('date', [$startDate, $endDate])
+        ->select('total_normal_hours', 'total_overtime_hours', 'total_holiday_hours')->get();
 
         $totalNormalHours = $hourSessions->sum('total_normal_hours');
         $totalOvertimeHours = $hourSessions->sum('total_overtime_hours');
         $totalHolidayHours = $hourSessions->sum('total_holiday_hours');
-        $totalNightHours = $hourSessions->sum('total_night_hours');
-        $totalHours = $totalNormalHours + $totalOvertimeHours + $totalHolidayHours + $totalNightHours;
+       
+        $totalHours = $totalNormalHours + $totalOvertimeHours + $totalHolidayHours ;
         
-        $totalHoursWorked = $totalNormalHours + $totalOvertimeHours + $totalHolidayHours + $totalNightHours;
+        $totalHoursWorked = $totalNormalHours + $totalOvertimeHours + $totalHolidayHours ;
        
         return [
             

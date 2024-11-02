@@ -1,14 +1,22 @@
 <?php 
+declare(strict_types=1);
 namespace App\Services\HourWorked;
 
-use Carbon\Carbon;
+use App\Enums\WorkTypeEnum;
 
 trait HourCalculateTrait{
        /**
      * Calcular las horas extras.
+     * Las horas extras son las horas trabajadas 
+     * @param float $hoursWorked
+     * @param float $plannedHours
+     * @return float
      */
-    private function calculateOvertimeHours(float $hoursWorked, float $plannedHours): float
+    private function calculateRegularOvertimeHours(float $hoursWorked, float $plannedHours,  $workType): float
     {
+        if (WorkTypeEnum::OVERTIME->value === $workType || WorkTypeEnum::HOLIDAY->value === $workType) {
+            return 0;
+        }
 
         if ($hoursWorked <= $plannedHours) {
             return 0;
@@ -16,51 +24,41 @@ trait HourCalculateTrait{
 
         $overtimeHours = $hoursWorked - $plannedHours;
 
-
-        return $overtimeHours;
-
-       
+        return $overtimeHours;  
     }
 
     /**
      * Calcular las horas festivas.
      */
-    private function calculateHolidayHours(float $hoursWorked, float $overtimeHours, bool $isHoliday): float
+    private function calculateHolidayHours(float $hoursWorked, float $overtimeHours,$workType): float
     {
-        if ($isHoliday) {
+        if (WorkTypeEnum::HOLIDAY->value === $workType) {
             return $hoursWorked;
         }
         return 0;
     }
 
-    /**
-     * Calcular las horas nocturnas.
-     * Si parte del turno cae entre las 22:00 y las 06:00, se consideran horas nocturnas.
-     */
-    private function calculateNightHours(Carbon $start, Carbon $end): float
-    {
-        // Definir el rango de horas nocturnas
-        $nightStart = Carbon::createFromTime(22, 0);
-        $nightEnd = Carbon::createFromTime(6, 0)->addDay();
-
-        // Calcular las horas nocturnas
-        $nightHours = 0;
-
-        // Si el turno empieza antes de las 6 AM o después de las 10 PM, ajustamos
-        if ($start->between($nightStart, $nightEnd) || $end->between($nightStart, $nightEnd)) {
-            // El tiempo que empieza antes de las 6 AM cuenta como nocturno
-            $nightHours += $start->max($nightStart)->diffInHours($end->min($nightEnd));
-        }
-
-        return $nightHours;
-    }
 
     /**
      * Calcular las horas normales.
      * Las horas normales son las horas trabajadas menos las extras, nocturnas y festivas.
      */
-    private function calculateNormalHours(float $hoursWorked, float $overtimeHours, float $holidayHours, float $nightHours): float
+    private function calculateNormalHours(float $hoursWorked, float $overtimeHours, $workType): float
     {
-        return $hoursWorked - ($overtimeHours + $holidayHours + $nightHours);
+        if (WorkTypeEnum::HOLIDAY->value === $workType || WorkTypeEnum::OVERTIME->value === $workType) {
+            
+           
+            return 0;
+        }
+        return $hoursWorked - $overtimeHours;
     }
+
+    private function calculateExtraShiftOvertime(float $hoursWorked,  $workType): float
+    {
+        if(WorkTypeEnum::OVERTIME->value === $workType) {
+            return $hoursWorked;
+        }
+            return 0;
+    }
+
 }
