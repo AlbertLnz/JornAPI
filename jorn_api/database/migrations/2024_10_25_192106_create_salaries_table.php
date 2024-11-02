@@ -14,15 +14,11 @@ return new class extends Migration
         Schema::create('salaries', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('employee_id')->references('id')->on('employees')->onUpdate('cascade')->onDelete('cascade');
-
-            $table->date('start_date');
-            $table->date('end_date');
-
+            $table->date('start_date')->unique();
+            $table->date('end_date')->unique();
             $table->decimal('total_normal_hours', 8, 2)->default(0);
             $table->decimal('total_overtime_hours', 8, 2)->default(0);
-            $table->decimal('total_night_hours', 8, 2)->default(0)->nullable();
-            $table->decimal('total_holiday_hours', 8, 2)->default(0);
-
+            $table->decimal('total_holiday_hours', 8, 2)->default(0)->nullable();
             $table->decimal('total_gross_salary', 8, 2)->default(0)->nullable();   
             $table->decimal('total_net_salary', 8, 2)->default(0)->nullable();
             $table->timestamps();

@@ -13,10 +13,9 @@ class HourWorked extends Model
 
     protected $fillable = [
         'hour_session_id',
-        'total_normal_hours',
-        'total_overtime_hours',
-        'total_night_hours',
-        'total_holiday_hours',
+        'normal_hours',
+        'overtime_hours',
+        'holiday_hours',
     ];
 
     public function hourSession(): BelongsTo{

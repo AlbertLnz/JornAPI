@@ -5,20 +5,23 @@ namespace App\Services\User;
 
 use App\Exceptions\UserNotFound;
 use App\Models\User;
-use App\Services\Token\TokenService;
-use Illuminate\Http\Request;
+
 
 class DeleteUserService{
 
 
     public function __construct(){}
+    /**
+     * Summary of execute
+     * @param string $uuid
+     * @throws \App\Exceptions\UserNotFound
+     * @return void
+     */
     public function execute(string $uuid): void{
 
  
-       $user = User::where('id', $uuid)->update(['is_active' => 0]);
-       if(!$user){
-        throw new UserNotFound();
-       }
+        User::where('id', $uuid)->update(['is_active' => 0]);
+     
         
     }
 }

@@ -3,14 +3,11 @@ declare(strict_types=1);
 
 namespace App\Services\Token;
 
-use App\Exceptions\InvalidTokenException;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Laravel\Passport\Exceptions\InvalidAuthTokenException;
 class TokenService
 {
     protected $secret;

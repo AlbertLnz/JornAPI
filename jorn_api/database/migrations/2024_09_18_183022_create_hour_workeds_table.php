@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('hour_workeds', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('hour_session_id')->references('id')->on('hour_sessions')->onUpdate('cascade')->onDelete('cascade');
-            $table->decimal('total_normal_hours', 8, 2)->default(0);
-            $table->decimal('total_overtime_hours', 8, 2)->default(0);
-            $table->decimal('total_night_hours', 8, 2)->default(0);
-            $table->decimal('total_holiday_hours', 8, 2)->default(0);
+            $table->decimal('normal_hours', 8, 2)->default(0);
+            $table->decimal('overtime_hours', 8, 2)->default(0);
+            $table->decimal('holiday_hours', 8, 2)->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -17,8 +17,7 @@ return new class extends Migration
             $table->string('company_name')->nullable();
             $table->decimal('normal_hourly_rate', 8, 2);   // Tarifa Horaria Normal
             $table->decimal('overtime_hourly_rate', 8, 2); // Tarifa Horaria Extra
-            $table->decimal('night_hourly_rate', 8, 2)->nullable();    // Tarifa Nocturna
-            $table->decimal('holiday_hourly_rate', 8, 2)->nullable();  // Tarifa Festivo
+            $table->decimal('holiday_hourly_rate', 8, 2);  // Tarifa Festivo
             $table->decimal('irpf', 5, 2)->nullable();  
             $table->foreignUuid('user_id')->references('id')->on('users')->onUpdate('cascade');
             $table->timestamps();

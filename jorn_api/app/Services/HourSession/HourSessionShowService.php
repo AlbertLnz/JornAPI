@@ -10,7 +10,13 @@ use Illuminate\Support\Facades\Validator;
 
 class HourSessionShowService{
     public function __construct(){}
-
+    /**
+     * Summary of execute
+     * @param string $employeeId
+     * @param string $date
+     * @throws \App\Exceptions\HourSessionNotFoundException
+     * @return \App\DTO\HourSession\HourSessionShowDTO
+     */
     public function execute(string $employeeId, string $date): HourSessionShowDTO
     {
         $hourSession = HourSession::where('employee_id', $employeeId)->where('date', $date)->select( 'date', 'start_time', 'end_time', 'planned_hours', 'is_holiday', 'is_overtime')->first();

@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Enums\WorkTypeEnum;
 
 class HourSessionRegisterRequest extends FormRequest
 {
@@ -28,8 +29,7 @@ class HourSessionRegisterRequest extends FormRequest
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
             'planned_hours' => 'required|integer|min:2',  
-            'is_holiday' => 'required|boolean',
-            'is_overtime' => 'required|boolean',
+            'work_type' => ['nullable', 'string'],
 
         ];
     }
