@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class RegisterEmployeeRequest extends FormRequest
+class UpdateEmployeeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,9 @@ class RegisterEmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:55'],
-            'password' => ['required', 'string', 'min:8', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'normal_hourly_rate' => ['required', 'numeric', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
-            'overtime_hourly_rate' => ['required','numeric', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
+            'name' => ['string', 'max:55'],
+            'normal_hourly_rate' => ['numeric', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
+            'overtime_hourly_rate' => ['numeric', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
             'holiday_hourly_rate' => ['numeric', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
             'irpf' => ['numeric', 'regex:/^\d{1,2}(\.\d{1,2})?$/'],
         ];
@@ -36,7 +34,6 @@ class RegisterEmployeeRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-
-        throw new HttpResponseException(response()->json(['errors' => $validator->errors()], 422));
+        throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
 }

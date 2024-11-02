@@ -5,56 +5,64 @@ namespace App\Services\Employee;
 
 use App\Exceptions\UserNotFound;
 use App\Models\Employee;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class EmployeeUpdateService{
-
+    /**
+     * Summary of execute
+     * @param mixed $name
+     * @param mixed $company
+     * @param mixed $normalHourlyRate
+     * @param mixed $overtimeHourlyRate
+     * @param mixed $nightHourlyRate
+     * @param mixed $holidayHourlyRate
+     * @param mixed $irpf
+     * @param mixed $uuid
+     * @throws \App\Exceptions\UserNotFound
+     * @return \App\Models\Employee
+     */
     public function execute(?string $name, 
                             ?string $company, 
                             ?float $normalHourlyRate, 
                             ?float $overtimeHourlyRate, 
-                            ?float $nightHourlyRate, 
                             ?float $holidayHourlyRate, 
                             ?float $irpf, 
                             ?string $uuid): Employee{
-        $user = User::where('id', $uuid)->first();
-        DB::transaction(function () use ($user, $name, $company, $normalHourlyRate, $overtimeHourlyRate, $nightHourlyRate, $holidayHourlyRate, $irpf) {
-            if(!$user){
-                throw new UserNotFound();
-            }
-    
+        $employee = Employee::where('user_id', $uuid)->select('name', 'company', 'normal_hourly_rate', 'overtime_hourly_rate', 'night_hourly_rate', 'holiday_hourly_rate', 'irpf')->first();
+        if(!$employee){
+            throw new UserNotFound();
+        }
+
+        DB::transaction(function () use ($employee, $name, $company, $normalHourlyRate, $overtimeHourlyRate, $holidayHourlyRate, $irpf) {
+          
             if($name != null){
-                $user->employee->name = $name;
+                $employee->name = $name;
             }
     
             if($company != null){
-                $user->employee->company_name = $company;
+                $employee->company_name = $company;
             }
     
             if($normalHourlyRate != null){
-                $user->employee->normal_hourly_rate = $normalHourlyRate;
+                $employee->normal_hourly_rate = $normalHourlyRate;
             }
     
             if($overtimeHourlyRate != null){
-                $user->employee->overtime_hourly_rate = $overtimeHourlyRate;
+                $employee->overtime_hourly_rate = $overtimeHourlyRate;
             }
     
-            if($nightHourlyRate != null){
-                $user->employee->night_hourly_rate = $nightHourlyRate;
-            }
     
             if($holidayHourlyRate != null){
-                $user->employee->holiday_hourly_rate = $holidayHourlyRate;
+                $employee->holiday_hourly_rate = $holidayHourlyRate;
             }
     
             if($irpf != null){
-                $user->employee->irpf = $irpf;
+                $employee->irpf = $irpf;
             }
         
-            $user->employee->save();
+            $employee->save();
         });
        
-        return $user->employee;
+        return $employee;
     }
 }

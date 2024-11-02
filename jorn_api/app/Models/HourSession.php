@@ -18,8 +18,7 @@ class HourSession extends Model
         'start_time',
         'end_time',
         'planned_hours',
-        'is_holiday',
-        'is_overtime'
+        'work_type',
     ];
 
     public function employee(): BelongsTo{
