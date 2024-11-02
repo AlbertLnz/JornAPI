@@ -10,9 +10,19 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\UnauthorizedException;
 
 class AuthService{
-
+    /**
+     * Summary of __construct
+     * @param \App\Services\Token\TokenService $jwtService
+     */
     public function __construct(private TokenService $jwtService){}
-
+    /**
+     * Summary of execute
+     * @param string $email
+     * @param string $password
+     * @throws \App\Exceptions\UserNotFound
+     * @throws \Illuminate\Validation\UnauthorizedException
+     * @return array
+     */
     public function execute(string $email, string $password): array
     {
         $user = User::where('email', $email)->first();

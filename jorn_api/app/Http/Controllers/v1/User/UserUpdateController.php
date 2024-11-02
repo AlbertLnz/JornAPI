@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers\v1\User;
 
 use App\DTO\User\ShowUserDTO;
@@ -10,13 +10,21 @@ use App\Services\User\UserUpdateService;
 
 class UserUpdateController extends Controller
 {
-
-    public function __construct(private TokenService $tokenService, private UserUpdateService $userUpdateService){}
+    /**
+     * Summary of __construct
+     * @param \App\Services\User\UserUpdateService $userUpdateService
+     */
+    public function __construct( private UserUpdateService $userUpdateService){}
+    /**
+     * Summary of __invoke
+     * @param \App\Http\Requests\UpdateUserRequest $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function __invoke(UpdateUserRequest $request)
     {
      
-        $decode=  $this->tokenService->decodeToken($request->bearerToken());
-       $user= $this->userUpdateService->execute($request->email, $request->password, $decode->sub);
+        $user = $request->user();
+       $user= $this->userUpdateService->execute($request->email, $request->password, $user);
         return response()->json(['message' => 'User updated successfully','user'=>ShowUserDTO::fromUser($user)], 200);
     }
 }

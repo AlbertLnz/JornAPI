@@ -1,17 +1,16 @@
 <?php 
-
+declare(strict_types=1);
 namespace App\Services\Salary;
 
 use App\Models\Employee;
-use App\Models\HourSession;
-use App\Models\HourWorked;
+
 use App\Models\Salary;
 use Carbon\Carbon;
 
 class SalaryService implements  SalaryServiceInterface
 {
     use CalculateSalaryTrait;
-    public function execute(string $employeeId, string $date)
+    public function execute(string $employeeId, string $date): Salary
     {
         $date = new Carbon($date);
         // Primer día del mes
@@ -48,20 +47,19 @@ class SalaryService implements  SalaryServiceInterface
      
             $salary->total_holiday_hours = $dataSalary['total_holiday_hours'];
      
-            $salary->total_night_hours = $dataSalary['total_night_hours'];
+            
             $salary->total_gross_salary = $dataSalary['gross_salary'];
      
             $salary->save();
                  
              }else{
-                $salary = Salary::updateOrCreate(
+                $salary = Salary::create(
                     ['employee_id' => $employeeId,
                     'start_date' => $startOfMonth,
                     'end_date' => $endOfMonth,
                     'total_normal_hours' => $dataSalary['total_normal_hours'],
                     'total_overtime_hours' => $dataSalary['total_overtime_hours'],
                     'total_holiday_hours' => $dataSalary['total_holiday_hours'],
-                    'total_night_hours' => $dataSalary['total_night_hours'],
                     'total_gross_salary' => $dataSalary['gross_salary'],
                     'total_net_salary' => 0
                
