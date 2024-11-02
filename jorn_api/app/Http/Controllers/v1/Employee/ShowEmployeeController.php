@@ -35,4 +35,6 @@ class ShowEmployeeController extends Controller
         }
      
     }
+    //como crear un directorio en linux con terminal y darle permisos de ejecucion con chmod +x directorio y darle permisos de ejecucion con chmod 777 directorio
+
 }

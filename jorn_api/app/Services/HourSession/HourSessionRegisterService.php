@@ -48,7 +48,6 @@ use ValidateTimeEntry;
             ]);
          
 
-       //$this->salaryService->execute($employeeId, $date);
 
             return $hourSession;
         });
@@ -62,7 +61,9 @@ use ValidateTimeEntry;
             $transaction->end_time,
             $transaction->planned_hours, 
            $transaction->work_type); 
-      event(new HourSessionRegistered( $employeeId, $date));
+       $this->salaryService->execute($employeeId, $date);
+
+     // event(new HourSessionRegistered( $employeeId, $date));
 
      
     }

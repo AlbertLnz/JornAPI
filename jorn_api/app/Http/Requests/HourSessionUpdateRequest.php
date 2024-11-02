@@ -29,8 +29,7 @@ class HourSessionUpdateRequest extends FormRequest
             'start_time' => 'date_format:H:i',
             'end_time' => 'date_format:H:i',
             'planned_hours' => 'integer|min:2',
-            'is_holiday' => 'boolean',
-            'is_overtime' => 'boolean',
+            'work_type' => ['nullable', 'string'],
 
         ];
     }

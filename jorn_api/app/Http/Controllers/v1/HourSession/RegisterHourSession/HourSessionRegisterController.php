@@ -30,7 +30,6 @@ class HourSessionRegisterController extends Controller
             $employee =$request->user()->employee;
             $workType = WorkTypeEnum::fromValue($request->work_type);
             
-            var_dump($workType->value);
             
             $this->hourSessionRegisterService->execute(          
             $employee->id,

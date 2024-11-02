@@ -32,8 +32,7 @@ class HourSessionUpdateController{
         $request->start_time,
         $request->end_time, 
         $request->planned_hours, 
-        $request->is_holiday, 
-        $request->is_overtime);
+        $request->work_type);
         return response()->json(['message' => 'Hour worked updated successfully', 'HourSession' => $hourSession], 200);
        }catch(HourSessionNotFoundException | TimeEntryException $exception){
 

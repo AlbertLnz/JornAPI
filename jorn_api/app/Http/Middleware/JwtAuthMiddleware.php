@@ -41,7 +41,6 @@ class JwtAuthMiddleware
             if (!$decoded) {
                 throw new InvalidTokenException();
             }
-            var_dump($decoded->sub);
             $user = User::find($decoded->sub);
             if (!$user) {
                 throw new UserNotFound();
