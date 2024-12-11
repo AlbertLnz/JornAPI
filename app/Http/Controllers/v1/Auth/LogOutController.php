@@ -4,6 +4,7 @@ namespace App\Http\Controllers\v1\Auth;
 
 use App\Exceptions\InvalidTokenException;
 use App\Http\Controllers\Controller;
+use App\Services\Auth\LogOutService;
 use App\Services\Token\TokenService;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
@@ -16,9 +17,9 @@ class LogOutController extends Controller
 {
     /**
      * Summary of __construct
-     * @param \App\Services\Token\TokenService $tokenService
+     * @param \App\Services\Auth\LogOutService $logOutService
      */
-    public function __construct(private TokenService $tokenService){}
+    public function __construct(private LogOutService $logOutService){}
     
     /**
      * Summary of __invoke
@@ -31,18 +32,7 @@ class LogOutController extends Controller
     {
 
         try{
-            $token = $request->bearerToken();
-            // Extraer el JWT ID ('jti') del token
-            $jti = $this->tokenService->getJtiFromToken($token);
-            $userID = $this->tokenService->decodeToken($token)->sub;
-   
-            if (!$jti) {
-                // Almacenar el 'jti' en Redis para la lista negra (blacklist)
-               throw new InvalidTokenException();
-            }
-   
-            Cache::store('redis')->put('blacklist:' . $jti, true, now()->addMinutes(60));
-            $this->tokenService->revokeAllRefreshTokens($userID);
+                $this->logOutService->logOut( $request->bearerToken());
 
                 return response()->json(['message' => 'Logged out successfully']);
 

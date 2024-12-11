@@ -25,28 +25,59 @@ class AuthService{
      */
     public function execute(string $email, string $password): array
     {
+        $user = $this->validateUser($email, $password);
+        
+        $tokens = $this->generateTokens($user);
+    
+        // Cachear el token en Redis
+        Cache::store('redis')->put("user:{$user->id}:token", $tokens['token'], 3600);
+    
+        return $tokens;
+    }
+    
+    /**
+     * Valida el usuario y sus credenciales.
+     *
+     * @param string $email
+     * @param string $password
+     * @return User
+     * @throws UserNotFound
+     * @throws UnauthorizedException
+     */
+    private function validateUser(string $email, string $password): User
+    {
         $user = User::where('email', $email)->first();
-        if(!$user){
+    
+        if (!$user) {
             throw new UserNotFound();
         }
-        if(!$user->is_active){
-
-            throw new UnauthorizedException('User not active, please contact your administrator',401);
+    
+        if (!$user->is_active) {
+            throw new UnauthorizedException('User not active. Please contact your administrator.', 401);
         }
-
-        if (!$user || !Hash::check($password, $user->password)) {
-            throw new UnauthorizedException('Invalid credentials',401);
+    
+        if (!Hash::check($password, $user->password)) {
+            throw new UnauthorizedException('Invalid credentials.', 401);
         }
-
-        // Generar el token
+    
+        return $user;
+    }
+    
+    /**
+     * Genera el token y el refresh token para el usuario.
+     *
+     * @param User $user
+     * @return array
+     */
+    private function generateTokens(User $user): array
+    {
         $token = $this->jwtService->generateToken($user->id, $user->roles);
         $refreshToken = $this->jwtService->generateRefreshToken($user->id);
-        $data = [
+    
+        return [
             'token' => $token,
-            'refreshToken' => $refreshToken
+            'refreshToken' => $refreshToken,
         ];
-
-      Cache::store('redis')->put("user:{$user->id}:token", $token, 3600); //
-      return $data;
     }
+    
 }
