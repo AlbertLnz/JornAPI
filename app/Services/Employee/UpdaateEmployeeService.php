@@ -3,11 +3,12 @@ declare(strict_types=1);
 
 namespace App\Services\Employee;
 
+use App\DTO\Employee\EmployeeDTO;
 use App\Exceptions\UserNotFound;
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 
-class EmployeeUpdateService{
+class UpdaateEmployeeService{
     /**
      * Summary of execute
      * @param mixed $name
@@ -27,7 +28,7 @@ class EmployeeUpdateService{
                             ?float $overtimeHourlyRate, 
                             ?float $holidayHourlyRate, 
                             ?float $irpf, 
-                            ?string $uuid): Employee{
+                            ?string $uuid): array   {
         $employee = Employee::where('user_id', $uuid)->select('name', 'company', 'normal_hourly_rate', 'overtime_hourly_rate', 'night_hourly_rate', 'holiday_hourly_rate', 'irpf')->first();
         if(!$employee){
             throw new UserNotFound();
@@ -63,6 +64,6 @@ class EmployeeUpdateService{
             $employee->save();
         });
        
-        return $employee;
+        return EmployeeDTO::toArray($employee);
     }
 }

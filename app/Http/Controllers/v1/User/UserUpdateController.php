@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace App\Http\Controllers\v1\User;
 
-use App\DTO\User\ShowUserDTO;
+use App\DTO\User\UserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\Token\TokenService;
@@ -25,6 +25,6 @@ class UserUpdateController extends Controller
      
         $user = $request->user();
        $user= $this->userUpdateService->execute($request->email, $request->password, $user);
-        return response()->json(['message' => 'User updated successfully','user'=>ShowUserDTO::fromUser($user)], 200);
+        return response()->json(['message' => 'User updated successfully','user'=>UserDTO::fromModel($user)], 200);
     }
 }

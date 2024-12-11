@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\Salary;
 
-use App\DTO\Salary\ShowSalaryDTO;
+use App\DTO\Salary\SalaryDTO;
 use App\Exceptions\SalaryNotFoundException;
 use App\Models\Salary;
 use Carbon\Carbon;
@@ -17,6 +17,6 @@ class FindSalaryByMonthService{
         throw new SalaryNotFoundException();
     }
        
-        return ShowSalaryDTO::fromSalary($salary);
+        return SalaryDTO::toArray($salary->toArray());
     }
 }

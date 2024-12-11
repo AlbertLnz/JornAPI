@@ -7,7 +7,7 @@ namespace App\Services\Employee;
 
 use App\Services\User\RegisterUserService;
 use Illuminate\Support\Facades\DB;
-
+use Spatie\Permission\Models\Role;
 
 class RegisterEmployeeService{
     /**
@@ -27,7 +27,7 @@ class RegisterEmployeeService{
      * @param float $irpf
      * @return void
      */
-    public function execute(?string $name, ?string $email, ?string $password,  ?float $normalHourlyRate, ?float $overtimeHourlyRate, ?float $holidayHourlyRate, float $irpf,): void
+    public function execute(?string $name, ?string $email, ?string $password,  ?float $normalHourlyRate, ?float $overtimeHourlyRate, ?float $holidayHourlyRate, ?float $irpf,): void
     {
         $employee = [
             'name' => $name,
@@ -40,7 +40,8 @@ class RegisterEmployeeService{
 
         DB::transaction(function () use ( $email, $password, $employee) {
            $user= $this->registerUserService->execute($email, $password);
-            $user->assignRole('employee');
+          $user->assignRole('employee');
+          
             $user->employee()->create([
                 'name' => $employee['name']?? 'Company',
                 'normal_hourly_rate' => $employee['normal_hourly_rate'],

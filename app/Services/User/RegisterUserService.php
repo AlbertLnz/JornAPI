@@ -28,6 +28,7 @@ class RegisterUserService{
         SendRegistrNotification::dispatch($user);
       //  $user->sendEmailVerificationNotification();
 
+   
       
        return $user;
     }

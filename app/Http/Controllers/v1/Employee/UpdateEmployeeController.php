@@ -2,11 +2,11 @@
 declare(strict_types=1);
 namespace App\Http\Controllers\v1\Employee;
 
-use App\DTO\Employee\ShowEmployeeDTO;
+use App\DTO\Employee\EmployeeDTO;
 use App\Exceptions\UserNotFound;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateEmployeeRequest;
-use App\Services\Employee\EmployeeUpdateService;
+use App\Services\Employee\UpdaateEmployeeService;
 use App\Services\Token\TokenService;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
@@ -16,9 +16,9 @@ class UpdateEmployeeController extends Controller
 {
     /**
      * Summary of __construct
-     * @param \App\Services\Employee\EmployeeUpdateService $employeeUpdateService
+     * @param \App\Services\Employee\UpdaateEmployeeService $employeeUpdateService
      */
-    public function __construct(private EmployeeUpdateService $employeeUpdateService){
+    public function __construct(private UpdaateEmployeeService $employeeUpdateService){
 
     }
     /**
@@ -38,7 +38,7 @@ class UpdateEmployeeController extends Controller
                                                 $request->irpf, 
                                                 $user->id);
              
-             return response()->json(['message' => 'Employee updated successfully','employee'=>ShowEmployeeDTO::fromEmployee($employee)], 200);
+             return response()->json(['message' => 'Employee updated successfully','employee'=>$employee], 200);
         }catch(UserNotFound $e){
             throw new HttpResponseException(response()->json(['message' => $e->getMessage()], $e->getCode()));
         }

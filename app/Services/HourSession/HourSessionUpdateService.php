@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace App\Services\HourSession;
 
-use App\DTO\HourSession\HourSessionShowDTO;
+use App\DTO\HourSession\HourSessionDTO;
 use App\Events\HourSessionUpdatedEvent;
 use App\Exceptions\HourSessionNotFoundException;
 use App\Models\HourSession;
@@ -28,9 +28,9 @@ class HourSessionUpdateService{
      * @param mixed $isHoliday
      * @param mixed $isOvertime
      * @throws \App\Exceptions\HourSessionNotFoundException
-     * @return \App\DTO\HourSession\HourSessionShowDTO
+     * @return \App\DTO\HourSession\HourSessionDTO
      */
-    public function execute(?string $employeeId, ?string $date, ?string $startTime, ?string $endTime, ?int $plannedHours, $workType): HourSessionShowDTO
+    public function execute(?string $employeeId, ?string $date, ?string $startTime, ?string $endTime, ?int $plannedHours, $workType): array
     {
        // $this->validateDateIsToday($date);
         $carbon = new Carbon($date);
@@ -68,6 +68,6 @@ class HourSessionUpdateService{
         event(new HourSessionUpdatedEvent( $employeeId, $date));
     
 
-        return HourSessionShowDTO::fromHourSession($hourSession);
+        return HourSessionDTO::toArray($hourSession);
     }
 }

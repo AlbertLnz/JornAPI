@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\DTO\Employee;
 
+use App\DTO\DTOInterface;
 use App\Models\Employee;
+use Illuminate\Database\Eloquent\Model;
 
-class  ShowEmployeeDTO{
+class  EmployeeDTO implements DTOInterface{
 
 
     public function __construct(
@@ -19,7 +21,7 @@ class  ShowEmployeeDTO{
         public float $irpf
     ){}
 
-    public static function fromEmployee(Employee $employee): self
+    public static function fromModel(Model $employee): self
     {
         return new self(
             $employee->name,
@@ -31,4 +33,17 @@ class  ShowEmployeeDTO{
             (float)$employee->irpf??0.0
         );
     }
+
+    public static function toArray(array $data): array
+    {
+        return [
+            'name' => $data['name'],
+            'company_name' => $data['company_name'],
+            'normal_hourly_rate' => $data['normal_hourly_rate'],
+            'overtime_hourly_rate' => $data['overtime_hourly_rate'],
+            'night_hourly_rate' => $data['night_hourly_rate'],
+            'holiday_hourly_rate' => $data['holiday_hourly_rate'],
+            'irpf' => $data['irpf'],
+        ];
+    } 
 }
