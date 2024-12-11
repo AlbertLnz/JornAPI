@@ -21,7 +21,7 @@ trait ValidateTimeEntry
 
         // Validación: si después de ajustar sigue siendo inválido, lanzamos excepción
         if ($start > $end) {
-            throw new TimeEntryException();
+            throw new TimeEntryException("'The start time cannot be greater than the end time'");
         }
     }
 

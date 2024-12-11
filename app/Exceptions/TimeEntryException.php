@@ -6,7 +6,8 @@ use Exception;
 
 class TimeEntryException extends Exception
 {
-    public function __construct(){
-        parent::__construct("The start time cannot be greater than the end time", 400);
+    
+    public function __construct($msg ){
+        parent::__construct($msg, 400);
     }
 }
