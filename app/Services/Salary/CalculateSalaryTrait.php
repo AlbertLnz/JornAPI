@@ -3,18 +3,28 @@ declare(strict_types=1);
 namespace App\Services\Salary;
 
 use App\Models\Employee;
+use App\Traits\TimeConverterTrait;
 
 trait CalculateSalaryTrait
 {
+    use TimeConverterTrait;
+    /**
+     * Summary of calculateSalary
+     * @param mixed $hoursWorkeds
+     * @param \App\Models\Employee $employee
+     * @return array
+     */
     public function calculateSalary(mixed $hoursWorkeds, Employee $employee): array
     {
      $hourCalculations = $this->calculateTotalHoursWorked($hoursWorkeds);
-    
+    $convertToNormalHours = $this->convertDecimalToHoursAndMinutes($hourCalculations['total_normal_hours']);
+    $convertToOvertimeHours = $this->convertDecimalToHoursAndMinutes($hourCalculations['total_overtime_hours']);
+    $convertToHolidayHours = $this->convertDecimalToHoursAndMinutes($hourCalculations['total_holiday_hours']);
    
      $grossSalary =  $this->calculateGrossSalary(
-        $hourCalculations['total_normal_hours'], 
-        $hourCalculations['total_overtime_hours'], 
-        $hourCalculations['total_holiday_hours'], 
+        $convertToNormalHours,
+        $convertToOvertimeHours,
+        $convertToHolidayHours, 
         $employee);
         return [
             'total_normal_hours' => $hourCalculations['total_normal_hours'],
@@ -23,7 +33,11 @@ trait CalculateSalaryTrait
             'gross_salary' => $grossSalary,
       ];
     }
-
+    /**
+     * Summary of calculateTotalHoursWorked
+     * @param mixed $hoursWorkeds
+     * @return array
+     */
     private function calculateTotalHoursWorked(mixed $hoursWorkeds):array
     {
         $totalNormalHours = $hoursWorkeds->sum('normal_hours');
@@ -37,12 +51,28 @@ trait CalculateSalaryTrait
            
         ];
     }
-
-    private function calculateGrossSalary(float $totalNormalHours, float $totalOvertimeHours, float $totalHolidayHours, Employee $employee): float{
-        $normal_hourly_rate= $employee->normal_hourly_rate;
-        $overtime_hourly_rate= $employee->overtime_hourly_rate;
-        $holiday_hourly_rate= $employee->holiday_hourly_rate;
-        return $normal_hourly_rate * $totalNormalHours + $overtime_hourly_rate * $totalOvertimeHours + $holiday_hourly_rate * $totalHolidayHours ;
-
+    /**
+     * Summary of calculateGrossSalary
+     * @param array $totalNormalHours
+     * @param array $totalOvertimeHours
+     * @param array $totalHolidayHours
+     * @param \App\Models\Employee $employee
+     * @return float
+     */
+    private function calculateGrossSalary(array $totalNormalHours, array $totalOvertimeHours, array $totalHolidayHours, Employee $employee): float
+    {
+        // Convierte los minutos a fracciones de hora
+        $normalHoursWithMinutes = $totalNormalHours['hours'] + ($totalNormalHours['minutes'] / 60);
+        $overtimeHoursWithMinutes = $totalOvertimeHours['hours'] + ($totalOvertimeHours['minutes'] / 60);
+        $holidayHoursWithMinutes = $totalHolidayHours['hours'] + ($totalHolidayHours['minutes'] / 60);
+    
+        // Calcula el salario bruto tomando en cuenta horas y minutos
+        $totalNormalSalary = $normalHoursWithMinutes * $employee->normal_hourly_rate;
+        $totalOvertimeSalary = $overtimeHoursWithMinutes * $employee->overtime_hourly_rate;
+        $totalHolidaySalary = $holidayHoursWithMinutes * $employee->holiday_hourly_rate;
+    
+        // Suma todos los salarios
+        return $totalNormalSalary + $totalOvertimeSalary + $totalHolidaySalary;
     }
+    
 }
