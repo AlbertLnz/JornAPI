@@ -17,11 +17,10 @@ class TokenService
         $this->secret = config('jwt.secret');
     }
 
-    public function generateToken($userId, $roles = [])
+    public function generateToken($userId)
     {
         $payload = [
             'sub' => $userId,
-            'role' => $roles[0]['name'],
             'iat' => time(),
             'exp' => time() + 3600, // Token válido por 30 minutos
             'jti' => bin2hex(random_bytes(16)) // Genera un ID único para el token
@@ -41,7 +40,7 @@ class TokenService
         }
     }
 
-    public function getJtiFromToken($token)
+    public function getJtiFromToken($token): mixed
     {
         try {
             $decoded = JWT::decode($token, new Key($this->secret, 'HS256'));

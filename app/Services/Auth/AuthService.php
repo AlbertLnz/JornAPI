@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Services\Token\TokenService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Validation\UnauthorizedException;
 
 class AuthService{
@@ -71,7 +72,7 @@ class AuthService{
      */
     private function generateTokens(User $user): array
     {
-        $token = $this->jwtService->generateToken($user->id, $user->roles);
+        $token = $this->jwtService->generateToken($user->id);
         $refreshToken = $this->jwtService->generateRefreshToken($user->id);
     
         return [

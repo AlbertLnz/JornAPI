@@ -25,11 +25,10 @@ public function logOut(string $token){
     $userID = $this->tokenService->decodeToken($token)->sub;
 
     if (!$jti) {
-        // Almacenar el 'jti' en Redis para la lista negra (blacklist)
        throw new InvalidTokenException();
     }
 
-    Cache::store('redis')->put('blacklist:' . $jti, true, now()->addMinutes(60));
+    Cache::store('redis')->put("blacklist:$jti", true, now()->addMinutes(30));
     $this->tokenService->revokeAllRefreshTokens($userID);
 }
 
