@@ -12,7 +12,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-class SendRegistrNotification implements ShouldQueue
+class SendRegisterNotification implements ShouldQueue
 {
     use Queueable;
 
@@ -30,7 +30,7 @@ class SendRegistrNotification implements ShouldQueue
     public function handle(): void
     {
         try{
-            Mail::to($this->user->email)->send(new RegisterNotification($this->user->employee));
+            Mail::to($this->user->email)->send(new RegisterNotification($this->user));
           }catch(Exception $e){
             Log::error($e->getMessage());
           }

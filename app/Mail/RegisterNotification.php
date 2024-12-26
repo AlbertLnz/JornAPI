@@ -3,12 +3,12 @@
 namespace App\Mail;
 
 use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Source\User\Domain\Entity\User\User;
 
 class RegisterNotification extends Mailable
 {
@@ -19,7 +19,7 @@ class RegisterNotification extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(Employee $user)
+    public function __construct(User $user)
     {
         $this->user = $user;
     }

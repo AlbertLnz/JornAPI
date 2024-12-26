@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace App\Http\Controllers\v1\Employee;
 
+use App\Exceptions\NullDataException;
 use App\Exceptions\UserAlReadyExists;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterEmployeeRequest;
@@ -36,7 +37,7 @@ class RegisterEmployeeController extends Controller
                                      $request->holiday_hourly_rate, 
                                      $request->irpf);
             return response()->json(['message' => 'Employee created successfully'], 201);
-        }catch(UserAlReadyExists $e){
+        }catch(UserAlReadyExists |NullDataException $e){
             throw new HttpResponseException(response()->json(['message' => $e->getMessage()], $e->getCode()));
 
         }
