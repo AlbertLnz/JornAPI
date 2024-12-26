@@ -2,13 +2,13 @@
 declare(strict_types=1);
 namespace App\Services\HourSession;
 
+use App\Events\HourSessionUpdatedEvent;
 use App\Exceptions\HourSessionNotFoundException;
 use App\Jobs\ProcessSalary;
 use App\Models\HourSession;
-
+use Illuminate\Support\Facades\DB;
 
 class HourSessionDeleteService{
-    public function __construct(){}
     /**
      * Summary of execute
      * @param string $employeeId
@@ -22,9 +22,14 @@ class HourSessionDeleteService{
         if(!$hourSession){
             throw new HourSessionNotFoundException();
         }
-        $hourSession->delete();
+        DB::transaction(function () use ($hourSession, $employeeId, $date) {
+            $hourSession->delete();
 
-        ProcessSalary::dispatch($employeeId, $date);
+            DB::afterCommit(function () use ($employeeId, $date) {
+               event( new HourSessionUpdatedEvent($employeeId, $date));
+            });
+        });
+       
 
 
     }
