@@ -32,8 +32,7 @@ class UpdateHourWorked implements ShouldQueue
             $this->hourSession->start_time,
             $this->hourSession->end_time,
             $this->hourSession->planned_hours,
-            $this->hourSession->is_holiday,
-            $this->hourSession->is_overtime
+            $this->hourSession->work_type
         );
     }
 }

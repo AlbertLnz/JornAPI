@@ -3,11 +3,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\v1\User;
 
 use App\DTO\User\UserDTO;
-use App\Exceptions\UserNotFound;
 use App\Http\Controllers\Controller;
-use App\Services\Token\TokenService;
 use App\Services\User\FindUserService;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 
 class ShowUserController extends Controller
@@ -27,7 +24,7 @@ class ShowUserController extends Controller
     {
     
             $user = $request->user();
-            return response()->json(['message' => 'User found successfully','user'=>UserDTO::fromModel($user)], 200);
+            return response()->json(['message' => 'User found successfully','user'=>UserDTO::toArray($user->toArray())], 200);
         
    
        
