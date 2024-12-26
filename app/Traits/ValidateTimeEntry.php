@@ -8,8 +8,11 @@ use Carbon\Carbon;
 
 trait ValidateTimeEntry
 {
-    public function validateTimeEntry(string $startTime, string $endTime): void
+    public function validateTimeEntry(?string $startTime , ?string $endTime): void
     {
+        if ($startTime == null || $endTime == null) {
+            throw new TimeEntryException("'The start time and end time are required'");
+        }
         $start = Carbon::parse($startTime);
         $end = Carbon::parse($endTime);
 
