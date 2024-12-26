@@ -29,9 +29,9 @@ class HourSessionUpdateController{
       $hourSession =  $this->hourSessionUpdateService->execute(
         $employee->id,
         $request->query('date'),
-        $request->start_time,
-        $request->end_time, 
-        $request->planned_hours, 
+        $request->start_time??null,
+        $request->end_time??null, 
+        $request->planned_hours??null, 
         $request->work_type);
         return response()->json(['message' => 'Hour worked updated successfully', 'HourSession' => $hourSession], 200);
        }catch(HourSessionNotFoundException | TimeEntryException $exception){

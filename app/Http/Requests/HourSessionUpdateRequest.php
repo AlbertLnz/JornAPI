@@ -26,9 +26,9 @@ class HourSessionUpdateRequest extends FormRequest
     {
         return [
             'date' => 'date',
-            'start_time' => 'date_format:H:i',
-            'end_time' => 'date_format:H:i',
-            'planned_hours' => 'integer|min:2',
+            'start_time' => [ 'date_format:H:i'],
+            'end_time' => ['date_format:H:i'],
+            'planned_hours' => ['integer', 'min:2'],
             'work_type' => ['nullable', 'string'],
 
         ];

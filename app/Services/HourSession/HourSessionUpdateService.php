@@ -39,9 +39,10 @@ class HourSessionUpdateService{
             
             throw new HourSessionNotFoundException();
         }
+       
         $this->validateTimeEntry($startTime, $endTime);
 
-         DB::transaction(function () use ($employeeId, $startTime, $endTime, $plannedHours, $workType, $hourSession) {
+         DB::transaction(function () use ($employeeId, $startTime, $endTime, $plannedHours, $workType, $hourSession, $date) {
 
        
         if($startTime != null){
@@ -61,13 +62,17 @@ class HourSessionUpdateService{
         }
         $hourSession->save();
 
+        
         $this->hourWorkedUpdateService->execute($hourSession->id, $hourSession->start_time, $hourSession->end_time, $hourSession->planned_hours, $workType);
-  
+        DB::afterCommit(function () use ($employeeId, $date) {
+            event(new HourSessionUpdatedEvent( $employeeId, $date));
+                
+            });
         });
 
-        event(new HourSessionUpdatedEvent( $employeeId, $date));
+       
     
 
-        return HourSessionDTO::toArray($hourSession);
+        return HourSessionDTO::toArray($hourSession->toArray());
     }
 }
