@@ -1,7 +1,9 @@
 <?php 
+
 declare(strict_types=1);
 namespace App\Services\HourSession;
 
+use App\Enums\WorkTypeEnum;
 use App\Events\HourSessionRegistered;
 use App\Exceptions\HourSessionExistException;
 use App\Models\HourSession;
@@ -9,64 +11,84 @@ use App\Services\HourWorked\HourWorkedEntryService;
 use App\Services\Salary\SalaryService;
 use App\Traits\ValidateTimeEntry;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class HourSessionRegisterService{
-use ValidateTimeEntry;
+class HourSessionRegisterService
+{
+    use ValidateTimeEntry;
+
     /**
-     * Summary of __construct
      * @param \App\Services\HourWorked\HourWorkedEntryService $hourWorkedEntryService
      * @param \App\Services\Salary\SalaryService $salaryService
      */
-    public function __construct(private HourWorkedEntryService $hourWorkedEntryService , private SalaryService $salaryService){}
+    public function __construct(
+        private HourWorkedEntryService $hourWorkedEntryService,
+    ) {}
+
     /**
-     * Summary of execute
      * @param string $employeeId
      * @param string $date
      * @param string $startTime
      * @param string $endTime
      * @param int $plannedHours
-     * @param bool $isHoliday
-     * @param bool $isOvertime
+     * @param string $workType
      * @throws \Exception
      * @return void
      */
     public function execute(?string $employeeId, string $date, string $startTime, string $endTime, int $plannedHours, ?string $workType): void
     {
-     
-       $this->validateDateIsToday($date);
-       $this->validateTimeEntry($startTime, $endTime);
+        // Validaciones
+        $this->validateDateIsToday($date);
+        $this->validateTimeEntry($startTime, $endTime);
 
-     
-       $transaction = DB::transaction(function () use ($employeeId, $date, $startTime, $endTime, $plannedHours, $workType) {
+        // Verifica si ya existe una sesión de trabajo para el empleado en la misma fecha
+        if ($this->sessionExists($employeeId, $date)) {
+            throw new HourSessionExistException();
+        }
+
+        $transaction = DB::transaction(function () use ($employeeId, $date, $startTime, $endTime, $plannedHours, $workType) {
+            // Crear la sesión de trabajo
             $hourSession = HourSession::create([
                 'employee_id' => $employeeId,
                 'date' => $date,
                 'start_time' => $startTime,
                 'end_time' => $endTime,
                 'planned_hours' => $plannedHours,
-                'work_type' => $workType ?? null
+                'work_type' => $workType ?? WorkTypeEnum::NORMAL->value,
             ]);
+
+            // Ejecutar el servicio de HourWorkedEntry
+            $this->hourWorkedEntryService->execute(
+                $hourSession->id,
+                $hourSession->start_time,
+                $hourSession->end_time,
+                $hourSession->planned_hours,
+                $hourSession->work_type
+            );
+
+            
          
 
+            // Disparar evento después de la transacción
+            DB::afterCommit(function () use ($employeeId, $date) {
+                event(new HourSessionRegistered($employeeId, $date));
+            });
 
             return $hourSession;
         });
-
-        if(!$transaction){
-            throw new \Exception("Failed to register hour worked");
-        }
-        $this->hourWorkedEntryService->execute(
-            $transaction->id,
-            $transaction->start_time,
-            $transaction->end_time,
-            $transaction->planned_hours, 
-           $transaction->work_type); 
-       $this->salaryService->execute($employeeId, $date);
-
-     // event(new HourSessionRegistered( $employeeId, $date));
-
-     
     }
 
-  
+    /**
+     * Verificar si ya existe una sesión de horas para un empleado en una fecha específica
+     *
+     * @param string $employeeId
+     * @param string $date
+     * @return bool
+     */
+    protected function sessionExists(string $employeeId, string $date): bool
+    {
+        return HourSession::where('employee_id', $employeeId)
+                          ->where('date', $date)
+                          ->exists();
+    }
 }
