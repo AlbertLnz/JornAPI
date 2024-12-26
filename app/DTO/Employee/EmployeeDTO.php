@@ -16,7 +16,6 @@ class  EmployeeDTO implements DTOInterface{
         public string $company_name,
         public float $normal_hourly_rate,
         public float $overtime_hourly_rate,
-        public float $night_hourly_rate,
         public float $holiday_hourly_rate, 
         public float $irpf
     ){}
@@ -28,7 +27,6 @@ class  EmployeeDTO implements DTOInterface{
             $employee->company_name??'',
             (float)$employee->normal_hourly_rate,
             (float)$employee->overtime_hourly_rate,
-            (float)$employee->night_hourly_rate??0.0,
             (float)$employee->holiday_hourly_rate ?? 0.0,
             (float)$employee->irpf??0.0
         );
@@ -41,7 +39,6 @@ class  EmployeeDTO implements DTOInterface{
             'company_name' => $data['company_name'],
             'normal_hourly_rate' => $data['normal_hourly_rate'],
             'overtime_hourly_rate' => $data['overtime_hourly_rate'],
-            'night_hourly_rate' => $data['night_hourly_rate'],
             'holiday_hourly_rate' => $data['holiday_hourly_rate'],
             'irpf' => $data['irpf'],
         ];

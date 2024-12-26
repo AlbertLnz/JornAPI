@@ -25,11 +25,11 @@ class RegisterEmployeeRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:55'],
-            'password' => ['required', 'string', 'min:8', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'max:40'],
+            'email' => ['required', 'string', 'email', 'max:70', 'unique:users'],
             'normal_hourly_rate' => ['required', 'numeric', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
             'overtime_hourly_rate' => ['required','numeric', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
-            'holiday_hourly_rate' => ['numeric', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
+            'holiday_hourly_rate' => ['required','numeric', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
             'irpf' => ['numeric', 'regex:/^\d{1,2}(\.\d{1,2})?$/'],
         ];
     }

@@ -24,7 +24,6 @@ class EmployeeFactory extends Factory
             'company_name' => fake()->company(),
             'normal_hourly_rate' => fake()->numberBetween(10, 100),
             'overtime_hourly_rate' => fake()->numberBetween(10, 100),
-            'night_hourly_rate' => fake()->numberBetween(10, 100),
             'holiday_hourly_rate' => fake()->numberBetween(10, 100),
             'irpf' => fake()->numberBetween(10, 100),
             'user_id' => $user->id
