@@ -1,7 +1,7 @@
 <?php 
 namespace Tests\Feature\User\ShowUser;
 
-use App\DTO\User\ShowUserDTO;
+use App\DTO\User\UserDTO;
 use App\Models\Employee;
 use App\Models\User;
 use App\Services\Token\TokenService;
@@ -26,15 +26,14 @@ class ShowUserFoundTest extends TestCase
     }
     public function testShowUserFound()
     {
-        $user =ShowUserDTO::fromUser($this->employee->user);
+        $user =UserDTO::fromModel($this->employee->user);
 
-        $token =$this->tokenService->generateToken($this->employee->user_id,$this->employee->user->roles);
+        $token =$this->tokenService->generateToken($this->employee->user_id);
         Cache::store('redis')->put("user:{$this->employee->user_id}:token", $token, 3600); //
        
       $showUser = $this->withHeaders([
     'Authorization' => 'Bearer ' . $token,
 ])->getJson('/api/user/show');
-dump($showUser->getContent()); // Mostrar el contenido de la respuesta para depuración
 
         $showUser->assertStatus(200);
         $showUser->assertJsonStructure([

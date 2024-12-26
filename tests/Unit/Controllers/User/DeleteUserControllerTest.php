@@ -3,7 +3,6 @@
 declare(strict_types=1);
 namespace Tests\Unit\Controllers\User;
 
-use App\Exceptions\UserNotFound;
 use App\Http\Controllers\v1\User\DeleteUserController;
 use App\Models\User;
 use App\Services\Token\TokenService;
@@ -14,18 +13,23 @@ use Illuminate\Http\Request;
 use Mockery;
 use Tests\TestCase;
 
-class DeleteUserControllerTest extends TestCase{
-use DatabaseTransactions;
+class DeleteUserControllerTest extends TestCase
+{
+    use DatabaseTransactions;
+
     private DeleteUserController $controller;
     private User $user;
     private TokenService $tokenService;
     private DeleteUserService $userDeleteService;
+
     public function setUp(): void
     {
         parent::setUp();
+
         $this->tokenService = Mockery::mock(TokenService::class);
         $this->userDeleteService = Mockery::mock(DeleteUserService::class);
-        $this->controller = new DeleteUserController( $this->userDeleteService,$this->tokenService);
+        $this->controller = new DeleteUserController($this->userDeleteService);
+        
         $this->user = User::factory()->create();
         $this->user->assignRole('employee');
     }
@@ -35,28 +39,22 @@ use DatabaseTransactions;
         $this->assertInstanceOf(DeleteUserController::class, $this->controller);
     }
 
-    public function testDeleteUser(){
+    public function testDeleteUser()
+    {
         $userId = $this->user->id;
-        $token = 'mocked-jwt-token';
-        $decodedToken = (object) ['sub' => $userId];
         $request = new Request();
-        $request->headers->set('Authorization', 'Bearer ' . $token);
-        $this->tokenService->shouldReceive('decodeToken')
-        ->once()
-        ->with($token)
-        ->andReturn($decodedToken);
-        $this->userDeleteService->shouldReceive('execute')->once()
-        ->with($userId);
+        $request->setUserResolver(fn () => $this->user);
 
-        // Invoke the controller
+        $this->userDeleteService->shouldReceive('execute')->once()->with($userId);
+
+        // Invocar el controlador
         $response = $this->controller->__invoke($request);
 
-        // Assert the response is a JsonResponse
+        // Verificar que la respuesta sea un JsonResponse
         $this->assertInstanceOf(JsonResponse::class, $response);
 
-        // Decode the JSON response
+        // Decodificar el contenido JSON de la respuesta
         $responseData = $response->getData();
         $this->assertEquals('User deleted successfully', $responseData->message);
-
     }
 }

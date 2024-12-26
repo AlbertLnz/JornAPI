@@ -27,9 +27,8 @@ public function testCanInstantiate()
 public function testUpdateUserServicewithvaliddata()
 {
    
-    $user = $this->service->execute('peter@example.com','password', $this->user->id);
+    $user = $this->service->execute('peter@example.com', $this->user->id);
     $this->assertInstanceOf(User::class, $user);
     $this->assertEquals('peter@example.com', $user->email);
-    $this->assertNotEmpty($user->password);
 }
 }
