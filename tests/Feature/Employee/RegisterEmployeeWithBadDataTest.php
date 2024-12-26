@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\RegisterEmployee;
+namespace Tests\Feature\Employee;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
