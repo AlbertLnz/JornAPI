@@ -11,20 +11,18 @@ use Illuminate\Support\Facades\DB;
 class UserUpdateService{
 
 
-    public function execute( ?string $email, ?string $password, ?string $uuid): User{
+    public function execute( ?string $email,  ?string $uuid): User{
 
         $user = User::where('id', $uuid)->first();
         if(!$user){
             throw new UserNotFound();
         }
-        DB::transaction(function () use ($user, $email, $password) {
+        DB::transaction(function () use ($user, $email,) {
             if($email != null){
                 $user->email = $email;
             }
     
-            if($password != null){
-                $user->password = $password;
-            }
+         
     
             $user->save();
         });

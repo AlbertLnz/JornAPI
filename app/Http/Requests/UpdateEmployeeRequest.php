@@ -25,6 +25,7 @@ class UpdateEmployeeRequest extends FormRequest
     {
         return [
             'name' => ['string', 'max:55'],
+            'company_name' => ['string', 'max:95'],
             'normal_hourly_rate' => ['numeric', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
             'overtime_hourly_rate' => ['numeric', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
             'holiday_hourly_rate' => ['numeric', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
