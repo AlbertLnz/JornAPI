@@ -6,6 +6,7 @@ use App\Exceptions\HourWorkedNotFoundException;
 use App\Models\HourWorked;
 use App\Traits\ValidateTimeEntry;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class HourWorkedUpdateService
 {
@@ -22,22 +23,33 @@ class HourWorkedUpdateService
      * @throws \App\Exceptions\HourWorkedNotFoundException
      * @return void
      */
-    public function execute( string $hourSessionId, $startTime, $endTime, $plannedHours, $workType): void
+    public function execute( string $hourSessionId, ?string $startTime, ?string $endTime, ?int $plannedHours, $workType): void
     {
-        $this->validateTimeEntry($startTime, $endTime);
 
-        $hourWorkeed = HourWorked::find($hourSessionId); 
+        $hourWorkeed = HourWorked::where('hour_session_id', $hourSessionId)->first(); 
         if(!$hourWorkeed){
             throw new HourWorkedNotFoundException();
         }
+       
+       
+        $this->validateTimeEntry($startTime, $endTime);
+
 
 $hoursList =  $this->calculate($startTime, $endTime, $plannedHours, $workType);  
     
-        $hourWorkeed->update([
-         'total_normal_hours' =>  $hoursList['normalHours'], // 
-            'total_overtime_hours' =>  $hoursList['overtimeHours'],
-            'total_holiday_hours' => $hoursList['holidayHours'],
-       ]);
+DB::transaction(function () use ($hourWorkeed, $hoursList) {
+    if($hourWorkeed->normal_hours != null){
+        $hourWorkeed->normal_hours = $hoursList['normalHours'];
+    }
+    if($hourWorkeed->overtime_hours != null){
+        $hourWorkeed->overtime_hours = $hoursList['overtimeHours'];
+    }
+    if($hourWorkeed->holiday_hours != null){
+        $hourWorkeed->holiday_hours = $hoursList['holidayHours'];
+    }
+    $hourWorkeed->save();
+});
+       
     }
 
    

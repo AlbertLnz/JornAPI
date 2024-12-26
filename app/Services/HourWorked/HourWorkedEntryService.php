@@ -2,10 +2,8 @@
 declare(strict_types=1);
 namespace App\Services\HourWorked;
 
-
+use App\Exceptions\HourWorkedNotFoundException;
 use App\Models\HourWorked;
-use App\Services\Salary\SalaryService;
-use Carbon\Carbon;
 use App\Traits\ValidateTimeEntry;
 use Illuminate\Support\Facades\DB;
 
@@ -13,11 +11,7 @@ class HourWorkedEntryService
 {
     use ValidateTimeEntry;
     use CalculateTrait;
-    /**
-     * Summary of __construct
-     * @param \App\Services\Salary\SalaryService $salaryService
-     */
-    public function __construct( private SalaryService $salaryService ) {}
+   
     /**
      * Summary of execute
      * @param string $hourSessionId
@@ -28,8 +22,9 @@ class HourWorkedEntryService
      * @param mixed $isOvertime
      * @return void
      */
-    public function execute(string $hourSessionId, $startTime, $endTime, $plannedHours,  $workType): void
+    public function execute(string $hourSessionId, string $startTime, string $endTime, int $plannedHours,  $workType): void
     {
+       
         // Validar la entrada de tiempo
         $this->validateTimeEntry($startTime, $endTime);
 
@@ -45,7 +40,6 @@ class HourWorkedEntryService
             ]);
         });
         
-
         
           
 
