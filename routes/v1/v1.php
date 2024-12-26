@@ -31,10 +31,11 @@ Route::middleware(['jwt.auth','token_redis', 'role:employee','is_active'])->grou
     Route::put('/employee', UpdateEmployeeController::class);
    
   //HourSession Routes
-    Route::post('/hourSession', HourSessionRegisterController::class);
-    Route::get('/hourSession', HourSessionShowController::class);
-    Route::put('/hourSession', HourSessionUpdateController::class);
-    Route::delete('/hourSession/delete', HourSessionDeleteController::class);
+  Route::post('/hour_session', HourSessionRegisterController::class);  // Crear
+  Route::get('/hour_session', HourSessionShowController::class);       // Leer
+  Route::put('/hour_session', HourSessionUpdateController::class);     // Actualizar
+  Route::delete('/hour_session', HourSessionDeleteController::class);  // Eliminar
+  
 
     Route::get('/dashboard', DashboardController::class);
 
