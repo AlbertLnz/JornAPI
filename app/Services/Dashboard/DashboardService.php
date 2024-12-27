@@ -4,7 +4,6 @@ namespace App\Services\Dashboard;
 
 use App\Exceptions\SalaryNotFoundException;
 use App\Models\User;
-use App\Services\HourSession\CurrentMonthHourSessionService;
 use App\Services\Salary\FindSalaryByMonthService;
 use App\Traits\TimeConverterTrait;
 use Carbon\Carbon;

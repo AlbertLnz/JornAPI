@@ -5,10 +5,9 @@ namespace App\Services\HourSession;
 use App\DTO\HourSession\HourSessionDTO;
 use App\Exceptions\HourSessionNotFoundException;
 use App\Models\HourSession;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
-class HourSessionShowService{
+
+class FindHourSessionService{
     public function __construct(){}
     /**
      * Summary of execute

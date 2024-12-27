@@ -8,12 +8,10 @@ use App\Events\HourSessionRegistered;
 use App\Exceptions\HourSessionExistException;
 use App\Models\HourSession;
 use App\Services\HourWorked\HourWorkedEntryService;
-use App\Services\Salary\SalaryService;
 use App\Traits\ValidateTimeEntry;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class HourSessionRegisterService
+class RegisterHourSessionService
 {
     use ValidateTimeEntry;
 

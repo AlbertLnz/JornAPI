@@ -5,22 +5,24 @@ namespace App\Http\Controllers\v1\HourSession\UpdateHourSession;
 use App\Exceptions\HourSessionNotFoundException;
 use App\Exceptions\TimeEntryException;
 use App\Http\Requests\HourSessionUpdateRequest;
-use App\Services\HourSession\HourSessionUpdateService;
+use App\Http\Requests\UpdateHourSessionRequest;
+use App\Services\HourSession\UpdateHourSessionService;
 use Illuminate\Http\JsonResponse;
 
-class HourSessionUpdateController{
+class UpdateHourSessionController
+{
 /**
  * Summary of __construct
- * @param \App\Services\HourSession\HourSessionUpdateService $hourSessionUpdateService
+ * @param \App\Services\HourSession\UpdateHourSessionService $hourSessionUpdateService
  */
 
-    public function __construct(private HourSessionUpdateService $hourSessionUpdateService){}
+    public function __construct(private UpdateHourSessionService $hourSessionUpdateService){}
     /**
      * Summary of __invoke
-     * @param \App\Http\Requests\HourSessionUpdateRequest $request
+     * @param \App\Http\Requests\UpdateHourSessionRequest $request
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function __invoke(HourSessionUpdateRequest $request):JsonResponse
+    public function __invoke(UpdateHourSessionRequest $request):JsonResponse
     {
        try{ 
         

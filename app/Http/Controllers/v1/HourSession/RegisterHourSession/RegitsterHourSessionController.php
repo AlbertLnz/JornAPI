@@ -7,24 +7,24 @@ use App\Exceptions\HourSessionExistException;
 use App\Exceptions\TimeEntryException;
 use App\Exceptions\TodayDateException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\HourSessionRegisterRequest;
-use App\Services\HourSession\HourSessionRegisterService;
+use App\Http\Requests\RegisterHourSessionRequest;
+use App\Services\HourSession\RegisterHourSessionService;
 use Illuminate\Http\JsonResponse;
 
 
-class HourSessionRegisterController extends Controller
+class RegitsterHourSessionController extends Controller
 {
     /**
      * Summary of __construct
-     * @param \App\Services\HourSession\HourSessionRegisterService $hourSessionRegisterService
+     * @param \App\Services\HourSession\RegisterHourSessionService $hourSessionRegisterService
      */
-    public function  __construct(private HourSessionRegisterService $hourSessionRegisterService,){}
+    public function  __construct(private RegisterHourSessionService $hourSessionRegisterService,){}
     /**
      * Summary of __invoke
-     * @param \App\Http\Requests\HourSessionRegisterRequest $request
+     * @param \App\Http\Requests\RegisterHourSessionRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function __invoke(HourSessionRegisterRequest $request): JsonResponse  {
+    public function __invoke(RegisterHourSessionRequest $request): JsonResponse  {
 
         try{
             $employee =$request->user()->employee;

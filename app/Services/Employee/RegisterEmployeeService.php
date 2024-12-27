@@ -7,7 +7,6 @@ namespace App\Services\Employee;
 
 use App\Services\User\RegisterUserService;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
 
 class RegisterEmployeeService{
     /**

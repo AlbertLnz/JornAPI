@@ -9,6 +9,7 @@ use App\Exceptions\HourSessionExistException;
 use App\Models\Employee;
 use App\Models\HourSession;
 use App\Services\HourSession\HourSessionRegisterService;
+use App\Services\HourSession\RegisterHourSessionService;
 use App\Services\HourWorked\HourWorkedEntryService;
 use App\Services\Salary\SalaryService;
 use Database\Factories\EmployeeFactory;
@@ -52,7 +53,7 @@ class HourSessionRegisterServiceTest extends TestCase
        
 
         // Crear la instancia del servicio bajo prueba
-        $service = new HourSessionRegisterService(
+        $service = new RegisterHourSessionService(
             $this->hourWorkedEntryServiceMock,
         );
 
@@ -92,7 +93,7 @@ class HourSessionRegisterServiceTest extends TestCase
         ]);
 
         // Crear la instancia del servicio bajo prueba
-        $service = new HourSessionRegisterService(
+        $service = new RegisterHourSessionService(
             $this->hourWorkedEntryServiceMock,
         );
 

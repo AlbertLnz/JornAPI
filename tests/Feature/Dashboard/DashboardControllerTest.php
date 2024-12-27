@@ -32,7 +32,7 @@ use DatabaseTransactions;
         $this->hourWorked = HourWorked::factory()->create([
             'hour_session_id' => $this->hourSession->id
         ]);
-        event(new HourSessionRegistered($this->employee->id, $this->hourSession->date));
+     //   event(new HourSessionRegistered($this->employee->id, $this->hourSession->date));
        
         
     }

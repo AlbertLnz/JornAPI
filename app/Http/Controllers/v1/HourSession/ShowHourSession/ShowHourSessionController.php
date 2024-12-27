@@ -1,24 +1,24 @@
-<?php 
+<?php
 declare(strict_types=1);
-namespace App\Http\Controllers\v1\HourSession\DeleteHourSession;
+namespace App\Http\Controllers\v1\HourSession\ShowHourSession;
 
 use App\Exceptions\HourSessionNotFoundException;
-use App\Http\Controllers\Controller;
-use App\Services\HourSession\HourSessionDeleteService;
+use App\Http\Requests\HourSessionShowRequest;
+use App\Services\HourSession\FindHourSessionService;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class HourSessionDeleteController extends Controller
+class ShowHourSessionController
 {
     /**
      * Summary of __construct
-     * @param \App\Services\HourSession\HourSessionDeleteService $hourSessionDeleteService
+     * @param \App\Services\HourSession\FindHourSessionService $hourSessionShowService
      */
-    public function __construct(private HourSessionDeleteService $hourSessionDeleteService){}
+    public function __construct(private FindHourSessionService $hourSessionShowService){}
     /**
      * Summary of __invoke
-     * @param \Illuminate\Http\Request $request
+     *  
      * @throws \Illuminate\Http\Exceptions\HttpResponseException
      * @return mixed|\Illuminate\Http\JsonResponse
      */
@@ -26,12 +26,13 @@ class HourSessionDeleteController extends Controller
     {
         try{
             $query = $request->query('date');
+           
             $employee = $request->user()->employee;
-            $this->hourSessionDeleteService->execute($employee->id, $query);
-            return response()->json(['message' => 'Hour worked deleted successfully'], 200);
-
+           $hourSession =  $this->hourSessionShowService->execute($employee->id, $query);
+           return response()->json(['hour_session' => $hourSession], 200);
         }catch(HourSessionNotFoundException $exception){
             throw new HttpResponseException(response()->json(['message' => $exception->getMessage()], $exception->getCode()));
+            
         }
       
     }

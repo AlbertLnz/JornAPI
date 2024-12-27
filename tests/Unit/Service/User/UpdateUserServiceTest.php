@@ -3,24 +3,24 @@
 namespace Tests\Unit\Service\User;
 
 use App\Models\User;
-use App\Services\User\UserUpdateService;
+use App\Services\User\UpdateUserService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class UpdateUserServiceTest extends TestCase{
 use DatabaseTransactions;
-private UserUpdateService $service;
+private UpdateUserService $service;
 private User $user;
 public function setUp(): void
 {
     parent::setUp();
-    $this->service = new UserUpdateService();
+    $this->service = new UpdateUserService();
     $this->user = User::factory()->create();
 }
 
 public function testCanInstantiate()
 {
-    $this->assertInstanceOf(UserUpdateService::class, $this->service);    
+    $this->assertInstanceOf(UpdateUserService::class, $this->service);    
 
 }
 

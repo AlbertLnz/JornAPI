@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Services\Token\TokenService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Validation\UnauthorizedException;
 
 class AuthService{

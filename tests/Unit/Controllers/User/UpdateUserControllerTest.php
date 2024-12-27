@@ -5,10 +5,12 @@ namespace Tests\Unit\Controllers\User;
 
 use App\DTO\User\UserDTO;
 use App\Exceptions\UserNotFound;
+use App\Http\Controllers\v1\User\UpdateUserController;
 use App\Http\Controllers\v1\User\UserUpdateController;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Services\Token\TokenService;
+use App\Services\User\UpdateUserService;
 use App\Services\User\UserUpdateService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\JsonResponse;
@@ -19,23 +21,23 @@ class UpdateUserControllerTest extends TestCase
 {
     use DatabaseTransactions;
 
-    private UserUpdateController $controller;
+    private UpdateUserController $controller;
     private User $user;
     private TokenService $tokenService;
-    private UserUpdateService $userUpdateService;
+    private UpdateUserService $userUpdateService;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->userUpdateService = Mockery::mock(UserUpdateService::class);
-        $this->controller = new UserUpdateController($this->userUpdateService);
+        $this->userUpdateService = Mockery::mock(UpdateUserService::class);
+        $this->controller = new UpdateUserController($this->userUpdateService);
         $this->user = User::factory()->create();
         $this->user->assignRole('employee');
     }
 
     public function testCanInstantiate()
     {
-        $this->assertInstanceOf(UserUpdateController::class, $this->controller);
+        $this->assertInstanceOf(UpdateUserController::class, $this->controller);
     }
 
     public function testUpdateUser()

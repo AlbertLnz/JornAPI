@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\HourSession;
 use App\Models\HourWorked;
 use App\Services\HourSession\HourSessionUpdateService;
+use App\Services\HourSession\UpdateHourSessionService;
 use App\Services\HourWorked\HourWorkedUpdateService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Mockery;
@@ -19,8 +20,8 @@ class HourSessionUpdateServiceTest extends TestCase
     public function testCantInstantiate(): void
     {
         $employee = Employee::factory()->create();
-        $hourSessionUpdateService = new HourSessionUpdateService(new HourWorkedUpdateService());
-        $this->assertInstanceOf(HourSessionUpdateService::class, $hourSessionUpdateService);
+        $hourSessionUpdateService = new UpdateHourSessionService(new HourWorkedUpdateService());
+        $this->assertInstanceOf(UpdateHourSessionService::class, $hourSessionUpdateService);
     }
 
     public function test_execute_throws_exception_if_hour_session_not_found(): void
@@ -30,7 +31,7 @@ class HourSessionUpdateServiceTest extends TestCase
         // Crear empleado
         $employee = Employee::factory()->create();
         
-        $hourSessionUpdateService = new HourSessionUpdateService(new HourWorkedUpdateService());
+        $hourSessionUpdateService = new UpdateHourSessionService(new HourWorkedUpdateService());
 
         // Intentar actualizar una sesión de trabajo que no existe
         $hourSessionUpdateService->execute(
@@ -75,7 +76,7 @@ class HourSessionUpdateServiceTest extends TestCase
             );
 
         // Crear el servicio HourSessionUpdateService con el mock de HourWorkedUpdateService
-        $hourSessionUpdateService = new HourSessionUpdateService($hourWorkedUpdateServiceMock);
+        $hourSessionUpdateService = new UpdateHourSessionService($hourWorkedUpdateServiceMock);
 
         // Ejecutar la actualización
         $result = $hourSessionUpdateService->execute(

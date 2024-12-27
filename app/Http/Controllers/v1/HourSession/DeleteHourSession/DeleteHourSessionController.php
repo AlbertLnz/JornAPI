@@ -1,24 +1,24 @@
-<?php
+<?php 
 declare(strict_types=1);
-namespace App\Http\Controllers\v1\HourSession\ShowHourSession;
+namespace App\Http\Controllers\v1\HourSession\DeleteHourSession;
 
 use App\Exceptions\HourSessionNotFoundException;
-use App\Http\Requests\HourSessionShowRequest;
-use App\Services\HourSession\HourSessionShowService;
+use App\Http\Controllers\Controller;
+use App\Services\HourSession\DeleteHourSessionService;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class HourSessionShowController
+class DeleteHourSessionController extends Controller
 {
     /**
      * Summary of __construct
-     * @param \App\Services\HourSession\HourSessionShowService $hourSessionShowService
+     * @param \App\Services\HourSession\DeleteHourSessionService $hourSessionDeleteService
      */
-    public function __construct(private HourSessionShowService $hourSessionShowService){}
+    public function __construct(private DeleteHourSessionService $hourSessionDeleteService){}
     /**
      * Summary of __invoke
-     *  
+     * @param \Illuminate\Http\Request $request
      * @throws \Illuminate\Http\Exceptions\HttpResponseException
      * @return mixed|\Illuminate\Http\JsonResponse
      */
@@ -26,13 +26,12 @@ class HourSessionShowController
     {
         try{
             $query = $request->query('date');
-           
             $employee = $request->user()->employee;
-           $hourSession =  $this->hourSessionShowService->execute($employee->id, $query);
-           return response()->json(['hour_session' => $hourSession], 200);
+            $this->hourSessionDeleteService->execute($employee->id, $query);
+            return response()->json(['message' => 'Hour worked deleted successfully'], 200);
+
         }catch(HourSessionNotFoundException $exception){
             throw new HttpResponseException(response()->json(['message' => $exception->getMessage()], $exception->getCode()));
-            
         }
       
     }

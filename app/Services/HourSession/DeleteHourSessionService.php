@@ -4,11 +4,10 @@ namespace App\Services\HourSession;
 
 use App\Events\HourSessionUpdatedEvent;
 use App\Exceptions\HourSessionNotFoundException;
-use App\Jobs\ProcessSalary;
 use App\Models\HourSession;
 use Illuminate\Support\Facades\DB;
 
-class HourSessionDeleteService{
+class DeleteHourSessionService{
     /**
      * Summary of execute
      * @param string $employeeId

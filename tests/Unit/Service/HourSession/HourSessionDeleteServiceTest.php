@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\HourSession;
 use App\Services\HourSession\HourSessionDeleteService;
 use App\Exceptions\HourSessionNotFoundException;
+use App\Services\HourSession\DeleteHourSessionService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -17,7 +18,7 @@ class HourSessionDeleteServiceTest extends TestCase
     use DatabaseTransactions;
     private HourSession $hourSession;
     private Employee $employee;
-    private HourSessionDeleteService $service;
+    private DeleteHourSessionService $service;
     /**
      * Set up the test environment and mocks.
      *
@@ -35,13 +36,13 @@ class HourSessionDeleteServiceTest extends TestCase
             'planned_hours' => 8,
             'work_type' => WorkTypeEnum::NORMAL->value
         ]);
-        $this->service = new HourSessionDeleteService();
+        $this->service = new DeleteHourSessionService();
         // Limpiar mocks antes de cada test
     }
 
     public function testCantInstantiate(): void
     {
-        $this->assertInstanceOf(HourSessionDeleteService::class, $this->service);
+        $this->assertInstanceOf(DeleteHourSessionService::class, $this->service);
     }
     /**
      * Test that an exception is thrown when the hour session does not exist.

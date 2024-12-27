@@ -11,7 +11,7 @@ use App\Traits\ValidateTimeEntry;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class HourSessionUpdateService{
+class UpdateHourSessionService{
     use ValidateTimeEntry;
     /**
      * Summary of __construct

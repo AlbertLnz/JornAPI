@@ -8,7 +8,7 @@ use App\Exceptions\UserNotFound;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
-class UserUpdateService{
+class UpdateUserService{
 
 
     public function execute( ?string $email,  ?string $uuid): User{

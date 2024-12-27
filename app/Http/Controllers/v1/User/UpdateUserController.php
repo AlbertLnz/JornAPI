@@ -5,16 +5,15 @@ namespace App\Http\Controllers\v1\User;
 use App\DTO\User\UserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
-use App\Services\Token\TokenService;
-use App\Services\User\UserUpdateService;
+use App\Services\User\UpdateUserService;
 
-class UserUpdateController extends Controller
+class UpdateUserController extends Controller
 {
     /**
      * Summary of __construct
-     * @param \App\Services\User\UserUpdateService $userUpdateService
+     * @param \App\Services\User\UpdateUserService $userUpdateService
      */
-    public function __construct( private UserUpdateService $userUpdateService){}
+    public function __construct( private UpdateUserService $userUpdateService){}
     /**
      * Summary of __invoke
      * @param \App\Http\Requests\UpdateUserRequest $request

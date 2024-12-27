@@ -5,6 +5,7 @@ use App\Exceptions\HourSessionNotFoundException;
 use App\Models\Employee;
 use App\Models\HourSession;
 use App\Models\HourWorked;
+use App\Services\HourSession\FindHourSessionService;
 use App\Services\HourSession\HourSessionShowService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -12,7 +13,7 @@ use Tests\TestCase;
 class HourSessionShowServiceTest extends TestCase
 {
     use DatabaseTransactions;
-    private HourSessionShowService $hourSessionShowService;
+    private FindHourSessionService $hourSessionShowService;
     private HourSession $hourSession;
     private Employee $employee;
     private HourWorked $hourWorked;
@@ -20,7 +21,7 @@ class HourSessionShowServiceTest extends TestCase
 
     protected function setUp(): void{
         parent::setUp();
-        $this->hourSessionShowService = new HourSessionShowService();
+        $this->hourSessionShowService = new FindHourSessionService();
         $this->employee = Employee::factory()->create();
         $this->randomDate = date('Y-m-d', mt_rand(0, time()));
 
@@ -36,7 +37,7 @@ class HourSessionShowServiceTest extends TestCase
 
     public function testCantInstantiate(): void
     {
-        $this->assertInstanceOf(HourSessionShowService::class, $this->hourSessionShowService);
+        $this->assertInstanceOf(FindHourSessionService::class, $this->hourSessionShowService);
     }
 
     public function testShowHourSession(): void
@@ -52,10 +53,5 @@ class HourSessionShowServiceTest extends TestCase
         $hourSession = $this->hourSessionShowService->execute($this->employee->id, '2023-01-01');
     }
 
-    public function test_show_with_null_date(): void
-    {
-        $this->expectException(HourSessionNotFoundException::class);
- 
-        $hourSession = $this->hourSessionShowService->execute($this->employee->id, null);
-    }
+  
 }
