@@ -1,23 +1,25 @@
-<?php 
+<?php
+
 namespace Tests\Unit\Service\Salary;
 
 use App\Enums\WorkTypeEnum;
+use App\Models\Employee;
+use App\Models\HourSession;
+use App\Models\HourWorked;
 use App\Services\Salary\SalaryService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-use App\Models\Employee;
-use App\Models\HourWorked;
-use App\Models\HourSession;
-use App\Models\Salary;
-use Carbon\Carbon;
-use Database\Factories\HourWorkedFactory;
-use Database\Factories\HourSessionFactory;
 
-class SalaryServiceTest extends TestCase{
+class SalaryServiceTest extends TestCase
+{
     use DatabaseTransactions;
+
     private SalaryService $salaryService;
+
     private Employee $employee;
+
     private HourWorked $hourWorked;
+
     private HourSession $hourSession;
 
     protected function setUp(): void
@@ -34,21 +36,23 @@ class SalaryServiceTest extends TestCase{
             'normal_hours' => 8,
             'overtime_hours' => 0,
             'holiday_hours' => 0]);
-        $this->salaryService = new SalaryService();
+        $this->salaryService = new SalaryService;
     }
 
-    public function testCantInstantiate(): void{
+    public function test_cant_instantiate(): void
+    {
         $this->assertInstanceOf(SalaryService::class, $this->salaryService);
     }
 
-    public function test_salary_service_execute(){
+    public function test_salary_service_execute()
+    {
         $this->salaryService->execute($this->employee->id, '2023-01-19');
         $this->assertDatabaseHas('salaries', [
             'employee_id' => $this->employee->id,
             'total_normal_hours' => 8,
             'total_overtime_hours' => 0,
             'total_holiday_hours' => 0,
-            'total_net_salary' => 0
+            'total_net_salary' => 0,
         ]);
     }
 }

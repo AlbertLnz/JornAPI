@@ -1,5 +1,7 @@
-<?php 
+<?php
+
 declare(strict_types=1);
+
 namespace App\Services\Dashboard;
 
 use App\Exceptions\SalaryNotFoundException;
@@ -8,59 +10,60 @@ use App\Services\Salary\FindSalaryByMonthService;
 use App\Traits\TimeConverterTrait;
 use Carbon\Carbon;
 
-class DashboardService{
-  use TimeConverterTrait;
- 
+class DashboardService
+{
+    use TimeConverterTrait;
+
     /**
      * Summary of __construct
-     * @param \App\Services\Salary\FindSalaryByMonthService $findSalaryByMonthService
      */
-    public function __construct(private FindSalaryByMonthService $findSalaryByMonthService ){}
+    public function __construct(private FindSalaryByMonthService $findSalaryByMonthService) {}
 
     /**
      * Summary of execute
-     * @param \App\Models\User $user
-     * @return array
      */
-    public function execute(User $user): array{
-       
-try{
-   $currentMonthSalary = $this->getCurrentMonth($user->employee->id);
-   
-    return [
-        'total_hours_worked' => $currentMonthSalary['convertTotalHourWorked'],
-        'current_month_salary' => $currentMonthSalary['currentMonthSalary'],
-        //'current_month_hours_session' => $currentMonthHourSession
-    ];
-}catch(SalaryNotFoundException $e){
-    
-    return [
-        'total_hours_worked' => 0,
-        'current_month_salary' => 0,
-       // 'current_month_hours_session' => []
-    ];
-}
+    public function execute(User $user): array
+    {
 
-     
+        try {
+            $currentMonthSalary = $this->getCurrentMonth($user->employee->id);
+
+            return [
+                'total_hours_worked' => $currentMonthSalary['convertTotalHourWorked'],
+                'current_month_salary' => $currentMonthSalary['currentMonthSalary'],
+                //'current_month_hours_session' => $currentMonthHourSession
+            ];
+        } catch (SalaryNotFoundException $e) {
+
+            return [
+                'total_hours_worked' => 0,
+                'current_month_salary' => 0,
+                // 'current_month_hours_session' => []
+            ];
+        }
+
     }
+
     /**
      * Summary of getCurrentMonth
-     * @param string $employeeId
+     *
      * @return array
      */
-    private function getCurrentMonth(string $employeeId){
+    private function getCurrentMonth(string $employeeId)
+    {
         $month = Carbon::now()->format('m');
         $year = Carbon::now()->format('Y');
-        $startMonth = Carbon::create($year, (int)$month, 1);
+        $startMonth = Carbon::create($year, (int) $month, 1);
 
         $currentMonthSalary = $this->findSalaryByMonthService->execute($employeeId, $startMonth->format('m'), $startMonth->format('Y'));
-    
-        $totalHoursWorked = $currentMonthSalary['total_normal_hours'] + $currentMonthSalary['total_overtime_hours']   + $currentMonthSalary['total_holiday_hours'];
-       $totalHoursWorked = $this->convertDecimalToHoursAndMinutes($totalHoursWorked);
-       $convertTotalHourWorked = "".$totalHoursWorked['hours'].":".$totalHoursWorked['minutes'];
-       return [
-           'convertTotalHourWorked' => $convertTotalHourWorked,
-           'currentMonthSalary' => $currentMonthSalary['total_gross_salary'],
-       ];
+
+        $totalHoursWorked = $currentMonthSalary['total_normal_hours'] + $currentMonthSalary['total_overtime_hours'] + $currentMonthSalary['total_holiday_hours'];
+        $totalHoursWorked = $this->convertDecimalToHoursAndMinutes($totalHoursWorked);
+        $convertTotalHourWorked = ''.$totalHoursWorked['hours'].':'.$totalHoursWorked['minutes'];
+
+        return [
+            'convertTotalHourWorked' => $convertTotalHourWorked,
+            'currentMonthSalary' => $currentMonthSalary['total_gross_salary'],
+        ];
     }
 }

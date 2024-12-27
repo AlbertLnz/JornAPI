@@ -19,6 +19,7 @@ class EmployeeFactory extends Factory
     {
         $user = User::factory()->create();
         $user->assignRole('employee');
+
         return [
             'name' => fake()->name(),
             'company_name' => fake()->company(),
@@ -26,7 +27,7 @@ class EmployeeFactory extends Factory
             'overtime_hourly_rate' => fake()->numberBetween(10, 100),
             'holiday_hourly_rate' => fake()->numberBetween(10, 100),
             'irpf' => fake()->numberBetween(10, 100),
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ];
     }
 }

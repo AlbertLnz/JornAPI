@@ -16,7 +16,7 @@ class Employee extends Model
         'overtime_hourly_rate',
         'holiday_hourly_rate',
         'user_id',
-        'irpf'
+        'irpf',
     ];
 
     public function user()
@@ -33,5 +33,4 @@ class Employee extends Model
     {
         return $this->hasMany(Salary::class);
     }
-
 }

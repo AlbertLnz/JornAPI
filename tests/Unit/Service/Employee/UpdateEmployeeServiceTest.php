@@ -16,18 +16,18 @@ class UpdateEmployeeServiceTest extends TestCase
 
     private UpdateEmployeeService $service;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->service = new UpdateEmployeeService();
+        $this->service = new UpdateEmployeeService;
     }
 
-    public function testCanInstantiate()
+    public function test_can_instantiate()
     {
         $this->assertInstanceOf(UpdateEmployeeService::class, $this->service);
     }
 
-    public function testUpdateEmployeeServiceWithValidData()
+    public function test_update_employee_service_with_valid_data()
     {
         // Arrange: Crear un empleado ficticio
         $employee = Employee::factory()->create();
@@ -52,7 +52,7 @@ class UpdateEmployeeServiceTest extends TestCase
         $this->assertEquals(5.00, $updatedEmployeeData['irpf']);
     }
 
-    public function testUpdateEmployeeServiceThrowsUserNotFoundException()
+    public function test_update_employee_service_throws_user_not_found_exception()
     {
         // Assert: Esperamos que se lance la excepción UserNotFound
         $this->expectException(UserNotFound::class);
@@ -69,7 +69,7 @@ class UpdateEmployeeServiceTest extends TestCase
         );
     }
 
-    public function testUpdateEmployeeServiceWithNullData()
+    public function test_update_employee_service_with_null_data()
     {
         // Arrange: Crear un empleado ficticio
         $employee = Employee::factory()->create();

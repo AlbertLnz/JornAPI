@@ -1,18 +1,18 @@
-<?php 
+<?php
+
 declare(strict_types=1);
+
 namespace App\Services\HourWorked;
 
 use App\Enums\WorkTypeEnum;
 
-trait HourCalculateTrait{
-       /**
+trait HourCalculateTrait
+{
+    /**
      * Calcular las horas extras.
-     * Las horas extras son las horas trabajadas 
-     * @param float $hoursWorked
-     * @param float $plannedHours
-     * @return float
+     * Las horas extras son las horas trabajadas
      */
-    private function calculateRegularOvertimeHours(float $hoursWorked, float $plannedHours,  $workType): float
+    private function calculateRegularOvertimeHours(float $hoursWorked, float $plannedHours, $workType): float
     {
         if (WorkTypeEnum::OVERTIME->value === $workType || WorkTypeEnum::HOLIDAY->value === $workType) {
             return 0;
@@ -24,20 +24,20 @@ trait HourCalculateTrait{
 
         $overtimeHours = $hoursWorked - $plannedHours;
 
-        return $overtimeHours;  
+        return $overtimeHours;
     }
 
     /**
      * Calcular las horas festivas.
      */
-    private function calculateHolidayHours(float $hoursWorked, float $overtimeHours,$workType): float
+    private function calculateHolidayHours(float $hoursWorked, float $overtimeHours, $workType): float
     {
         if (WorkTypeEnum::HOLIDAY->value === $workType) {
             return $hoursWorked;
         }
+
         return 0;
     }
-
 
     /**
      * Calcular las horas normales.
@@ -46,19 +46,19 @@ trait HourCalculateTrait{
     private function calculateNormalHours(float $hoursWorked, float $overtimeHours, $workType): float
     {
         if (WorkTypeEnum::HOLIDAY->value === $workType || WorkTypeEnum::OVERTIME->value === $workType) {
-            
-           
+
             return 0;
         }
+
         return $hoursWorked - $overtimeHours;
     }
 
-    private function calculateExtraShiftOvertime(float $hoursWorked,  $workType): float
+    private function calculateExtraShiftOvertime(float $hoursWorked, $workType): float
     {
-        if(WorkTypeEnum::OVERTIME->value === $workType) {
+        if (WorkTypeEnum::OVERTIME->value === $workType) {
             return $hoursWorked;
         }
-            return 0;
-    }
 
+        return 0;
+    }
 }

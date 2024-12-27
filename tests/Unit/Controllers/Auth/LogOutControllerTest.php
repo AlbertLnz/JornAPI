@@ -20,10 +20,12 @@ class LogOutControllerTest extends TestCase
     use DatabaseTransactions;
 
     private LogOutController $controller;
+
     private LogOutService $logOutService;
+
     private User $user;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->logOutService = Mockery::mock(LogOutService::class);
@@ -31,12 +33,12 @@ class LogOutControllerTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    public function testCanInstantiate(): void
+    public function test_can_instantiate(): void
     {
         $this->assertInstanceOf(LogOutController::class, $this->controller);
     }
 
-    public function testLogOutSuccessfully(): void
+    public function test_log_out_successfully(): void
     {
         $token = 'mocked-valid-token';
 
@@ -48,8 +50,8 @@ class LogOutControllerTest extends TestCase
             ->andReturnTrue();
 
         // Crear un request con el token
-        $request = new Request();
-        $request->headers->set('Authorization', 'Bearer ' . $token);
+        $request = new Request;
+        $request->headers->set('Authorization', 'Bearer '.$token);
 
         // Invocar el controlador
         $response = $this->controller->__invoke($request);
@@ -60,7 +62,7 @@ class LogOutControllerTest extends TestCase
         $this->assertEquals(['message' => 'Logged out successfully'], $response->getData(true));
     }
 
-    public function testLogOutWithInvalidToken(): void
+    public function test_log_out_with_invalid_token(): void
     {
         $token = 'mocked-invalid-token';
 
@@ -69,11 +71,11 @@ class LogOutControllerTest extends TestCase
             ->shouldReceive('logOut')
             ->once()
             ->with($token)
-            ->andThrow(new InvalidTokenException());
+            ->andThrow(new InvalidTokenException);
 
         // Crear un request con el token
-        $request = new Request();
-        $request->headers->set('Authorization', 'Bearer ' . $token);
+        $request = new Request;
+        $request->headers->set('Authorization', 'Bearer '.$token);
 
         $this->expectException(HttpResponseException::class);
 

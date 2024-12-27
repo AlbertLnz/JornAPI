@@ -5,8 +5,7 @@ namespace App\Listeners;
 use App\Events\HourSessionRegistered;
 use App\Jobs\ProcessSalary;
 
-
-class QueueHourProcessing 
+class QueueHourProcessing
 {
     /**
      * Create the event listener.
@@ -21,9 +20,7 @@ class QueueHourProcessing
      */
     public function handle(HourSessionRegistered $event): void
     {
-     
 
-     ProcessSalary::dispatch($event->getEmployeeId(), $event->getDate());  
-}
-
+        ProcessSalary::dispatch($event->getEmployeeId(), $event->getDate());
+    }
 }

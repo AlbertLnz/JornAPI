@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace Tests\Unit\Services\HourSession;
 
 use App\Enums\WorkTypeEnum;
@@ -17,10 +18,10 @@ class HourSessionUpdateServiceTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testCantInstantiate(): void
+    public function test_cant_instantiate(): void
     {
         $employee = Employee::factory()->create();
-        $hourSessionUpdateService = new UpdateHourSessionService(new HourWorkedUpdateService());
+        $hourSessionUpdateService = new UpdateHourSessionService(new HourWorkedUpdateService);
         $this->assertInstanceOf(UpdateHourSessionService::class, $hourSessionUpdateService);
     }
 
@@ -30,16 +31,16 @@ class HourSessionUpdateServiceTest extends TestCase
 
         // Crear empleado
         $employee = Employee::factory()->create();
-        
-        $hourSessionUpdateService = new UpdateHourSessionService(new HourWorkedUpdateService());
+
+        $hourSessionUpdateService = new UpdateHourSessionService(new HourWorkedUpdateService);
 
         // Intentar actualizar una sesión de trabajo que no existe
         $hourSessionUpdateService->execute(
-            $employee->id, 
-            '2024-11-13', 
-            '09:00', 
-            '17:00', 
-            8, 
+            $employee->id,
+            '2024-11-13',
+            '09:00',
+            '17:00',
+            8,
             WorkTypeEnum::NORMAL->value
         );
     }
@@ -54,13 +55,13 @@ class HourSessionUpdateServiceTest extends TestCase
             'start_time' => '09:00',
             'end_time' => '17:00',
             'planned_hours' => 8,
-            'work_type' => WorkTypeEnum::NORMAL->value
+            'work_type' => WorkTypeEnum::NORMAL->value,
         ]);
         $hourWorked = HourWorked::create([
             'hour_session_id' => $hourSession->id,
             'normal_hours' => 8,
             'overtime_hours' => 0,
-            'holiday_hours' => 0
+            'holiday_hours' => 0,
         ]);
 
         // Crear un mock de HourWorkedUpdateService
@@ -80,11 +81,11 @@ class HourSessionUpdateServiceTest extends TestCase
 
         // Ejecutar la actualización
         $result = $hourSessionUpdateService->execute(
-            $employee->id, 
-            $hourSession->date, 
-            '09:00', 
-            '16:00', 
-            $hourSession->planned_hours, 
+            $employee->id,
+            $hourSession->date,
+            '09:00',
+            '16:00',
+            $hourSession->planned_hours,
             WorkTypeEnum::HOLIDAY->value
         );
 
@@ -95,7 +96,7 @@ class HourSessionUpdateServiceTest extends TestCase
             'start_time' => '09:00',
             'end_time' => '16:00',
             'planned_hours' => 8,
-            'work_type' => WorkTypeEnum::HOLIDAY->value // Verificamos el cambio en work_type en hour_sessions
+            'work_type' => WorkTypeEnum::HOLIDAY->value, // Verificamos el cambio en work_type en hour_sessions
         ]);
 
         // Verificar que la base de datos refleja los cambios en hour_workeds (aunque no es necesario que work_type esté en hour_workeds)
@@ -103,7 +104,7 @@ class HourSessionUpdateServiceTest extends TestCase
             'hour_session_id' => $hourSession->id,
             'normal_hours' => 8, // Verifica que las horas trabajadas son correctas
             'overtime_hours' => 0,
-            'holiday_hours' => 0
+            'holiday_hours' => 0,
         ]);
 
         // Asegurarse de que se haya ejecutado la actualización de HourWorked

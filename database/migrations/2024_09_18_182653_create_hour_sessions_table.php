@@ -18,7 +18,7 @@ return new class extends Migration
             $table->time('start_time'); // Hora de inicio
             $table->time('end_time'); // Hora de fin
             $table->integer('planned_hours'); // Horas planeadas
-            $table->enum('work_type', ['is_holiday','is_overtime','is_normal'])->default('is_normal')->nullable();
+            $table->enum('work_type', ['is_holiday', 'is_overtime', 'is_normal'])->default('is_normal')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

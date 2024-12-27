@@ -17,13 +17,14 @@ class CheckUserIsActive
      */
     public function handle(Request $request, Closure $next): Response
     {
-        try{
+        try {
             if ($request->user()->is_active == 0) {
-                throw new UserIsNotActiveException();
+                throw new UserIsNotActiveException;
             }
-        }catch(UserIsNotActiveException $e){
+        } catch (UserIsNotActiveException $e) {
             throw new HttpResponseException(response()->json(['message' => $e->getMessage()], $e->getCode()));
         }
+
         return $next($request);
     }
 }

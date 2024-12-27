@@ -6,7 +6,6 @@ use App\Events\HourSessionUpdatedEvent;
 use App\Jobs\ProcessSalary;
 use App\Jobs\UpdateHourWorked;
 
-
 class QueueHourUpdating
 {
     /**
@@ -24,11 +23,11 @@ class QueueHourUpdating
     {
         $date = $event->getDate();
         $employeeId = $event->getEmployeeId();
-     //   $hourSession = $event->getHourSession();
-      /*   UpdateHourWorked::withChain(
-            [new ProcessSalary($employeeId, $date)])
-            ->dispatch($hourSession); */
+        //   $hourSession = $event->getHourSession();
+        /*   UpdateHourWorked::withChain(
+              [new ProcessSalary($employeeId, $date)])
+              ->dispatch($hourSession); */
 
-            ProcessSalary::dispatch($employeeId, $date);
+        ProcessSalary::dispatch($employeeId, $date);
     }
 }

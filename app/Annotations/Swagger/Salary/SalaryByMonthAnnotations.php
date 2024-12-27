@@ -11,24 +11,31 @@ class SalaryByMonthAnnotations
      *     description="Fetches the details of the salary associated with the provided JWT token. The token must be valid and authorized.",
      *     tags={"Salary"},
      *     security={{"bearerAuth":{}}},
+     *
      *     @OA\Parameter(
      *         name="month",
      *         in="query",
      *         required=true,
      *         description="The month for which the salary is retrieved",
+     *
      *         @OA\Schema(type="integer", example=1)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="year",
      *         in="query",
      *         required=true,
      *         description="The year for which the salary is retrieved",
+     *
      *         @OA\Schema(type="integer", example=2020)
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Salary found successfully",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Salary found successfully"),
      *             @OA\Property(property="salary", type="object",
      *                 @OA\Property(property="total_normal_hours", type="number", format="float", example=8.0),
@@ -39,10 +46,13 @@ class SalaryByMonthAnnotations
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Salary not found",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Salary not found")
      *         )
      *     )

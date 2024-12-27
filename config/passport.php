@@ -72,7 +72,6 @@ return [
         'secret' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET'),
     ],
 
-
     'tokens' => [
         'expiration' => env('PASSPORT_ACCESS_TOKEN_EXPIRATION', 60),
     ],

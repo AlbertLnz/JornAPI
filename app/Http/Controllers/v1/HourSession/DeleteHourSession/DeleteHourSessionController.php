@@ -1,5 +1,7 @@
-<?php 
+<?php
+
 declare(strict_types=1);
+
 namespace App\Http\Controllers\v1\HourSession\DeleteHourSession;
 
 use App\Exceptions\HourSessionNotFoundException;
@@ -13,26 +15,28 @@ class DeleteHourSessionController extends Controller
 {
     /**
      * Summary of __construct
-     * @param \App\Services\HourSession\DeleteHourSessionService $hourSessionDeleteService
      */
-    public function __construct(private DeleteHourSessionService $hourSessionDeleteService){}
+    public function __construct(private DeleteHourSessionService $hourSessionDeleteService) {}
+
     /**
      * Summary of __invoke
-     * @param \Illuminate\Http\Request $request
-     * @throws \Illuminate\Http\Exceptions\HttpResponseException
+     *
      * @return mixed|\Illuminate\Http\JsonResponse
+     *
+     * @throws \Illuminate\Http\Exceptions\HttpResponseException
      */
-    public function __invoke(Request $request):JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
-        try{
+        try {
             $query = $request->query('date');
             $employee = $request->user()->employee;
             $this->hourSessionDeleteService->execute($employee->id, $query);
+
             return response()->json(['message' => 'Hour worked deleted successfully'], 200);
 
-        }catch(HourSessionNotFoundException $exception){
+        } catch (HourSessionNotFoundException $exception) {
             throw new HttpResponseException(response()->json(['message' => $exception->getMessage()], $exception->getCode()));
         }
-      
+
     }
 }

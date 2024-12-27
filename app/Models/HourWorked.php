@@ -18,8 +18,8 @@ class HourWorked extends Model
         'holiday_hours',
     ];
 
-    public function hourSession(): BelongsTo{
+    public function hourSession(): BelongsTo
+    {
         return $this->belongsTo(HourSession::class);
     }
-
 }

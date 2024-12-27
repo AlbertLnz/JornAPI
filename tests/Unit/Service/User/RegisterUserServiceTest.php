@@ -2,9 +2,8 @@
 
 namespace Tests\Unit\Service\User;
 
-use App\Services\User\RegisterUserService;
-use App\Jobs\SendRegisterNotification;
 use App\Models\User;
+use App\Services\User\RegisterUserService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
@@ -15,18 +14,18 @@ class RegisterUserServiceTest extends TestCase
 
     private $service;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->service = new RegisterUserService();
+        $this->service = new RegisterUserService;
     }
 
-    public function testCanInstantiate()
+    public function test_can_instantiate()
     {
         $this->assertInstanceOf(RegisterUserService::class, $this->service);
     }
 
-    public function testRegisterUserServiceWithValidData()
+    public function test_register_user_service_with_valid_data()
     {
         // Asegurarse de que el trabajo no se ejecute realmente durante la prueba
         Queue::fake();
@@ -39,10 +38,10 @@ class RegisterUserServiceTest extends TestCase
         $this->assertNotEmpty($user->password);
 
         // Verificar que el trabajo fue encolado
-        
+
     }
 
-    public function testRegisterUserWithExistingEmail()
+    public function test_register_user_with_existing_email()
     {
         // Crear un usuario previamente para asegurar que ya existe
         User::create([
@@ -56,7 +55,7 @@ class RegisterUserServiceTest extends TestCase
         $this->service->execute('email@example.com', 'newpassword');
     }
 
-    public function testRegisterUserWithNullEmailOrPassword()
+    public function test_register_user_with_null_email_or_password()
     {
         $this->expectException(\Exception::class);
         $this->service->execute(null, 'password');

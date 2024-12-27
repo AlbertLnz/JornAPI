@@ -18,11 +18,12 @@ class HourWorkedFactory extends Factory
     public function definition(): array
     {
         $hourSession = HourSession::factory()->create();
+
         return [
             'hour_session_id' => $hourSession->id,
             'normal_hours' => $this->faker->numberBetween(1, 10),
             'overtime_hours' => 0,
-            'holiday_hours' => 0
+            'holiday_hours' => 0,
         ];
     }
 }

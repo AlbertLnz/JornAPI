@@ -3,32 +3,32 @@
 namespace App\DTO\Salary;
 
 use App\DTO\DTOInterface;
-use App\Models\Salary;
 use Illuminate\Database\Eloquent\Model;
 
-class SalaryDTO implements DTOInterface{
-
+class SalaryDTO implements DTOInterface
+{
     public function __construct(
-        public string $startDate, 
-        public string $endDate, 
-        public float $total_normal_hours, 
-        public float $total_overtime_hours, 
+        public string $startDate,
+        public string $endDate,
+        public float $total_normal_hours,
+        public float $total_overtime_hours,
         public float $total_holiday_hours,
         public float $total_gross_salary,
-        public float $total_net_salary){}
+        public float $total_net_salary) {}
 
-   public static function fromModel(Model $salary)
-   {
-    return new self(
-        $salary->start_date,
-        $salary->end_date,
-        $salary->total_normal_hours,
-        $salary->total_overtime_hours,
-        $salary->total_holiday_hours,
-        $salary->total_gross_salary,
-        $salary->total_net_salary
-    );
-   }
+    public static function fromModel(Model $salary)
+    {
+        return new self(
+            $salary->start_date,
+            $salary->end_date,
+            $salary->total_normal_hours,
+            $salary->total_overtime_hours,
+            $salary->total_holiday_hours,
+            $salary->total_gross_salary,
+            $salary->total_net_salary
+        );
+    }
+
     public static function toArray(array $data)
     {
         return [

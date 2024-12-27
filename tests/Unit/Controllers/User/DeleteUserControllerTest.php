@@ -1,6 +1,7 @@
-<?php 
+<?php
 
 declare(strict_types=1);
+
 namespace Tests\Unit\Controllers\User;
 
 use App\Http\Controllers\v1\User\DeleteUserController;
@@ -18,31 +19,34 @@ class DeleteUserControllerTest extends TestCase
     use DatabaseTransactions;
 
     private DeleteUserController $controller;
+
     private User $user;
+
     private TokenService $tokenService;
+
     private DeleteUserService $userDeleteService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->tokenService = Mockery::mock(TokenService::class);
         $this->userDeleteService = Mockery::mock(DeleteUserService::class);
         $this->controller = new DeleteUserController($this->userDeleteService);
-        
+
         $this->user = User::factory()->create();
         $this->user->assignRole('employee');
     }
 
-    public function testCanInstantiate()
+    public function test_can_instantiate()
     {
         $this->assertInstanceOf(DeleteUserController::class, $this->controller);
     }
 
-    public function testDeleteUser()
+    public function test_delete_user()
     {
         $userId = $this->user->id;
-        $request = new Request();
+        $request = new Request;
         $request->setUserResolver(fn () => $this->user);
 
         $this->userDeleteService->shouldReceive('execute')->once()->with($userId);

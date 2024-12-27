@@ -35,18 +35,18 @@ return [
     |
     */
 
-'guards' => [
-    'web' => [
-        'driver' => 'session',
-        'provider' => 'users',
+    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'api' => [
+            'driver' => 'jwt', // Cambia esto de 'passport' a 'jwt' o el nombre de tu driver JWT personalizado
+            'provider' => 'users',
+            'hash' => false,
+        ],
     ],
- 
-    'api' => [
-        'driver' => 'jwt', // Cambia esto de 'passport' a 'jwt' o el nombre de tu driver JWT personalizado
-        'provider' => 'users',
-        'hash' => false,
-    ],
-],
 
     /*
     |--------------------------------------------------------------------------

@@ -6,10 +6,10 @@ use App\Exceptions\InvalidTokenException;
 use App\Exceptions\TokenNotProvidedException;
 use App\Exceptions\UserNotFound;
 use App\Models\User;
-use Closure;
-use Illuminate\Http\Request;
 use App\Services\Token\TokenService;
+use Closure;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
 
 class JwtAuthMiddleware
 {
@@ -23,38 +23,36 @@ class JwtAuthMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
-        try{
+        try {
             $token = $request->bearerToken();
 
-            if (!$token) {
-                throw new TokenNotProvidedException();
+            if (! $token) {
+                throw new TokenNotProvidedException;
             }
-    
+
             $decoded = $this->jwtService->decodeToken($token);
-    
-            if (!$decoded) {
-                throw new InvalidTokenException();
+
+            if (! $decoded) {
+                throw new InvalidTokenException;
             }
             $user = User::find($decoded->sub);
-            if (!$user) {
-                throw new UserNotFound();
+            if (! $user) {
+                throw new UserNotFound;
             }
             //auth()->setUser($user);
-         
+
             $request->attributes->set('token', $token);
             $request->attributes->set('user', $user);
-    
+
             return $next($request);
 
-        }catch(InvalidTokenException | TokenNotProvidedException | UserNotFound  $e){
+        } catch (InvalidTokenException|TokenNotProvidedException|UserNotFound  $e) {
             throw new HttpResponseException(response()->json(['message' => $e->getMessage()], $e->getCode()));
         }
-       
+
     }
 }

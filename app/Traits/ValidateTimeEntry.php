@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 trait ValidateTimeEntry
 {
-    public function validateTimeEntry(?string $startTime , ?string $endTime): void
+    public function validateTimeEntry(?string $startTime, ?string $endTime): void
     {
         if ($startTime == null || $endTime == null) {
             throw new TimeEntryException("'The start time and end time are required'");
@@ -32,9 +32,9 @@ trait ValidateTimeEntry
     {
         $today = Carbon::today();
         $date = Carbon::parse($date);
-      
+
         if ($date > $today) {
-            throw new TodayDateException();
+            throw new TodayDateException;
         }
     }
 }

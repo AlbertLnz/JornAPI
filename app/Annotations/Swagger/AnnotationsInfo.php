@@ -18,10 +18,12 @@ namespace App\Annotations\Swagger;
  *         "url": "https://opensource.org/licenses/MIT"
  *     }
  * )
+ *
  * @OA\Server(
  *     url="http://127.0.0.1:8000/api",
  *     description="Local development server"
  * )
+ *
  * @OA\SecurityScheme(
  *     type="http",
  *     description="Bearer token authentication",
@@ -32,6 +34,4 @@ namespace App\Annotations\Swagger;
  *     securityScheme="bearerAuth"
  * )
  */
-class AnnotationsInfo
-{
-}
+class AnnotationsInfo {}

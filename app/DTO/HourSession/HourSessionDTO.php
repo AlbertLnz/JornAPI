@@ -1,9 +1,8 @@
-<?php 
+<?php
 
 namespace App\DTO\HourSession;
 
 use App\DTO\DTOInterface;
-use App\Models\HourSession;
 use Illuminate\Database\Eloquent\Model;
 
 class HourSessionDTO implements DTOInterface
@@ -16,7 +15,7 @@ class HourSessionDTO implements DTOInterface
         public bool $isHoliday,
         public bool $isOvertime
 
-    ){}
+    ) {}
 
     public static function fromModel(Model $hourSession): self
     {
@@ -37,7 +36,7 @@ class HourSessionDTO implements DTOInterface
             'start_time' => $data['start_time'],
             'end_time' => $data['end_time'],
             'planned_hours' => $data['planned_hours'],
-            'work_type' => $data['work_type']
+            'work_type' => $data['work_type'],
         ];
     }
 }

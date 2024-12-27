@@ -5,10 +5,13 @@ namespace Tests\Feature\Employee;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
-class RegisterEmployeeWithBadDataTest extends TestCase{
-use DatabaseTransactions;
-    public function testRegisterEmployeeWithBadEmail(): void{
-        $register = $this->post('/api/register', [  
+class RegisterEmployeeWithBadDataTest extends TestCase
+{
+    use DatabaseTransactions;
+
+    public function test_register_employee_with_bad_email(): void
+    {
+        $register = $this->post('/api/register', [
             'email' => 'JZQ3xample.com',
             'password' => 'password',
             'name' => 'John Doe',
@@ -20,7 +23,8 @@ use DatabaseTransactions;
         $register->assertStatus(422);
     }
 
-    public function testRegisterEmployeeWithBadPassword(): void{
+    public function test_register_employee_with_bad_password(): void
+    {
         $register = $this->post('/api/register', [
             'email' => fake()->email(),
             'password' => '',
@@ -33,7 +37,8 @@ use DatabaseTransactions;
         $register->assertStatus(422);
     }
 
-    public function testRegisterEmployeeWithSqlInjection(): void{
+    public function test_register_employee_with_sql_injection(): void
+    {
         $register = $this->post('/api/register', [
             'email' => "' OR 1=1",
             'password' => 'password',
@@ -47,9 +52,9 @@ use DatabaseTransactions;
         $register->assertStatus(422);
     }
 
-    public function testRegisterEmployeeWithNullData(): void{
+    public function test_register_employee_with_null_data(): void
+    {
         $register = $this->post('/api/register', [
-          
 
         ]);
         $register->assertStatus(422);

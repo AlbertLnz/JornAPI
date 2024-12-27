@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class JwtBlackListMiddleware
 {
+    public function __construct(private TokenService $tokenService) {}
 
-    public function __construct(private TokenService $tokenService){}
     /**
      * Handle an incoming request.
      *
@@ -21,18 +21,17 @@ class JwtBlackListMiddleware
     {
         $token = $request->bearerToken();
 
-        if (!$token) {
+        if (! $token) {
             return response()->json(['error' => 'Token not provided'], 401);
         }
 
         // Extraer el JWT ID ('jti') del token
         $jti = $this->tokenService->getJtiFromToken($token);
 
-        if (Cache::store('redis')->has('blacklist:' . $jti)) {
+        if (Cache::store('redis')->has('blacklist:'.$jti)) {
             return response()->json(['error' => 'Token has been revoked'], 401);
         }
 
-   
         return $next($request);
     }
 }

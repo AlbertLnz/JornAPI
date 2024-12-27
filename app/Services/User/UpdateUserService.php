@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
@@ -8,26 +8,24 @@ use App\Exceptions\UserNotFound;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
-class UpdateUserService{
-
-
-    public function execute( ?string $email,  ?string $uuid): User{
+class UpdateUserService
+{
+    public function execute(?string $email, ?string $uuid): User
+    {
 
         $user = User::where('id', $uuid)->first();
-        if(!$user){
-            throw new UserNotFound();
+        if (! $user) {
+            throw new UserNotFound;
         }
-        DB::transaction(function () use ($user, $email,) {
-            if($email != null){
+        DB::transaction(function () use ($user, $email) {
+            if ($email != null) {
                 $user->email = $email;
             }
-    
-         
-    
+
             $user->save();
         });
+
         return $user;
-      
-       
+
     }
 }

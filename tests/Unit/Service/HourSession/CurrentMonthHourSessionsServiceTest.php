@@ -1,13 +1,12 @@
 <?php
+
 namespace Tests\Unit\Service\HourSession;
 
 use App\Enums\WorkTypeEnum;
 use App\Models\Employee;
 use App\Models\HourSession;
 use App\Services\HourSession\CurrentMonthHourSessionService;
-use App\Services\HourSession\HourSessionShowService;
 use Carbon\Carbon;
-use Database\Factories\HourSessionFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -15,11 +14,14 @@ use Tests\TestCase;
 class CurrentMonthHourSessionsServiceTest extends TestCase
 {
     use DatabaseTransactions;
+
     private Employee $employee;
+
     private CurrentMonthHourSessionService $currentMonthHourSessionService;
+
     private HourSession $hourSession;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->employee = Employee::factory()->create();
@@ -31,18 +33,17 @@ class CurrentMonthHourSessionsServiceTest extends TestCase
             'work_type' => WorkTypeEnum::NORMAL->value]);
         // Crear 10 empleados y persistirlos en la base de datos
 
-
-        $this->currentMonthHourSessionService = new CurrentMonthHourSessionService();
+        $this->currentMonthHourSessionService = new CurrentMonthHourSessionService;
     }
 
-    public function testCantInstantiate(): void
+    public function test_cant_instantiate(): void
     {
         $this->assertInstanceOf(CurrentMonthHourSessionService::class, $this->currentMonthHourSessionService);
     }
 
     public function test_show_hour_sessions(): void
     {
-        $result = $this->currentMonthHourSessionService->execute($this->employee->id, Carbon::create('2023','12','1'), Carbon::create('2023-12-31'));
+        $result = $this->currentMonthHourSessionService->execute($this->employee->id, Carbon::create('2023', '12', '1'), Carbon::create('2023-12-31'));
         $this->assertInstanceOf(Collection::class, $result);
         $this->assertCount(1, $result);
     }
@@ -53,6 +54,4 @@ class CurrentMonthHourSessionsServiceTest extends TestCase
         $this->assertInstanceOf(Collection::class, $result);
         $this->assertCount(0, $result);
     }
-
-   
 }

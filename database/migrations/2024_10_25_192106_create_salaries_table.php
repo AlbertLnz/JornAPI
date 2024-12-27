@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('total_normal_hours', 8, 2)->default(0);
             $table->decimal('total_overtime_hours', 8, 2)->default(0);
             $table->decimal('total_holiday_hours', 8, 2)->default(0)->nullable();
-            $table->decimal('total_gross_salary', 8, 2)->default(0)->nullable();   
+            $table->decimal('total_gross_salary', 8, 2)->default(0)->nullable();
             $table->decimal('total_net_salary', 8, 2)->default(0)->nullable();
             $table->timestamps();
         });

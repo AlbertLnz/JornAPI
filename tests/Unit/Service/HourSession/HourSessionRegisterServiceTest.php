@@ -6,24 +6,21 @@ namespace Tests\Unit\Services\HourSession;
 
 use App\Enums\WorkTypeEnum;
 use App\Exceptions\HourSessionExistException;
-use App\Models\Employee;
 use App\Models\HourSession;
-use App\Services\HourSession\HourSessionRegisterService;
 use App\Services\HourSession\RegisterHourSessionService;
 use App\Services\HourWorked\HourWorkedEntryService;
 use App\Services\Salary\SalaryService;
 use Database\Factories\EmployeeFactory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use Mockery;
-use Mockery\MockInterface;
 use Tests\TestCase;
 
 class HourSessionRegisterServiceTest extends TestCase
 {
-    use DatabaseTransactions ;
+    use DatabaseTransactions;
+
     private HourWorkedEntryService $hourWorkedEntryServiceMock;
+
     private SalaryService $salaryServiceMock;
 
     protected function setUp(): void
@@ -50,7 +47,6 @@ class HourSessionRegisterServiceTest extends TestCase
             ->withAnyArgs();
 
         // Mock de SalaryService
-       
 
         // Crear la instancia del servicio bajo prueba
         $service = new RegisterHourSessionService(
@@ -101,6 +97,4 @@ class HourSessionRegisterServiceTest extends TestCase
         $this->expectException(HourSessionExistException::class);
         $service->execute($employeeId, $date, $startTime, $endTime, $plannedHours, $workType);
     }
-
-   
 }

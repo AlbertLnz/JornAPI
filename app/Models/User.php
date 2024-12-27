@@ -13,7 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, HasRoles, HasUuids;
+    use HasFactory, HasRoles, HasUuids, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        
+
         'email',
         'password',
         'is_active',
@@ -54,6 +54,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Employee::class);
     }
-
-  
 }

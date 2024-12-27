@@ -2,11 +2,9 @@
 
 namespace App\Mail;
 
-use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
@@ -34,15 +32,11 @@ class RegisterNotification extends Mailable
         );
     }
 
-
     public function build()
     {
         return $this->view('emails.register_notification')->subject('Register Notification')->with(['user' => $this->user]);
     }
 
-
-        
- 
     /**
      * Get the attachments for the message.
      *

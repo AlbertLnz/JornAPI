@@ -27,7 +27,7 @@ class RegisterHourSessionRequest extends FormRequest
             'date' => 'required|date|unique:hour_sessions,date',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
-            'planned_hours' => 'required|integer|min:2',  
+            'planned_hours' => 'required|integer|min:2',
             'work_type' => ['nullable', 'string'],
 
         ];

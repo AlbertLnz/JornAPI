@@ -13,7 +13,7 @@ class HourSession extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'employee_id',  
+        'employee_id',
         'date',
         'start_time',
         'end_time',
@@ -21,11 +21,13 @@ class HourSession extends Model
         'work_type',
     ];
 
-    public function employee(): BelongsTo{
+    public function employee(): BelongsTo
+    {
         return $this->belongsTo(Employee::class);
     }
 
-    public function hourWorked(): HasOne{
+    public function hourWorked(): HasOne
+    {
         return $this->hasOne(HourWorked::class);
     }
 }

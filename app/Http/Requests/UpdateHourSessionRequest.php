@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Contracts\Validation\Validator;
-
 
 class UpdateHourSessionRequest extends FormRequest
 {
@@ -26,7 +25,7 @@ class UpdateHourSessionRequest extends FormRequest
     {
         return [
             'date' => 'date',
-            'start_time' => [ 'date_format:H:i'],
+            'start_time' => ['date_format:H:i'],
             'end_time' => ['date_format:H:i'],
             'planned_hours' => ['integer', 'min:2'],
             'work_type' => ['nullable', 'string'],

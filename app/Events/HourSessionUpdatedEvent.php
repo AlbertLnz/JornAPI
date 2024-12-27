@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -16,15 +15,15 @@ class HourSessionUpdatedEvent
      */
     /**
      * Summary of __construct
-     * @param string $employeeId
-     * @param string $date
      */
-    public function __construct( private string $employeeId, private string $date)
+    public function __construct(private string $employeeId, private string $date)
     {
         //
     }
+
     /**
      * Summary of getEmployeeId
+     *
      * @return string
      */
     public function getEmployeeId()
@@ -34,14 +33,11 @@ class HourSessionUpdatedEvent
 
     /**
      * Summary of getDate
+     *
      * @return string
      */
-
     public function getDate()
     {
         return $this->date;
     }
-    
-
-   
 }

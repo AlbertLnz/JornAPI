@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace Tests\Unit\Service\HourWorked;
 
 use App\Enums\WorkTypeEnum;
@@ -6,22 +7,23 @@ use App\Exceptions\TimeEntryException;
 use App\Models\Employee;
 use App\Models\HourSession;
 use App\Models\HourWorked;
-use App\Services\HourWorked\HourWorkedEntryService;
 use App\Services\HourWorked\HourWorkedUpdateService;
-use App\Services\Salary\SalaryService;
-use Database\Factories\EmployeeFactory;
-use Database\Factories\HourWorkedFactory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
-class HourWorkedUpdateServiceTest extends TestCase{
-use DatabaseTransactions;
+class HourWorkedUpdateServiceTest extends TestCase
+{
+    use DatabaseTransactions;
+
     private HourSession $hourSession;
+
     private Employee $employee;
+
     private HourWorked $hourWorked;
+
     private HourWorkedUpdateService $hourWorkedUpdateService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->hourSession = HourSession::factory()->create([
@@ -29,7 +31,7 @@ use DatabaseTransactions;
             'start_time' => '09:00',
             'end_time' => '17:00',
             'planned_hours' => 8,
-            'work_type' => WorkTypeEnum::NORMAL->value
+            'work_type' => WorkTypeEnum::NORMAL->value,
         ]);
         $this->hourWorked = HourWorked::create([
             'hour_session_id' => $this->hourSession->id,
@@ -37,10 +39,10 @@ use DatabaseTransactions;
             'overtime_hours' => 0,
             'holiday_hours' => 0,
         ]);
-        $this->hourWorkedUpdateService = new HourWorkedUpdateService();
+        $this->hourWorkedUpdateService = new HourWorkedUpdateService;
     }
 
-    public function testCantInstantiate(): void
+    public function test_cant_instantiate(): void
     {
         $this->assertInstanceOf(HourWorkedUpdateService::class, $this->hourWorkedUpdateService);
     }
@@ -89,8 +91,6 @@ use DatabaseTransactions;
             8,
             WorkTypeEnum::NORMAL->value
         );
-        
-    }
 
-    
+    }
 }

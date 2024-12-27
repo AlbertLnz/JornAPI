@@ -17,15 +17,16 @@ class HourSessionFactory extends Factory
      */
     public function definition(): array
     {
-        $employee =Employee::factory()->create();
+        $employee = Employee::factory()->create();
+
         return [
             'date' => $this->faker->date(),
             'start_time' => $this->faker->time(),
             'end_time' => $this->faker->time(),
             'planned_hours' => $this->faker->numberBetween(1, 10),
             'work_type' => $this->faker->randomElement(['is_normal', 'is_holiday', 'is_overtime']),
-            'employee_id' => $employee->id
+            'employee_id' => $employee->id,
         ];
-        
+
     }
 }

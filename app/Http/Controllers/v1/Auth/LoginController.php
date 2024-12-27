@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Http\Controllers\v1\Auth;
 
 use App\Exceptions\UserNotFound;
@@ -17,28 +19,27 @@ class LoginController extends Controller
 {
     /**
      * Summary of __construct
-     * @param \App\Services\Auth\AuthService $authService
      */
-    public function __construct( private AuthService $authService)
-    {
-        
-    }
+    public function __construct(private AuthService $authService) {}
+
     /**
      * Summary of __invoke
-     * @param \App\Http\Requests\LoginRequest $request
-     * @throws \Illuminate\Http\Exceptions\HttpResponseException
+     *
      * @return mixed|\Illuminate\Http\JsonResponse
+     *
+     * @throws \Illuminate\Http\Exceptions\HttpResponseException
      */
-    public function __invoke(LoginRequest $request): JsonResponse{
+    public function __invoke(LoginRequest $request): JsonResponse
+    {
 
-            try{
+        try {
 
-                $data = $this->authService->execute($request->email, $request->password);
-                return response()->json(['token' => $data['token']
-                                         ,'refreshToken' => $data['refreshToken'] ], 200);    
-            }catch(UserNotFound  | UnauthorizedException $e){
-                throw new HttpResponseException(response()->json(['message' => $e->getMessage()], $e->getCode())); 
-            }
-          
-        }  
+            $data = $this->authService->execute($request->email, $request->password);
+
+            return response()->json(['token' => $data['token'], 'refreshToken' => $data['refreshToken']], 200);
+        } catch (UserNotFound|UnauthorizedException $e) {
+            throw new HttpResponseException(response()->json(['message' => $e->getMessage()], $e->getCode()));
+        }
+
+    }
 }

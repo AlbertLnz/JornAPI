@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Support\Str;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder

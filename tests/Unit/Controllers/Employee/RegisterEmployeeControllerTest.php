@@ -1,11 +1,12 @@
-<?php 
+<?php
 
 declare(strict_types=1);
+
 namespace Tests\Unit\Controllers\Employee;
 
+use App\Exceptions\UserAlreadyExists;
 use App\Http\Controllers\v1\Employee\RegisterEmployeeController;
 use App\Http\Requests\RegisterEmployeeRequest;
-use App\Exceptions\UserAlreadyExists;
 use App\Services\Employee\RegisterEmployeeService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -18,9 +19,10 @@ class RegisterEmployeeControllerTest extends TestCase
     use DatabaseTransactions;
 
     private RegisterEmployeeController $controller;
+
     private RegisterEmployeeService $service;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -28,12 +30,12 @@ class RegisterEmployeeControllerTest extends TestCase
         $this->controller = new RegisterEmployeeController($this->service);
     }
 
-    public function testCanInstantiate(): void
+    public function test_can_instantiate(): void
     {
         $this->assertInstanceOf(RegisterEmployeeController::class, $this->controller);
     }
 
-    public function testRegisterEmployeeSuccessfully(): void
+    public function test_register_employee_successfully(): void
     {
         // Arrange
         $request = new RegisterEmployeeRequest([
@@ -43,7 +45,7 @@ class RegisterEmployeeControllerTest extends TestCase
             'normal_hourly_rate' => 10.0,
             'overtime_hourly_rate' => 15.0,
             'holiday_hourly_rate' => 20.0,
-            'irpf' => 5.0
+            'irpf' => 5.0,
         ]);
 
         $this->service->shouldReceive('execute')
@@ -67,7 +69,7 @@ class RegisterEmployeeControllerTest extends TestCase
         $this->assertEquals('Employee created successfully', $response->getData()->message);
     }
 
-    public function testRegisterEmployeeThrowsUserAlreadyExistsException(): void
+    public function test_register_employee_throws_user_already_exists_exception(): void
     {
         // Arrange
         $request = new RegisterEmployeeRequest([
@@ -77,7 +79,7 @@ class RegisterEmployeeControllerTest extends TestCase
             'normal_hourly_rate' => 10.0,
             'overtime_hourly_rate' => 15.0,
             'holiday_hourly_rate' => 20.0,
-            'irpf' => 5.0
+            'irpf' => 5.0,
         ]);
 
         $this->service->shouldReceive('execute')
@@ -91,14 +93,12 @@ class RegisterEmployeeControllerTest extends TestCase
                 $request->holiday_hourly_rate,
                 $request->irpf
             )
-            ->andThrow(new UserAlreadyExists());
+            ->andThrow(new UserAlreadyExists);
 
         $this->expectException(HttpResponseException::class);
 
-
         // Act
-       $response= $this->controller->__invoke($request);
-       $this->assertEquals(409, $response->getStatusCode());
+        $response = $this->controller->__invoke($request);
+        $this->assertEquals(409, $response->getStatusCode());
     }
-
 }

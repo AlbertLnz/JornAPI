@@ -3,9 +3,9 @@
 use App\Http\Controllers\v1\Auth\LoginController;
 use App\Http\Controllers\v1\Auth\LogOutController;
 use App\Http\Controllers\v1\DashBoard\DashboardController;
+use App\Http\Controllers\v1\Employee\RegisterEmployeeController;
 use App\Http\Controllers\v1\Employee\ShowEmployeeController;
 use App\Http\Controllers\v1\Employee\UpdateEmployeeController;
-use App\Http\Controllers\v1\Employee\RegisterEmployeeController;
 use App\Http\Controllers\v1\HourSession\DeleteHourSession\DeleteHourSessionController;
 use App\Http\Controllers\v1\HourSession\RegisterHourSession\RegitsterHourSessionController;
 use App\Http\Controllers\v1\HourSession\ShowHourSession\ShowHourSessionController;
@@ -19,33 +19,26 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', RegisterEmployeeController::class)->name('verification.verify');
 Route::post('/login', LoginController::class);
 
-
-
-Route::middleware(['jwt.auth','token_redis', 'role:employee','is_active'])->group(function(){
+Route::middleware(['jwt.auth', 'token_redis', 'role:employee', 'is_active'])->group(function () {
     //User Routes
     Route::put('/user/update', UpdateUserController::class);
     Route::get('/user/show', ShowUserController::class);
-    Route::post('user/delete', DeleteUserController::class );
+    Route::post('user/delete', DeleteUserController::class);
     //Employee Routes
     Route::get('/employee', ShowEmployeeController::class);
     Route::put('/employee', UpdateEmployeeController::class);
-   
-  //HourSession Routes
-  Route::post('/hour_session', RegitsterHourSessionController::class);  // Crear
-  Route::get('/hour_session', ShowHourSessionController::class);       // Leer
-  Route::put('/hour_session', UpdateHourSessionController::class);     // Actualizar
-  Route::delete('/hour_session', DeleteHourSessionController::class);  // Eliminar
-  
+
+    //HourSession Routes
+    Route::post('/hour_session', RegitsterHourSessionController::class);  // Crear
+    Route::get('/hour_session', ShowHourSessionController::class);       // Leer
+    Route::put('/hour_session', UpdateHourSessionController::class);     // Actualizar
+    Route::delete('/hour_session', DeleteHourSessionController::class);  // Eliminar
 
     Route::get('/dashboard', DashboardController::class);
 
-   //Salary Routes
-   Route::get('/salary', ShowSalaryByMonthController::class);
+    //Salary Routes
+    Route::get('/salary', ShowSalaryByMonthController::class);
 
-   Route::post('/logout',LogOutController::class);
+    Route::post('/logout', LogOutController::class);
 
 });
-
-
-
-

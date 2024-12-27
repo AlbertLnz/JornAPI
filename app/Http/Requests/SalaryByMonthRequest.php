@@ -25,9 +25,10 @@ class SalaryByMonthRequest extends FormRequest
     {
         return [
             'month' => 'integer|min:1|max:12',
-            'year' => 'integer|min:2010|max:2999'
+            'year' => 'integer|min:2010|max:2999',
         ];
     }
+
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json($validator->errors(), 422));

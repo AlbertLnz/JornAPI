@@ -1,6 +1,7 @@
-<?php 
+<?php
 
 declare(strict_types=1);
+
 namespace App\Services\HourSession;
 
 use App\Enums\WorkTypeEnum;
@@ -16,22 +17,14 @@ class RegisterHourSessionService
     use ValidateTimeEntry;
 
     /**
-     * @param \App\Services\HourWorked\HourWorkedEntryService $hourWorkedEntryService
-     * @param \App\Services\Salary\SalaryService $salaryService
+     * @param  \App\Services\Salary\SalaryService  $salaryService
      */
     public function __construct(
         private HourWorkedEntryService $hourWorkedEntryService,
     ) {}
 
     /**
-     * @param string $employeeId
-     * @param string $date
-     * @param string $startTime
-     * @param string $endTime
-     * @param int $plannedHours
-     * @param string $workType
      * @throws \Exception
-     * @return void
      */
     public function execute(?string $employeeId, string $date, string $startTime, string $endTime, int $plannedHours, ?string $workType): void
     {
@@ -41,7 +34,7 @@ class RegisterHourSessionService
 
         // Verifica si ya existe una sesión de trabajo para el empleado en la misma fecha
         if ($this->sessionExists($employeeId, $date)) {
-            throw new HourSessionExistException();
+            throw new HourSessionExistException;
         }
 
         $transaction = DB::transaction(function () use ($employeeId, $date, $startTime, $endTime, $plannedHours, $workType) {
@@ -64,9 +57,6 @@ class RegisterHourSessionService
                 $hourSession->work_type
             );
 
-            
-         
-
             // Disparar evento después de la transacción
             DB::afterCommit(function () use ($employeeId, $date) {
                 event(new HourSessionRegistered($employeeId, $date));
@@ -78,15 +68,11 @@ class RegisterHourSessionService
 
     /**
      * Verificar si ya existe una sesión de horas para un empleado en una fecha específica
-     *
-     * @param string $employeeId
-     * @param string $date
-     * @return bool
      */
     protected function sessionExists(string $employeeId, string $date): bool
     {
         return HourSession::where('employee_id', $employeeId)
-                          ->where('date', $date)
-                          ->exists();
+            ->where('date', $date)
+            ->exists();
     }
 }

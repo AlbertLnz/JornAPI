@@ -1,9 +1,10 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Http\Controllers\v1\HourSession\ShowHourSession;
 
 use App\Exceptions\HourSessionNotFoundException;
-use App\Http\Requests\HourSessionShowRequest;
 use App\Services\HourSession\FindHourSessionService;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
@@ -13,27 +14,28 @@ class ShowHourSessionController
 {
     /**
      * Summary of __construct
-     * @param \App\Services\HourSession\FindHourSessionService $hourSessionShowService
      */
-    public function __construct(private FindHourSessionService $hourSessionShowService){}
+    public function __construct(private FindHourSessionService $hourSessionShowService) {}
+
     /**
      * Summary of __invoke
-     *  
-     * @throws \Illuminate\Http\Exceptions\HttpResponseException
+     *
      * @return mixed|\Illuminate\Http\JsonResponse
+     *
+     * @throws \Illuminate\Http\Exceptions\HttpResponseException
      */
-    public function __invoke(Request $request):JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
-        try{
+        try {
             $query = $request->query('date');
-           
+
             $employee = $request->user()->employee;
-           $hourSession =  $this->hourSessionShowService->execute($employee->id, $query);
-           return response()->json(['hour_session' => $hourSession], 200);
-        }catch(HourSessionNotFoundException $exception){
+            $hourSession = $this->hourSessionShowService->execute($employee->id, $query);
+
+            return response()->json(['hour_session' => $hourSession], 200);
+        } catch (HourSessionNotFoundException $exception) {
             throw new HttpResponseException(response()->json(['message' => $exception->getMessage()], $exception->getCode()));
-            
         }
-      
+
     }
 }

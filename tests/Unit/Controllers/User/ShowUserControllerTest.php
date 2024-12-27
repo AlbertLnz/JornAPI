@@ -18,10 +18,12 @@ use Tests\TestCase;
 class ShowUserControllerTest extends TestCase
 {
     use DatabaseTransactions;
+
     private ShowUserController $controller;
+
     private MockInterface $findUserService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -32,12 +34,11 @@ class ShowUserControllerTest extends TestCase
         $this->controller = new ShowUserController($this->findUserService);
     }
 
-    public function testShowUser(): void
+    public function test_show_user(): void
     {
         // Crear un usuario usando el factory
         $user = User::factory()->create([
-           
-            
+
         ]);
 
         // Mock del Request

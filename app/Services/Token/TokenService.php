@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Services\Token;
@@ -8,6 +9,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+
 class TokenService
 {
     protected $secret;
@@ -23,18 +25,18 @@ class TokenService
             'sub' => $userId,
             'iat' => time(),
             'exp' => time() + 3600, // Token válido por 30 minutos
-            'jti' => bin2hex(random_bytes(16)) // Genera un ID único para el token
+            'jti' => bin2hex(random_bytes(16)), // Genera un ID único para el token
         ];
-    
+
         return JWT::encode($payload, $this->secret, 'HS256');
     }
 
     public function decodeToken($token): ?object
     {
         try {
-             $tokenDecoded = JWT::decode($token, new Key($this->secret, 'HS256'));
-          
-             return $tokenDecoded;
+            $tokenDecoded = JWT::decode($token, new Key($this->secret, 'HS256'));
+
+            return $tokenDecoded;
         } catch (\Exception $e) {
             return null;
         }
@@ -44,6 +46,7 @@ class TokenService
     {
         try {
             $decoded = JWT::decode($token, new Key($this->secret, 'HS256'));
+
             return $decoded->jti;
         } catch (\Exception $e) {
             return null;
@@ -53,7 +56,7 @@ class TokenService
     public function generateRefreshToken($userId)
     {
         $refreshToken = Str::random(60); // Genera un refresh token aleatorio
-        
+
         // Establece la fecha de expiración para 1 día a partir de ahora
         $expiresAt = Carbon::now()->addDay();
 
@@ -66,7 +69,7 @@ class TokenService
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
-        
+
         return $refreshToken;
     }
 

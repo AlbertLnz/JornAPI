@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Controllers\Employee;
 
-use App\Exceptions\UserNotFound;
 use App\Http\Controllers\v1\Employee\UpdateEmployeeController;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Employee;
@@ -18,11 +17,14 @@ use Tests\TestCase;
 class UpdateEmployeeControllerTest extends TestCase
 {
     private UpdateEmployeeService $employeeUpdateService;
+
     private UpdateEmployeeController $controller;
+
     private User $user;
+
     private Employee $employee;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -41,7 +43,7 @@ class UpdateEmployeeControllerTest extends TestCase
         ]);
     }
 
-    public function testEmployeeUpdateSuccess(): void
+    public function test_employee_update_success(): void
     {
         // Mockear el request y asociarlo al usuario
         $request = Mockery::mock(UpdateEmployeeRequest::class);
@@ -95,8 +97,7 @@ class UpdateEmployeeControllerTest extends TestCase
         ], $response->getData(true));
     }
 
-   
-     public function testUpdateEmployeeWithNullData(): void
+    public function test_update_employee_with_null_data(): void
     {
         $request = Mockery::mock(UpdateEmployeeRequest::class);
         $request->shouldReceive('user')->andReturn($this->user);
@@ -128,28 +129,24 @@ class UpdateEmployeeControllerTest extends TestCase
                 'irpf' => 30.0,
             ]);
 
-       
+        $response = $this->controller->__invoke($request);
 
-      $response=  $this->controller->__invoke($request);
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(200, $response->status());
+        $this->assertEquals([
+            'message' => 'Employee updated successfully',
+            'employee' => [
+                'id' => $this->employee->id,
+                'name' => 'John Doe',
+                'company' => 'Acme Inc.',
+                'normal_hourly_rate' => 10.0,
+                'overtime_hourly_rate' => 15.0,
+                'holiday_hourly_rate' => 25.0,
+                'irpf' => 30.0,
+            ],
+        ], $response->getData(true));
 
-      $this->assertInstanceOf(JsonResponse::class, $response);
-      $this->assertEquals(200, $response->status());
-      $this->assertEquals([
-        'message' => 'Employee updated successfully',
-        'employee' => [
-            'id' => $this->employee->id,
-            'name' => 'John Doe',
-            'company' => 'Acme Inc.',
-            'normal_hourly_rate' => 10.0,
-            'overtime_hourly_rate' => 15.0,
-            'holiday_hourly_rate' => 25.0,
-            'irpf' => 30.0,
-        ],
-    ], $response->getData(true));
-
-      
-            
-    } 
+    }
 
     protected function tearDown(): void
     {

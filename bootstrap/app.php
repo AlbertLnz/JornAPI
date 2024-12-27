@@ -18,9 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
             'token_redis' => App\Http\Middleware\CheckTokenInRedis::class,
             'jwt.auth' => \App\Http\Middleware\JwtAuthMiddleware::class,
-            'is_active' => App\Http\Middleware\CheckUserIsActive::class
+            'is_active' => App\Http\Middleware\CheckUserIsActive::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions) {
-       
-    })->create();
+    ->withExceptions(function (Exceptions $exceptions) {})->create();
