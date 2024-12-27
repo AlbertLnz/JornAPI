@@ -36,7 +36,7 @@ class ShowEmployeeAnnotations{
  *     ),
  *     @OA\Response(
  *         response=401,
- *         description="Invalid token",
+ *         description="Token not provided",
  *         @OA\JsonContent(
  *             @OA\Property(property="message", type="string", example="Invalid token")
  *         )

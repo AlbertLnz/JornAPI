@@ -6,9 +6,9 @@ class RegisterHourSessionAnnotations
 {
     /**
      * @OA\Post(
-     *     path="/HourSession",
-     *     summary="Register a new hour worked",
-     *     description="Registers a new hour worked with the provided details.",
+     *     path="/hour_session",
+     *     summary="Register a new hour session",
+     *     description="Registers a new hour session with the provided details.",
      *     tags={"HourSession"},
      *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
@@ -26,9 +26,9 @@ class RegisterHourSessionAnnotations
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Hour worked created successfully",
+     *         description="Hour session created successfully",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Hour worked created successfully")
+     *             @OA\Property(property="message", type="string", example="Hour session created successfully")
      *         )
      *     ),
      *     @OA\Response(

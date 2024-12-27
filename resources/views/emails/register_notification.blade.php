@@ -11,7 +11,7 @@
     <div class="max-w-xl mx-auto py-8 px-4 bg-white rounded-lg shadow-lg border-2 border-blue-500">
         <div class="bg-blue-500 text-white px-6 py-4 rounded-t-lg">
             <h2 class="text-3xl font-bold mb-2">¡Bienvenido a nuestra aplicación!</h2>
-            <p class="text-lg">¡Hola <strong>{{ $user->name}}</strong>!</p>
+            <p class="text-lg">¡Hola <strong>{{ $user->employee->name}}</strong>!</p>
         </div>
         <div class="p-6">
             <p class="mb-4 text-lg text-gray-700">Te has registrado exitosamente en nuestra aplicación. ¡Gracias por unirte a nosotros!</p>

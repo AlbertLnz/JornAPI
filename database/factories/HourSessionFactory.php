@@ -23,8 +23,7 @@ class HourSessionFactory extends Factory
             'start_time' => $this->faker->time(),
             'end_time' => $this->faker->time(),
             'planned_hours' => $this->faker->numberBetween(1, 10),
-            'is_overtime' => $this->faker->boolean(),
-            'is_holiday' => $this->faker->boolean(),
+            'work_type' => $this->faker->randomElement(['is_normal', 'is_holiday', 'is_overtime']),
             'employee_id' => $employee->id
         ];
         
