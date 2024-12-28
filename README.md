@@ -1,7 +1,7 @@
 # API de Jornalia
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/b6cb3ec7-ce69-4c2e-8bec-1a990e5ece74" alt="jornaliaHD" width="300" height="300">
+  <img src="https://github.com/user-attachments/assets/b6cb3ec7-ce69-4c2e-8bec-1a990e5ece74" alt="jornaliaHD" width="200" height="200">
 </div>
 
 
