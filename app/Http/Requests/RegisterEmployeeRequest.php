@@ -25,6 +25,7 @@ class RegisterEmployeeRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:55'],
+            'company_name' => [ 'string', 'max:55'],
             'password' => ['required', 'string', 'min:8', 'max:40'],
             'email' => ['required', 'string', 'email', 'max:70', 'unique:users'],
             'normal_hourly_rate' => ['required', 'numeric', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
