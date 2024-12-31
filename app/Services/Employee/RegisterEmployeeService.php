@@ -35,7 +35,7 @@ class RegisterEmployeeService
 
             $user->employee()->create([
                 'name' => $employee['name'],
-                'company_name' => $employee['company_name']?? 'company',
+                'company_name' => $employee['company_name'],
                 'normal_hourly_rate' => $employee['normal_hourly_rate'],
                 'overtime_hourly_rate' => $employee['overtime_hourly_rate'],
                 'holiday_hourly_rate' => $employee['holiday_hourly_rate'],
