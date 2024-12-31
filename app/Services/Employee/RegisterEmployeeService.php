@@ -19,11 +19,11 @@ class RegisterEmployeeService
      *
      * @param  float  $nightHourlyRate
      */
-    public function execute(string $name, string $email, string $password, float $normalHourlyRate, float $overtimeHourlyRate, float $holidayHourlyRate, float $irpf): void
+    public function execute(string $name, string $email,string $company_name, string $password, float $normalHourlyRate, float $overtimeHourlyRate, float $holidayHourlyRate, float $irpf): void
     {
         $employee = [
             'name' => $name,
-            'company_name' => 'Company',
+            'company_name' => $company_name,
             'normal_hourly_rate' => $normalHourlyRate,
             'overtime_hourly_rate' => $overtimeHourlyRate,
             'holiday_hourly_rate' => $holidayHourlyRate,
@@ -35,7 +35,7 @@ class RegisterEmployeeService
 
             $user->employee()->create([
                 'name' => $employee['name'],
-                'company_name' => 'Company',
+                'company_name' => $employee['company_name']?? 'company',
                 'normal_hourly_rate' => $employee['normal_hourly_rate'],
                 'overtime_hourly_rate' => $employee['overtime_hourly_rate'],
                 'holiday_hourly_rate' => $employee['holiday_hourly_rate'],

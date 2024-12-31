@@ -21,6 +21,7 @@ final class RegisterEmployeeAnnotations
      *
      *             @OA\Property(property="name", type="string", example="John Doe"),
      *             @OA\Property(property="email", type="string", example="john.doe@example.com"),
+     *            @OA\Property(property="company_name", type="string", example="Company Inc."),
      *             @OA\Property(property="password", type="string", example="securepassword123"),
      *             @OA\Property(property="normal_hourly_rate", type="number", format="float", example=20.00),
      *             @OA\Property(property="overtime_hourly_rate", type="number", format="float", example=30.00),

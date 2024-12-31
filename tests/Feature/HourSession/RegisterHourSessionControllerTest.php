@@ -90,7 +90,7 @@ class RegisterHourSessionControllerTest extends TestCase
         $register = $this->withHeaders([
             'Authorization' => 'Bearer '.$token,
         ])->postJson('/api/hour_session', [
-            'date' => '2024-12-30',
+            'date' => '2028-12-31',
             'start_time' => '09:00',
             'end_time' => '17:00',
             'planned_hours' => 8,

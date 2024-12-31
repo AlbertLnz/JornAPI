@@ -25,7 +25,6 @@ class RegisterEmployeeServiceTest extends TestCase
         parent::setUp();
         $this->registerUserService = new RegisterUserService;
         $this->service = new RegisterEmployeeService($this->registerUserService);
-        $this->user = User::factory()->create();
     }
 
     public function test_can_instantiate()
@@ -36,13 +35,13 @@ class RegisterEmployeeServiceTest extends TestCase
     public function testregister_employee_servicewithvaliddata()
     {
 
-        $this->service->execute('peter', 'peter@peter.com', $this->user->password, 1, 1, 1, 1, 1);
+        $this->service->execute('peter', 'peter@peter.com', 'comapany', '12345678', 1, 1, 1, 1, );
 
-        $user = User::where('email', 'peter@peter.com')->first();
-        $user->assignRole('employee');
-        $this->assertInstanceOf(User::class, $user);
+      
+        $this->assertDatabaseHas('employees', [
+            'name' => 'peter',
+        ]);
 
-        $this->assertNotEmpty($user->password);
 
     }
 }

@@ -41,6 +41,7 @@ class RegisterEmployeeControllerTest extends TestCase
         $request = new RegisterEmployeeRequest([
             'name' => 'Paul',
             'email' => 'paul@example.com',
+            'company_name' => 'company',
             'password' => 'securepassword',
             'normal_hourly_rate' => 10.0,
             'overtime_hourly_rate' => 15.0,
@@ -53,6 +54,7 @@ class RegisterEmployeeControllerTest extends TestCase
             ->with(
                 $request->name,
                 $request->email,
+                $request->company_name,
                 $request->password,
                 $request->normal_hourly_rate,
                 $request->overtime_hourly_rate,
@@ -75,6 +77,7 @@ class RegisterEmployeeControllerTest extends TestCase
         $request = new RegisterEmployeeRequest([
             'name' => 'Paul',
             'email' => 'paul@example.com',
+            'company_name' => 'company',
             'password' => 'securepassword',
             'normal_hourly_rate' => 10.0,
             'overtime_hourly_rate' => 15.0,
@@ -87,6 +90,7 @@ class RegisterEmployeeControllerTest extends TestCase
             ->with(
                 $request->name,
                 $request->email,
+                $request->company_name,
                 $request->password,
                 $request->normal_hourly_rate,
                 $request->overtime_hourly_rate,
