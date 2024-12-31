@@ -31,7 +31,7 @@ class RegisterEmployeeController extends Controller
         try {
             $this->service->execute($request->name,
                 $request->email,
-                $request->company_name,
+                $request->company_name?? 'company',
 
                 $request->password,
                 $request->normal_hourly_rate,
