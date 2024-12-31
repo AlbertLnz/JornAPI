@@ -11,6 +11,7 @@ use App\Http\Controllers\v1\HourSession\RegisterHourSession\RegitsterHourSession
 use App\Http\Controllers\v1\HourSession\ShowHourSession\ShowHourSessionController;
 use App\Http\Controllers\v1\HourSession\UpdateHourSession\UpdateHourSessionController;
 use App\Http\Controllers\v1\Salary\ShowSalaryByMonthController;
+use App\Http\Controllers\v1\User\ChangePasswordController;
 use App\Http\Controllers\v1\User\DeleteUserController;
 use App\Http\Controllers\v1\User\ShowUserController;
 use App\Http\Controllers\v1\User\UpdateUserController;
@@ -24,6 +25,7 @@ Route::middleware(['jwt.auth', 'token_redis', 'role:employee', 'is_active'])->gr
     Route::put('/user/update', UpdateUserController::class);
     Route::get('/user/show', ShowUserController::class);
     Route::post('user/delete', DeleteUserController::class);
+    Route::put('/user/change_password', ChangePasswordController::class);
     //Employee Routes
     Route::get('/employee', ShowEmployeeController::class);
     Route::put('/employee', UpdateEmployeeController::class);
@@ -38,7 +40,7 @@ Route::middleware(['jwt.auth', 'token_redis', 'role:employee', 'is_active'])->gr
 
     //Salary Routes
     Route::get('/salary', ShowSalaryByMonthController::class);
-
+    //Logout
     Route::post('/logout', LogOutController::class);
 
 });
