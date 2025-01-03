@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\Redis\RedisService;
 use App\Services\Salary\SalaryService;
 use App\Services\Salary\SalaryServiceInterface;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -17,6 +18,11 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(SalaryServiceInterface::class, SalaryService::class);
+        $this->app->singleton(RedisService::class, function () {
+            
+
+            return new RedisService();
+        });
     }
 
     /**
