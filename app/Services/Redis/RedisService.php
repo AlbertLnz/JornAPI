@@ -5,7 +5,6 @@ namespace App\Services\Redis;
 
 
     use Predis\Client;
-    use App\DTOs\SomeDataDTO;
 use Predis\Response\Status;
 
     class RedisService
@@ -14,7 +13,6 @@ use Predis\Response\Status;
 
         public function __construct()
         {
-            // Configuración de conexión a Upstash usando pRedis
             $this->redis = new Client([
                 'scheme' => 'tls',
                 'host'   => ENV('REDIS_CUSTOM_HOST'),
@@ -48,7 +46,7 @@ use Predis\Response\Status;
         {
             $items = $this->redis->lrange($listKey, 0, -1);
             return array_map(function ($item) {
-                return unserialize($item);  // Deserializar los DTOs de la lista
+                return unserialize($item);  
             }, $items);
         }
 
