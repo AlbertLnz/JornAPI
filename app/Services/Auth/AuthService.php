@@ -6,6 +6,7 @@ namespace App\Services\Auth;
 
 use App\Exceptions\UserNotFound;
 use App\Models\User;
+use App\Services\Redis\RedisService;
 use App\Services\Token\TokenService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +17,7 @@ class AuthService
     /**
      * Summary of __construct
      */
-    public function __construct(private TokenService $jwtService) {}
+    public function __construct(private TokenService $jwtService, private RedisService $redisService) {}
 
     /**
      * Summary of execute
@@ -31,7 +32,9 @@ class AuthService
         $tokens = $this->generateTokens($user);
 
         // Cachear el token en Redis
-        Cache::store('redis')->put("user:{$user->id}:token", $tokens['token'], 3600);
+    //$l=   Cache::store('redis')->put("user:{$user->id}:token", $tokens['token'], 3600);
+    // var_dump($l);
+        $this->redisService->set("user:{$user->id}:token", $tokens['token']);
 
         return $tokens;
     }
