@@ -36,7 +36,7 @@ class LoginController extends Controller
 
             $data = $this->authService->execute($request->email, $request->password);
 
-            return response()->json(['token' => $data['token'], 'refreshToken' => $data['refreshToken']], 200);
+            return response()->json(['token' => $data['token']], 200);
         } catch (UserNotFound|UnauthorizedException $e) {
             throw new HttpResponseException(response()->json(['message' => $e->getMessage()], $e->getCode()));
         }

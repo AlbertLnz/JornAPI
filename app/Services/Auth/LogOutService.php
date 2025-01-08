@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Services\Auth;
 
 use App\Exceptions\InvalidTokenException;
-use App\Services\Redis\RedisService;
 use App\Services\Token\TokenService;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 
 class LogOutService
 {
-    public function __construct(private TokenService $tokenService, private RedisService $redisService) {}
+    public function __construct(private TokenService $tokenService) {}
 
     /**
      * Summary of logOut
@@ -30,8 +29,7 @@ class LogOutService
             throw new InvalidTokenException;
         }
 
-        Cache::store('redis')->put("blacklist:$jti", true, now()->addMinutes(30));
-        $this->redisService->delete("user:$userID:token");
+        Redis::del("user:$userID:token");
         $this->tokenService->revokeAllRefreshTokens($userID);
     }
 }

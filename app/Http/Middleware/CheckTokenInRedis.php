@@ -3,16 +3,15 @@
 namespace App\Http\Middleware;
 
 use App\Exceptions\InvalidTokenException;
-use App\Services\Redis\RedisService;
 use App\Services\Token\TokenService;
 use Closure;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 
 class CheckTokenInRedis
 {
-    public function __construct(private TokenService $tokenService, private RedisService $redisService) {}
+    public function __construct(private TokenService $tokenService) {}
 
     /**
      * Handle an incoming request.
@@ -27,8 +26,7 @@ class CheckTokenInRedis
             $user = $request->attributes->get('user');
 
             // Check the token in Redis
-            $cachedToken = $this->redisService->get("user:{$user->id}:token");
-          //  $cachedToken = Cache::store('redis')->get("user:{$user->id}:token");
+         $cachedToken = Redis::get("user:{$user->id}:token");
             
 
             if (! $cachedToken || $cachedToken !== $token) {
