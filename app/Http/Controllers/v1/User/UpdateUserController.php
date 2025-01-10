@@ -27,6 +27,6 @@ class UpdateUserController extends Controller
         $user = $request->user();
         $user = $this->userUpdateService->execute($request->email ?? null, $user->id);
 
-        return response()->json(['message' => 'User updated successfully', 'user' => UserDTO::toArray($user->toArray())], 200);
+        return response()->json(['message' => 'User updated successfully', 'user' => $user], 200);
     }
 }

@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace App\Services\User;
 
+use App\DTO\User\UserDTO;
 use App\Exceptions\UserNotFound;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class UpdateUserService
 {
-    public function execute(?string $email, ?string $uuid): User
+    /**
+     * Summary of execute
+     * @param mixed $email
+     * @param mixed $uuid
+     * @throws \App\Exceptions\UserNotFound
+     * @return \App\Models\User
+     */
+    public function execute(?string $email, ?string $uuid): UserDTO
     {
 
         $user = User::where('id', $uuid)->first();
@@ -20,12 +28,13 @@ class UpdateUserService
         DB::transaction(function () use ($user, $email) {
             if ($email != null) {
                 $user->email = $email;
+            $user->save();
+
             }
 
-            $user->save();
         });
 
-        return $user;
+        return UserDTO::fromModel($user);
 
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserDTO implements DTOInterface
 {
     public function __construct(
-        public string $id,
+        public ?string $id,
         public string $email,
 
     ) {}
@@ -30,7 +30,7 @@ class UserDTO implements DTOInterface
     {
 
         return [
-            'id' => $data['id'],
+            'id' => $data['id']?? null,
             'email' => $data['email'],
         ];
     }

@@ -13,8 +13,8 @@ class DeleteUserService
 
     /**
      * Summary of execute
-     *
-     * @throws \App\Exceptions\UserNotFound
+     * @param string $uuid
+     * @return void
      */
     public function execute(string $uuid): void
     {

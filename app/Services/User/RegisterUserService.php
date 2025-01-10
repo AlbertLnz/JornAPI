@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterUserService
 {
+    /**
+     * Summary of execute
+     * @param mixed $email
+     * @param mixed $password
+     * @throws \App\Exceptions\NullDataException
+     * @throws \App\Exceptions\UserAlreadyExists
+     * @return \App\Models\User
+     */
     public function execute(?string $email, ?string $password): User
     {
         if ($email == null || $password == null) {

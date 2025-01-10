@@ -10,13 +10,19 @@ use App\Models\User;
 
 class FindUserService
 {
-    public function execute(string $uuid): array
+    /**
+     * Summary of execute
+     * @param string $uuid
+     * @throws \App\Exceptions\UserNotFound
+     * @return \App\DTO\User\UserDTO
+     */
+    public function execute(string $uuid): UserDTO
     {
         $user = User::where('id', $uuid)->first();
         if (! $user) {
             throw new UserNotFound;
         }
 
-        return UserDTO::toArray($user->toArray());
+        return UserDTO::fromModel($user);
     }
 }
