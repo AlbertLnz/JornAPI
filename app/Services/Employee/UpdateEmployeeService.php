@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Employee;
 
-use App\DTO\Employee\EmployeeDTO;
+use App\DTO\Employee\RegisterEmployeeDTO;
+use App\DTO\Employee\ShowEmployeeDTO;
 use App\Exceptions\UserNotFound;
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
@@ -66,6 +67,6 @@ class UpdateEmployeeService
             $employee->save();
         });
 
-        return EmployeeDTO::toArray($employee->toArray());
+        return ShowEmployeeDTO::toArray($employee->toArray());
     }
 }
