@@ -28,10 +28,6 @@ class RegisterUserService
                 'password' => Hash::make($password),
             ]);
 
-            DB::afterCommit(function () use ($data) {
-                SendRegisterNotification::dispatch($data);
-            });
-
             return $data;
         });
 
