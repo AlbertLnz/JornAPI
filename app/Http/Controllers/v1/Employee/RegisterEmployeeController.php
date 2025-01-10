@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\v1\Employee;
 
+use App\DTO\Employee\RegisterEmployeeDTO;
 use App\Exceptions\NullDataException;
 use App\Exceptions\UserAlReadyExists;
 use App\Http\Controllers\Controller;
@@ -16,6 +17,7 @@ class RegisterEmployeeController extends Controller
 {
     /**
      * Summary of __construct
+     * @var RegisterEmployeeService $service
      */
     public function __construct(private RegisterEmployeeService $service) {}
 
@@ -29,15 +31,8 @@ class RegisterEmployeeController extends Controller
     public function __invoke(RegisterEmployeeRequest $request): JsonResponse
     {
         try {
-            $this->service->execute($request->name,
-                $request->email,
-                $request->company_name?? 'company',
-
-                $request->password,
-                $request->normal_hourly_rate,
-                $request->overtime_hourly_rate,
-                $request->holiday_hourly_rate,
-                $request->irpf);
+           $data = RegisterEmployeeDTO::toArray($request->all());
+            $this->service->execute($data);
 
             return response()->json(['message' => 'Employee created successfully'], 201);
         } catch (UserAlReadyExists|NullDataException $e) {
