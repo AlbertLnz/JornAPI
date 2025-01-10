@@ -8,7 +8,7 @@ use App\DTO\DTOInterface;
 use App\DTO\User\UserDTO;
 use Illuminate\Database\Eloquent\Model;
 
-class RegisterEmployeeDTO implements DTOInterface
+readonly class RegisterEmployeeDTO implements DTOInterface
 {
     public function __construct(
         public UserDTO $user,

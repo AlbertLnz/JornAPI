@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services\Employee;
 
+use App\Jobs\SendRegisterNotification;
+use App\Models\User;
 use App\Services\User\RegisterUserService;
+use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RegisterEmployeeService
 {
@@ -16,38 +20,35 @@ class RegisterEmployeeService
 
     /**
      * Summary of execute
-     *
-     * @param  float  $nightHourlyRate
+     *@param array $data
      */
-    public function execute(string $name, string $email,string $company_name, string $password, float $normalHourlyRate, float $overtimeHourlyRate, float $holidayHourlyRate, float $irpf): void
+    public function execute(array $data): void
     {
-        $employee = [
-            'name' => $name,
-            'company_name' => $company_name,
-            'normal_hourly_rate' => $normalHourlyRate,
-            'overtime_hourly_rate' => $overtimeHourlyRate,
-            'holiday_hourly_rate' => $holidayHourlyRate,
-            'irpf' => $irpf,
-        ];
-
-        DB::transaction(function () use ($email, $password, $employee) {
-            $user = $this->registerUserService->execute($email, $password);
+        
+        DB::transaction(function () use ($data, ) {
+            $user = $this->registerUserService->execute($data['user']['email'], $data['user']['password']);
 
             $user->employee()->create([
-                'name' => $employee['name'],
-                'company_name' => $employee['company_name'],
-                'normal_hourly_rate' => $employee['normal_hourly_rate'],
-                'overtime_hourly_rate' => $employee['overtime_hourly_rate'],
-                'holiday_hourly_rate' => $employee['holiday_hourly_rate'],
-                'irpf' => $employee['irpf'] ?? 0.0,
+                'name' => $data['name'],
+                'company_name' => $data['company_name'],
+                'normal_hourly_rate' => $data['normal_hourly_rate'],
+                'overtime_hourly_rate' => $data['overtime_hourly_rate'],
+                'holiday_hourly_rate' => $data['holiday_hourly_rate'],
+                'irpf' => $data['irpf'],
             ]);
             DB::afterCommit(function () use ($user) {
                 $user->assignRole('employee');
-
-            });
-            //   SendRegisterNotification::dispatch($user);
-
+                $this->sendRegisterNotification($user);
+            }); 
         });
-
     }
+    private function sendRegisterNotification(User $user): void {
+        try {
+            SendRegisterNotification::dispatch($user);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+        }
+    }
+
+    
 }
