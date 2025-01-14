@@ -7,20 +7,20 @@ namespace App\DTO\User;
 use App\DTO\DTOInterface;
 use Illuminate\Database\Eloquent\Model;
 
-readonly class UserDTO implements DTOInterface
+readonly class RegisterUserDTO implements DTOInterface
 {
     public function __construct(
-        public string $id,
         public string $email,
+        public string $password
 
     ) {}
 
-    public static function fromModel(Model $object): UserDTO
+    public static function fromModel(Model $object): RegisterUserDTO
     {
 
         return new self(
-            $object->id,
             $object->email,
+            $object->password
 
         );
 
@@ -30,8 +30,8 @@ readonly class UserDTO implements DTOInterface
     {
 
         return [
-            'id' => $data['id']?? null,
             'email' => $data['email'],
+            'password' => $data['password']
         ];
     }
 }
