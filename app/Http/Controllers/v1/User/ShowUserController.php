@@ -6,7 +6,6 @@ namespace App\Http\Controllers\v1\User;
 
 use App\DTO\User\UserDTO;
 use App\Http\Controllers\Controller;
-use App\Services\User\FindUserService;
 use Illuminate\Http\Request;
 
 class ShowUserController extends Controller
@@ -14,7 +13,7 @@ class ShowUserController extends Controller
     /**
      * Summary of __construct
      */
-    public function __construct(private FindUserService $findUserService) {}
+    public function __construct() {}
 
     /**
      * Summary of __invoke
