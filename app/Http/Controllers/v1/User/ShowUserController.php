@@ -10,10 +10,7 @@ use Illuminate\Http\Request;
 
 class ShowUserController extends Controller
 {
-    /**
-     * Summary of __construct
-     */
-    public function __construct() {}
+   
 
     /**
      * Summary of __invoke

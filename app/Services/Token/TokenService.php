@@ -18,6 +18,7 @@ class TokenService
     {
         $this->secret = config('jwt.secret');
     }
+    
 
     public function generateToken($userId)
     {
