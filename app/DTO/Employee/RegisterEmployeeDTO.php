@@ -6,10 +6,9 @@ namespace App\DTO\Employee;
 
 use App\DTO\DTOInterface;
 use App\DTO\User\RegisterUserDTO;
-use App\DTO\User\UserDTO;
 use Illuminate\Database\Eloquent\Model;
 
-readonly class RegisterEmployeeDTO implements DTOInterface
+final readonly class RegisterEmployeeDTO implements DTOInterface
 {
     public function __construct(
         public RegisterUserDTO $user,

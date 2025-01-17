@@ -7,7 +7,7 @@ namespace App\DTO\User;
 use App\DTO\DTOInterface;
 use Illuminate\Database\Eloquent\Model;
 
-readonly class UserDTO implements DTOInterface
+final readonly class UserDTO implements DTOInterface
 {
     public function __construct(
         public string $id,
