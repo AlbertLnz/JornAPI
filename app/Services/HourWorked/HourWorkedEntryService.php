@@ -15,12 +15,6 @@ class HourWorkedEntryService
 
     /**
      * Summary of execute
-     * @param string $hourSessionId
-     * @param string $startTime
-     * @param string $endTime
-     * @param int $plannedHours
-     * @param string $workType
-     * @return void
      */
     public function execute(string $hourSessionId, string $startTime, string $endTime, int $plannedHours, string $workType): void
     {

@@ -14,7 +14,6 @@ class ShowHourSessionController
 {
     /**
      * Summary of __construct
-     * @param \App\Services\HourSession\FindHourSessionService $hourSessionShowService
      */
     public function __construct(private FindHourSessionService $hourSessionShowService) {}
 

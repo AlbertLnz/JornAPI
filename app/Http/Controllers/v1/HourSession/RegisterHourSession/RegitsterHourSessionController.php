@@ -18,14 +18,11 @@ class RegitsterHourSessionController extends Controller
 {
     /**
      * Summary of __construct
-     * @param \App\Services\HourSession\RegisterHourSessionService $hourSessionRegisterService
      */
     public function __construct(private RegisterHourSessionService $hourSessionRegisterService) {}
 
     /**
      * Summary of __invoke
-     * @param \App\Http\Requests\RegisterHourSessionRequest $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(RegisterHourSessionRequest $request): JsonResponse
     {
@@ -33,7 +30,7 @@ class RegitsterHourSessionController extends Controller
         try {
             $employee = $request->user()->employee;
             $workType = WorkTypeEnum::fromValue($request->work_type);
-            $hourSessionDTO = new HourSessionDTO($request->date, $request->start_time, $request->end_time, $request->planned_hours,$workType->value);
+            $hourSessionDTO = new HourSessionDTO($request->date, $request->start_time, $request->end_time, $request->planned_hours, $workType->value);
 
             $this->hourSessionRegisterService->execute(
                 $employee->id,

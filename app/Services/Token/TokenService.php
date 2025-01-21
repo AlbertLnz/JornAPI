@@ -12,34 +12,24 @@ use Illuminate\Support\Str;
 
 class TokenService
 {
-    /**
-     * Summary of secret
-     * @var string
-     */
-    protected string $secret;
-    /**
-     * Summary of ttl
-     * @var int
-     */
-    protected int $ttl;
+    protected $secret;
 
     public function __construct()
     {
         $this->secret = config('jwt.secret');
-        $this->ttl = config('jwt.ttl');
     }
-    
+
     /**
      * Summary of generateToken
-     * @param string $userId
-     * @return string
+     *
+     * @param  mixed  $userId
      */
-    public function generateToken(string $userId)
+    public function generateToken($userId): string
     {
         $payload = [
             'sub' => $userId,
             'iat' => time(),
-            'exp' => time() + ($this->ttl * 60), // Token válido por 30 minutos
+            'exp' => time() + 3600, // Token válido por 30 minutos
             'jti' => bin2hex(random_bytes(16)), // Genera un ID único para el token
         ];
 
@@ -48,10 +38,11 @@ class TokenService
 
     /**
      * Summary of decodeToken
-     * @param string $token
+     *
+     * @param  mixed  $token
      * @return \stdClass|null
      */
-    public function decodeToken(string $token): ?object
+    public function decodeToken($token): ?object
     {
         try {
             $tokenDecoded = JWT::decode($token, new Key($this->secret, 'HS256'));
@@ -62,12 +53,7 @@ class TokenService
         }
     }
 
-    /**
-     * Summary of getJtiFromToken
-     * @param string $token
-     * @return mixed
-     */
-    public function getJtiFromToken(string $token): mixed
+    public function getJtiFromToken($token): mixed
     {
         try {
             $decoded = JWT::decode($token, new Key($this->secret, 'HS256'));
@@ -78,12 +64,7 @@ class TokenService
         }
     }
 
-    /**
-     * Summary of generateRefreshToken
-     * @param string $userId
-     * @return string
-     */
-    public function generateRefreshToken(string $userId): string
+    public function generateRefreshToken($userId): string
     {
         $refreshToken = Str::random(60); // Genera un refresh token aleatorio
 
@@ -103,13 +84,14 @@ class TokenService
         return $refreshToken;
     }
 
+    // Nueva función para validar el refresh token
     /**
      * Summary of validateRefreshToken
-     * @param string $userId
-     * @param string $refreshToken
-     * @return bool
+     *
+     * @param  mixed  $userId
+     * @param  mixed  $refreshToken
      */
-    public function validateRefreshToken(string $userId, string $refreshToken): bool
+    public function validateRefreshToken($userId, $refreshToken): bool
     {
         $record = DB::table('jwt_refresh_tokens')
             ->where('user_id', $userId)
@@ -125,11 +107,11 @@ class TokenService
 
     /**
      * Summary of revokeRefreshToken
-     * @param string $userId
-     * @param string $refreshToken
-     * @return void
+     *
+     * @param  mixed  $userId
+     * @param  mixed  $refreshToken
      */
-    public function revokeRefreshToken(string $userId, string $refreshToken): void
+    public function revokeRefreshToken($userId, $refreshToken): void
     {
         DB::table('jwt_refresh_tokens')
             ->where('user_id', $userId)
@@ -139,10 +121,10 @@ class TokenService
 
     /**
      * Summary of revokeAllRefreshTokens
-     * @param mixed $userId
-     * @return void
+     *
+     * @param  mixed  $userId
      */
-    public function revokeAllRefreshTokens($userId)
+    public function revokeAllRefreshTokens($userId): void
     {
         DB::table('jwt_refresh_tokens')
             ->where('user_id', $userId)

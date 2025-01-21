@@ -12,7 +12,6 @@ class UpdateEmailController extends Controller
 {
     /**
      * Summary of __construct
-     * @param \App\Services\User\UpdateEmailService $userUpdateService
      */
     public function __construct(private UpdateEmailService $userUpdateService) {}
 

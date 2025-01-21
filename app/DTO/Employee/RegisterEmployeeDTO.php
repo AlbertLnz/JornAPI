@@ -39,11 +39,11 @@ final readonly class RegisterEmployeeDTO implements DTOInterface
             'user' => RegisterUserDTO::toArray($data),
 
             'name' => $data['name'],
-            'company_name' => $data['company_name']?? '',
+            'company_name' => $data['company_name'] ?? '',
             'normal_hourly_rate' => $data['normal_hourly_rate'],
             'overtime_hourly_rate' => $data['overtime_hourly_rate'],
             'holiday_hourly_rate' => $data['holiday_hourly_rate'],
-            'irpf' => $data['irpf']?? 0.0,
+            'irpf' => $data['irpf'] ?? 0.0,
         ];
     }
 }

@@ -20,6 +20,10 @@ class Employee extends Model
         'irpf',
     ];
 
+    protected $casts = [
+        'irpf' => 'float',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -15,7 +15,6 @@ use App\Http\Controllers\v1\User\ChangePasswordController;
 use App\Http\Controllers\v1\User\DeleteUserController;
 use App\Http\Controllers\v1\User\ShowUserController;
 use App\Http\Controllers\v1\User\UpdateEmailController;
-use App\Http\Controllers\v1\User\UpdateUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', RegisterEmployeeController::class)->middleware('throttle:60,1');

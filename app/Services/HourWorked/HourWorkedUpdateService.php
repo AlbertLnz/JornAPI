@@ -16,15 +16,10 @@ class HourWorkedUpdateService
 
     /**
      * Summary of execute
-     * @param string $hourSessionId
-     * @param ?string $startTime
-     * @param ?string $endTime
-     * @param ?int $plannedHours
-     * @param string $workType
+     *
      * @throws \App\Exceptions\HourWorkedNotFoundException
-     * @return void
      */
-    public function execute(string $hourSessionId, ?string $startTime, ?string $endTime, ?int $plannedHours, string $workType): void
+    public function execute(string $hourSessionId, ?string $startTime, ?string $endTime, ?int $plannedHours, ?string $workType): void
     {
 
         $hourWorkeed = HourWorked::where('hour_session_id', $hourSessionId)->first();

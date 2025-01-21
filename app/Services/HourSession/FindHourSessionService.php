@@ -12,11 +12,10 @@ class FindHourSessionService
 
     /**
      * Summary of execute
-     * 
-     *@param string $employeeId
-     *@param string $date
-     *@return array
-     *@throws \App\Exceptions\HourSessionNotFoundException
+     *
+     * @return array
+     *
+     * @throws \App\Exceptions\HourSessionNotFoundException
      */
     public function execute(string $employeeId, string $date): HourSessionDTO
     {

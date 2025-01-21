@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\v1\Employee;
 
-use App\DTO\Employee\RegisterEmployeeDTO;
 use App\DTO\Employee\ShowEmployeeDTO;
 use App\Exceptions\UserNotFound;
 use App\Http\Controllers\Controller;
@@ -12,7 +11,6 @@ use Illuminate\Http\Request;
 
 class ShowEmployeeController extends Controller
 {
-    
     /**
      * Summary of __invoke
      *
@@ -31,5 +29,4 @@ class ShowEmployeeController extends Controller
         }
 
     }
-
 }

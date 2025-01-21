@@ -30,7 +30,7 @@ final readonly class UserDTO implements DTOInterface
     {
 
         return [
-            'id' => $data['id']?? null,
+            'id' => $data['id'] ?? null,
             'email' => $data['email'],
         ];
     }

@@ -13,9 +13,6 @@ trait CalculateSalaryTrait
 
     /**
      * Summary of calculateSalary
-     * @param mixed $hoursWorked
-     * @param Employee $employee
-     * @return array
      */
     public function calculateSalary(mixed $hoursWorked, Employee $employee): array
     {
@@ -30,8 +27,8 @@ trait CalculateSalaryTrait
             $convertToHolidayHours,
             $employee);
 
-            $netSalary = $this->calculateNetSalary($grossSalary, $employee);
-            var_dump($netSalary);
+        $netSalary = $this->calculateNetSalary($grossSalary, $employee);
+        var_dump($netSalary);
 
         return [
             'total_normal_hours' => $hourCalculations['total_normal_hours'],
@@ -44,8 +41,6 @@ trait CalculateSalaryTrait
 
     /**
      * Summary of calculateTotalHoursWorked
-     * @param mixed $hoursWorked
-     * @return array
      */
     private function calculateTotalHoursWorked(mixed $hoursWorked): array
     {
@@ -63,11 +58,6 @@ trait CalculateSalaryTrait
 
     /**
      * Summary of calculateGrossSalary
-     * @param array $totalNormalHours
-     * @param array $totalOvertimeHours
-     * @param array $totalHolidayHours
-     * @param Employee $employee
-     * @return float
      */
     private function calculateGrossSalary(array $totalNormalHours, array $totalOvertimeHours, array $totalHolidayHours, Employee $employee): float
     {
@@ -79,7 +69,7 @@ trait CalculateSalaryTrait
         $totalNormal = $normalHoursWithMinutes * $employee->normal_hourly_rate;
         $totalOvertime = $overtimeHoursWithMinutes * $employee->overtime_hourly_rate;
         $totalHoliday = $holidayHoursWithMinutes * $employee->holiday_hourly_rate;
-    
+
         // Devuelve la suma total
         return $totalNormal + $totalOvertime + $totalHoliday;
     }
@@ -87,10 +77,9 @@ trait CalculateSalaryTrait
     private function calculateNetSalary(float $grossSalary, Employee $employee): float
     {
         if ($grossSalary < 0 || $employee->irpf < 0) {
-           return 0;
+            return 0;
         }
-    
+
         return $grossSalary - ($grossSalary * ($employee->irpf / 100));
     }
-    
 }

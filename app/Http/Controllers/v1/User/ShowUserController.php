@@ -10,8 +10,6 @@ use Illuminate\Http\Request;
 
 class ShowUserController extends Controller
 {
-   
-
     /**
      * Summary of __invoke
      *

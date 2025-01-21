@@ -16,8 +16,6 @@ class SalaryService implements SalaryServiceInterface
 
     public function execute(string $employeeId, string $date): void
     {
-        
-
 
         $employee = Employee::findOrFail($employeeId);
 
@@ -29,15 +27,14 @@ class SalaryService implements SalaryServiceInterface
 
         $dataSalary = $this->calculateSalary($hourWorkedCollection, $employee);
 
-       
-            DB::transaction(function () use ($salary, $dataSalary, $employeeId, $prepareDate) {
-                $salary ? $this->insertSalaryToField($salary, $dataSalary) : $this->createNewSalary($employeeId, $prepareDate, $dataSalary);
-            });
+        DB::transaction(function () use ($salary, $dataSalary, $employeeId, $prepareDate) {
+            $salary ? $this->insertSalaryToField($salary, $dataSalary) : $this->createNewSalary($employeeId, $prepareDate, $dataSalary);
+        });
 
-        
     }
 
-    private function prepareDate($date): array{
+    private function prepareDate($date): array
+    {
         $date = new Carbon($date);
         // Primer día del mes
         $startOfMonth = new Carbon($date->copy()->startOfMonth()->toDateString());
@@ -45,49 +42,50 @@ class SalaryService implements SalaryServiceInterface
         // Último día del mes
         $endOfMonth = new Carbon($date->copy()->endOfMonth()->toDateString()); // Último día del mes
 
-        return ['startOfMonth'=> $startOfMonth,
-        'endOfMonth'=> $endOfMonth];
+        return ['startOfMonth' => $startOfMonth,
+            'endOfMonth' => $endOfMonth];
     }
 
-    private function prepareHourWorkedCollection(Employee $employee, Carbon $startOfMonth, Carbon $endOfMonth): Collection{
+    private function prepareHourWorkedCollection(Employee $employee, Carbon $startOfMonth, Carbon $endOfMonth): Collection
+    {
         $hourSessions = $employee->hourSessions()
-        ->whereBetween('date', [$startOfMonth, $endOfMonth])
-        ->with('hourWorked')
-        ->get();
+            ->whereBetween('date', [$startOfMonth, $endOfMonth])
+            ->with('hourWorked')
+            ->get();
 
         return $hourSessions->pluck('hourWorked');
-        
+
     }
 
-    private function prepareSalary($employeeId, $startOfMonth, $endOfMonth):Salary{
-           return Salary::where('employee_id', $employeeId)
-        ->where(function ($query) use ($startOfMonth, $endOfMonth) {
-            $query->whereBetween('start_date', [$startOfMonth, $endOfMonth])
-                  ->orWhereBetween('end_date', [$startOfMonth, $endOfMonth]);
-        })
-        ->first();
+    private function prepareSalary($employeeId, $startOfMonth, $endOfMonth): Salary
+    {
+        return Salary::where('employee_id', $employeeId)
+            ->where(function ($query) use ($startOfMonth, $endOfMonth) {
+                $query->whereBetween('start_date', [$startOfMonth, $endOfMonth])
+                    ->orWhereBetween('end_date', [$startOfMonth, $endOfMonth]);
+            })
+            ->first();
     }
 
-    private function insertSalaryToField($salary, $dataSalary): void{
-      
-         
-                $salary->total_normal_hours = $dataSalary['total_normal_hours'];
+    private function insertSalaryToField($salary, $dataSalary): void
+    {
 
-                $salary->total_overtime_hours = $dataSalary['total_overtime_hours'];
+        $salary->total_normal_hours = $dataSalary['total_normal_hours'];
 
-                $salary->total_holiday_hours = $dataSalary['total_holiday_hours'];
+        $salary->total_overtime_hours = $dataSalary['total_overtime_hours'];
 
-                $salary->total_gross_salary = $dataSalary['gross_salary'];
+        $salary->total_holiday_hours = $dataSalary['total_holiday_hours'];
 
-                $salary->total_net_salary = $dataSalary['net_salary'];
+        $salary->total_gross_salary = $dataSalary['gross_salary'];
 
-                $salary->save();
-           
+        $salary->total_net_salary = $dataSalary['net_salary'];
 
-        
+        $salary->save();
+
     }
 
-    private function createNewSalary(string $employeeId, array $prepareDate, array $dataSalary): void{
+    private function createNewSalary(string $employeeId, array $prepareDate, array $dataSalary): void
+    {
         Salary::create(
             ['employee_id' => $employeeId,
                 'start_date' => $prepareDate['startOfMonth'],

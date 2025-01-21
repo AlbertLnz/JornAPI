@@ -14,7 +14,6 @@ class UpdateHourSessionController
 {
     /**
      * Summary of __construct
-     * @param \App\Services\HourSession\UpdateHourSessionService $hourSessionUpdateService
      */
     public function __construct(private UpdateHourSessionService $hourSessionUpdateService) {}
 

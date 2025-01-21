@@ -13,8 +13,6 @@ class DeleteHourSessionService
 {
     /**
      * Summary of execute
-     * @param string  $employeeId
-     * @param string $date
      *
      * @throws \App\Exceptions\HourSessionNotFoundException
      */

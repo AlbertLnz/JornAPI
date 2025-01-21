@@ -26,8 +26,7 @@ class CheckTokenInRedis
             $user = $request->attributes->get('user');
 
             // Check the token in Redis
-         $cachedToken = Redis::get("user:{$user->id}:token");
-            
+            $cachedToken = Redis::get("user:{$user->id}:token");
 
             if (! $cachedToken || $cachedToken !== $token) {
                 throw new InvalidTokenException;

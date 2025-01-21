@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Traits;
 
 use App\Exceptions\TimeEntryException;
@@ -10,10 +12,11 @@ trait ValidateTimeEntry
 {
     /**
      * Summary of validateTimeEntry
-     * @param mixed $startTime
-     * @param mixed $endTime
+     *
+     * @param  mixed  $startTime
+     * @param  mixed  $endTime
+     *
      * @throws \App\Exceptions\TimeEntryException
-     * @return void
      */
     public function validateTimeEntry(?string $startTime, ?string $endTime): void
     {
@@ -34,11 +37,11 @@ trait ValidateTimeEntry
             throw new TimeEntryException("'The start time cannot be greater than the end time'");
         }
     }
+
     /**
      * Summary of validateDateIsToday
-     * @param string $date
+     *
      * @throws \App\Exceptions\TodayDateException
-     * @return void
      */
     public function validateDateIsToday(string $date): void
     {

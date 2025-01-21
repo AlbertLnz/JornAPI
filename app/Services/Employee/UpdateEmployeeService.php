@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Employee;
 
-use App\DTO\Employee\RegisterEmployeeDTO;
 use App\DTO\Employee\ShowEmployeeDTO;
-use App\Exceptions\UserNotFound;
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 
@@ -22,7 +20,6 @@ class UpdateEmployeeService
      * @param  mixed  $holidayHourlyRate
      * @param  mixed  $irpf
      * @param  mixed  $uuid
-     * @return array
      *
      * @throws \App\Exceptions\UserNotFound
      */
@@ -34,9 +31,8 @@ class UpdateEmployeeService
         ?float $irpf,
         Employee $employee): array
     {
-       
 
-        DB::transaction(function () use ($employee, $name, $company, $normalHourlyRate, $overtimeHourlyRate, $holidayHourlyRate, $irpf) {
+        DB::transaction(function () use ($employee, $name, $company, $normalHourlyRate, $overtimeHourlyRate, $holidayHourlyRate, $irpf): void {
 
             if ($name != null) {
                 $employee->name = $name;

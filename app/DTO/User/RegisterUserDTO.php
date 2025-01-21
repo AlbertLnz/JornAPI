@@ -31,7 +31,7 @@ final readonly class RegisterUserDTO implements DTOInterface
 
         return [
             'email' => $data['email'],
-            'password' => $data['password']
+            'password' => $data['password'],
         ];
     }
 }

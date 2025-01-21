@@ -30,7 +30,7 @@ trait CalculateTrait
         $holidayHours = $this->calculateHolidayHours($hoursWorkedCalculated, $workType);
         // Calcular horas extras
         $regularOvertimeHours = $this->calculateRegularOvertimeHours($hoursWorkedCalculated, $plannedHours, $workType);
-       
+
         // Calcular dia complementario
         $extraShiftHours = $this->calculateExtraShiftOvertime($hoursWorkedCalculated, $workType);
         // Calcular las horas normales
@@ -45,14 +45,16 @@ trait CalculateTrait
             'holidayHours' => $holidayHours,
         ];
     }
+
     /**
      * Summary of verifyDuration
-     * @param mixed $start
-     * @param mixed $end
+     *
+     * @param  mixed  $start
+     * @param  mixed  $end
+     *
      * @throws \App\Exceptions\TimeEntryException
-     * @return mixed
      */
-    private function verifyDuration($start, $end)
+    private function verifyDuration($start, $end): mixed
     {
         $maxHoursWorked = 12;
         $minHoursWorked = 2;

@@ -21,28 +21,22 @@ class AuthService
 
     /**
      * Summary of execute
-     *
-     * @param string $email
-     * @param string $password
-     * @return array
      */
     public function execute(string $email, string $password): array
     {
         $user = $this->validateUser($email, $password);
 
         $tokens = $this->generateTokens($user);
-       $cacheToken = $this->tokenExistsInRedis($user,$tokens);
-       
+        $cacheToken = $this->tokenExistsInRedis($user, $tokens);
+
         return $cacheToken ? ['token' => $cacheToken] : $tokens;
     }
 
     /**
      * Valida el usuario y sus credenciales.
-     *@param string $email
-     *@param string $password
-     *@throws UserNotFound
-     *@throws UnauthorizedException
      *
+     * @throws UserNotFound
+     * @throws UnauthorizedException
      */
     private function validateUser(string $email, string $password): User
     {
@@ -53,7 +47,7 @@ class AuthService
         }
 
         if (! $user->is_active) {
-            throw new UserIsNotActiveException();
+            throw new UserIsNotActiveException;
         }
 
         if (! Hash::check($password, $user->password)) {
@@ -65,30 +59,24 @@ class AuthService
 
     /**
      * Genera el token y el refresh token para el usuario.
-     * @param User $user
-     * @return string
      */
     private function generateTokens(User $user): string
     {
-         return $this->jwtService->generateToken($user->id);
+        return $this->jwtService->generateToken($user->id);
 
-      
     }
 
     /**
      * Summary of RedisExists
-     * @param User $user
-     * @param string $token
-     * @return mixed
      */
-
-    private function tokenExistsInRedis(User $user,string  $token) {
-        if(!Redis::exists("user:{$user->id}:token")) {
-        Redis::set("user:{$user->id}:token", $token, 'EX', 3600);
+    private function tokenExistsInRedis(User $user, string $token): mixed
+    {
+        if (! Redis::exists("user:{$user->id}:token")) {
+            Redis::set("user:{$user->id}:token", $token, 'EX', 3600);
 
         }
-        return  Redis::get("user:{$user->id}:token");
 
-      
+        return Redis::get("user:{$user->id}:token");
+
     }
 }

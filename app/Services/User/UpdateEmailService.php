@@ -13,10 +13,12 @@ class UpdateEmailService
 {
     /**
      * Summary of execute
-     * @param mixed $email
-     * @param mixed $uuid
-     * @throws \App\Exceptions\UserNotFound
+     *
+     * @param  mixed  $email
+     * @param  mixed  $uuid
      * @return \App\Models\User
+     *
+     * @throws \App\Exceptions\UserNotFound
      */
     public function execute(?string $email, string $uuid): UserDTO
     {
@@ -26,7 +28,7 @@ class UpdateEmailService
             throw new UserNotFound;
         }
         DB::transaction(function () use ($user, $email) {
-                $user->email = $email;
+            $user->email = $email;
             $user->save();
         });
 

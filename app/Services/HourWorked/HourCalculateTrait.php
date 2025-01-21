@@ -10,10 +10,6 @@ trait HourCalculateTrait
 {
     /**
      * Summary of calculateRegularOvertimeHours
-     * @param float $hoursWorked
-     * @param float $plannedHours
-     * @param string $workType
-     * @return float
      */
     private function calculateRegularOvertimeHours(float $hoursWorked, float $plannedHours, string $workType): float
     {
@@ -32,9 +28,6 @@ trait HourCalculateTrait
 
     /**
      * Summary of calculateHolidayHours
-     * @param float $hoursWorked
-     * @param string $workType
-     * @return float
      */
     private function calculateHolidayHours(float $hoursWorked, string $workType): float
     {
@@ -47,12 +40,8 @@ trait HourCalculateTrait
 
     /**
      * Summary of calculateNormalHours
-     * @param float $hoursWorked
-     * @param float $overtimeHours
-     * @param string $workType
-     * @return float
      */
-    private function calculateNormalHours(float $hoursWorked, float $overtimeHours,string $workType): float
+    private function calculateNormalHours(float $hoursWorked, float $overtimeHours, string $workType): float
     {
         if (WorkTypeEnum::HOLIDAY->value === $workType || WorkTypeEnum::OVERTIME->value === $workType) {
 
@@ -61,13 +50,11 @@ trait HourCalculateTrait
 
         return $hoursWorked - $overtimeHours;
     }
+
     /**
      * Summary of calculateExtraShiftOvertime
-     * @param float $hoursWorked
-     * @param string $workType
-     * @return float
      */
-    private function calculateExtraShiftOvertime(float $hoursWorked,string $workType): float
+    private function calculateExtraShiftOvertime(float $hoursWorked, string $workType): float
     {
         if (WorkTypeEnum::OVERTIME->value === $workType) {
             return $hoursWorked;
