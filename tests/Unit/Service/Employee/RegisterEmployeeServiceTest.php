@@ -35,13 +35,11 @@ class RegisterEmployeeServiceTest extends TestCase
     public function testregister_employee_servicewithvaliddata()
     {
 
-        $this->service->execute('peter', 'peter@peter.com', 'comapany', '12345678', 1, 1, 1, 1, );
+        $this->service->execute('peter', 'peter@peter.com', 'comapany', '12345678', 1, 1, 1, 1);
 
-      
         $this->assertDatabaseHas('employees', [
             'name' => 'peter',
         ]);
-
 
     }
 }

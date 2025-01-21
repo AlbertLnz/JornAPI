@@ -17,7 +17,8 @@ class RegisterEmployeeController extends Controller
 {
     /**
      * Summary of __construct
-     * @var RegisterEmployeeService $service
+     *
+     * @var RegisterEmployeeService
      */
     public function __construct(private RegisterEmployeeService $service) {}
 
@@ -31,7 +32,7 @@ class RegisterEmployeeController extends Controller
     public function __invoke(RegisterEmployeeRequest $request): JsonResponse
     {
         try {
-           $data = RegisterEmployeeDTO::toArray($request->all());
+            $data = RegisterEmployeeDTO::toArray($request->all());
             $this->service->execute($data);
 
             return response()->json(['message' => 'Employee created successfully'], 201);

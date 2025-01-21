@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services\HourSession;
 
-use App\Enums\WorkTypeEnum;
+use App\DTO\HourSession\HourSessionDTO;
 use App\Events\HourSessionRegistered;
 use App\Exceptions\HourSessionExistException;
 use App\Models\HourSession;
 use App\Services\HourWorked\HourWorkedEntryService;
+use App\Services\Salary\SalaryService;
 use App\Traits\ValidateTimeEntry;
 use Illuminate\Support\Facades\DB;
 
@@ -16,54 +17,27 @@ class RegisterHourSessionService
 {
     use ValidateTimeEntry;
 
-    /**
-     * @param  \App\Services\Salary\SalaryService  $salaryService
-     */
-    public function __construct(
-        private HourWorkedEntryService $hourWorkedEntryService,
-    ) {}
+    public function __construct(private HourWorkedEntryService $hourWorkedEntryService, private SalaryService $salaryService) {}
 
     /**
-     * @throws \Exception
+     * Summary of execute
+     *
+     * @throws \App\Exceptions\HourSessionExistException
      */
-    public function execute(?string $employeeId, string $date, string $startTime, string $endTime, int $plannedHours, ?string $workType): void
+    public function execute(string $employeeId, HourSessionDTO $hourSessionDTO): void
     {
         // Validaciones
-        $this->validateDateIsToday($date);
-        $this->validateTimeEntry($startTime, $endTime);
+        $this->validateDateIsToday($hourSessionDTO->date);
+        $this->validateTimeEntry($hourSessionDTO->startTime, $hourSessionDTO->endTime);
 
         // Verifica si ya existe una sesión de trabajo para el empleado en la misma fecha
-        if ($this->sessionExists($employeeId, $date)) {
+        if ($this->sessionExists($employeeId, $hourSessionDTO->date)) {
             throw new HourSessionExistException;
         }
 
-        $transaction = DB::transaction(function () use ($employeeId, $date, $startTime, $endTime, $plannedHours, $workType) {
-            // Crear la sesión de trabajo
-            $hourSession = HourSession::create([
-                'employee_id' => $employeeId,
-                'date' => $date,
-                'start_time' => $startTime,
-                'end_time' => $endTime,
-                'planned_hours' => $plannedHours,
-                'work_type' => $workType ?? WorkTypeEnum::NORMAL->value,
-            ]);
+        // Crear la sesión de trabajo
+        $this->createHourSession($hourSessionDTO, $employeeId);
 
-            // Ejecutar el servicio de HourWorkedEntry
-            $this->hourWorkedEntryService->execute(
-                $hourSession->id,
-                $hourSession->start_time,
-                $hourSession->end_time,
-                $hourSession->planned_hours,
-                $hourSession->work_type
-            );
-
-            // Disparar evento después de la transacción
-            DB::afterCommit(function () use ($employeeId, $date) {
-                event(new HourSessionRegistered($employeeId, $date));
-            });
-
-            return $hourSession;
-        });
     }
 
     /**
@@ -74,5 +48,35 @@ class RegisterHourSessionService
         return HourSession::where('employee_id', $employeeId)
             ->where('date', $date)
             ->exists();
+    }
+
+    /**
+     * Summary of createHourSession
+     */
+    private function createHourSession(HourSessionDTO $hourSessionDTO, string $employeeId): void
+    {
+        DB::transaction(function () use ($employeeId, $hourSessionDTO): void {
+            $hourSession = HourSession::create([
+                'employee_id' => $employeeId,
+                'date' => $hourSessionDTO->date,
+                'start_time' => $hourSessionDTO->startTime,
+                'end_time' => $hourSessionDTO->endTime,
+                'planned_hours' => $hourSessionDTO->plannedHours,
+                'work_type' => $hourSessionDTO->workType,
+            ]);
+            $this->hourWorkedEntryService->execute(
+                $hourSession->id,
+                $hourSession->start_time,
+                $hourSession->end_time,
+                $hourSession->planned_hours,
+                $hourSession->work_type);
+
+            DB::afterCommit(function () use ($employeeId, $hourSession) {
+
+                event(new HourSessionRegistered($employeeId, $hourSession->date));
+
+            });
+
+        });
     }
 }

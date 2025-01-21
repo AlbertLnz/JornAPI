@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Employee;
 
-use App\DTO\Employee\RegisterEmployeeDTO;
 use App\DTO\Employee\ShowEmployeeDTO;
-use App\Exceptions\UserNotFound;
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 
@@ -31,14 +29,10 @@ class UpdateEmployeeService
         ?float $overtimeHourlyRate,
         ?float $holidayHourlyRate,
         ?float $irpf,
-        ?string $uuid): array
+        Employee $employee): array
     {
-        $employee = Employee::where('user_id', $uuid)->select('name', 'company_name', 'normal_hourly_rate', 'overtime_hourly_rate', 'holiday_hourly_rate', 'irpf')->first();
-        if (! $employee) {
-            throw new UserNotFound;
-        }
 
-        DB::transaction(function () use ($employee, $name, $company, $normalHourlyRate, $overtimeHourlyRate, $holidayHourlyRate, $irpf) {
+        DB::transaction(function () use ($employee, $name, $company, $normalHourlyRate, $overtimeHourlyRate, $holidayHourlyRate, $irpf): void {
 
             if ($name != null) {
                 $employee->name = $name;

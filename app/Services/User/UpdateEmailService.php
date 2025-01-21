@@ -9,16 +9,18 @@ use App\Exceptions\UserNotFound;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
-class UpdateUserService
+class UpdateEmailService
 {
     /**
      * Summary of execute
-     * @param mixed $email
-     * @param mixed $uuid
-     * @throws \App\Exceptions\UserNotFound
+     *
+     * @param  mixed  $email
+     * @param  mixed  $uuid
      * @return \App\Models\User
+     *
+     * @throws \App\Exceptions\UserNotFound
      */
-    public function execute(?string $email, ?string $uuid): UserDTO
+    public function execute(?string $email, string $uuid): UserDTO
     {
 
         $user = User::where('id', $uuid)->first();
@@ -26,12 +28,8 @@ class UpdateUserService
             throw new UserNotFound;
         }
         DB::transaction(function () use ($user, $email) {
-            if ($email != null) {
-                $user->email = $email;
+            $user->email = $email;
             $user->save();
-
-            }
-
         });
 
         return UserDTO::fromModel($user);

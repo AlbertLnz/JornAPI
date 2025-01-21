@@ -15,12 +15,10 @@ class LogOutService
     /**
      * Summary of logOut
      *
-     * @param  string  $userId
-     * @return void
      *
      * @throws \App\Exceptions\InvalidTokenException
      */
-    public function logOut(string $token)
+    public function logOut(string $token): void
     {
         $jti = $this->tokenService->getJtiFromToken($token);
         $userID = $this->tokenService->decodeToken($token)->sub;
@@ -30,6 +28,5 @@ class LogOutService
         }
 
         Redis::del("user:$userID:token");
-        $this->tokenService->revokeAllRefreshTokens($userID);
     }
 }

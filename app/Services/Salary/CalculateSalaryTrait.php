@@ -14,9 +14,9 @@ trait CalculateSalaryTrait
     /**
      * Summary of calculateSalary
      */
-    public function calculateSalary(mixed $hoursWorkeds, Employee $employee): array
+    public function calculateSalary(mixed $hoursWorked, Employee $employee): array
     {
-        $hourCalculations = $this->calculateTotalHoursWorked($hoursWorkeds);
+        $hourCalculations = $this->calculateTotalHoursWorked($hoursWorked);
         $convertToNormalHours = $this->convertDecimalToHoursAndMinutes($hourCalculations['total_normal_hours']);
         $convertToOvertimeHours = $this->convertDecimalToHoursAndMinutes($hourCalculations['total_overtime_hours']);
         $convertToHolidayHours = $this->convertDecimalToHoursAndMinutes($hourCalculations['total_holiday_hours']);
@@ -27,22 +27,26 @@ trait CalculateSalaryTrait
             $convertToHolidayHours,
             $employee);
 
+        $netSalary = $this->calculateNetSalary($grossSalary, $employee);
+        var_dump($netSalary);
+
         return [
             'total_normal_hours' => $hourCalculations['total_normal_hours'],
             'total_overtime_hours' => $hourCalculations['total_overtime_hours'],
             'total_holiday_hours' => $hourCalculations['total_holiday_hours'],
             'gross_salary' => $grossSalary,
+            'net_salary' => $netSalary,
         ];
     }
 
     /**
      * Summary of calculateTotalHoursWorked
      */
-    private function calculateTotalHoursWorked(mixed $hoursWorkeds): array
+    private function calculateTotalHoursWorked(mixed $hoursWorked): array
     {
-        $totalNormalHours = $hoursWorkeds->sum('normal_hours');
-        $totalOvertimeHours = $hoursWorkeds->sum('overtime_hours');
-        $totalHolidayHours = $hoursWorkeds->sum('holiday_hours');
+        $totalNormalHours = $hoursWorked->sum('normal_hours');
+        $totalOvertimeHours = $hoursWorked->sum('overtime_hours');
+        $totalHolidayHours = $hoursWorked->sum('holiday_hours');
 
         return [
             'total_normal_hours' => $totalNormalHours,
@@ -62,12 +66,20 @@ trait CalculateSalaryTrait
         $overtimeHoursWithMinutes = $totalOvertimeHours['hours'] + ($totalOvertimeHours['minutes'] / 60);
         $holidayHoursWithMinutes = $totalHolidayHours['hours'] + ($totalHolidayHours['minutes'] / 60);
 
-        // Calcula el salario bruto tomando en cuenta horas y minutos
-        $totalNormalSalary = $normalHoursWithMinutes * $employee->normal_hourly_rate;
-        $totalOvertimeSalary = $overtimeHoursWithMinutes * $employee->overtime_hourly_rate;
-        $totalHolidaySalary = $holidayHoursWithMinutes * $employee->holiday_hourly_rate;
+        $totalNormal = $normalHoursWithMinutes * $employee->normal_hourly_rate;
+        $totalOvertime = $overtimeHoursWithMinutes * $employee->overtime_hourly_rate;
+        $totalHoliday = $holidayHoursWithMinutes * $employee->holiday_hourly_rate;
 
-        // Suma todos los salarios
-        return $totalNormalSalary + $totalOvertimeSalary + $totalHolidaySalary;
+        // Devuelve la suma total
+        return $totalNormal + $totalOvertime + $totalHoliday;
+    }
+
+    private function calculateNetSalary(float $grossSalary, Employee $employee): float
+    {
+        if ($grossSalary < 0 || $employee->irpf < 0) {
+            return 0;
+        }
+
+        return $grossSalary - ($grossSalary * ($employee->irpf / 100));
     }
 }

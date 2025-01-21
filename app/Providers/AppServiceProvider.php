@@ -19,9 +19,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(SalaryServiceInterface::class, SalaryService::class);
         $this->app->singleton(RedisService::class, function () {
-            
 
-            return new RedisService();
+            return new RedisService;
         });
     }
 

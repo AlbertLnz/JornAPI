@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\v1\HourSession\RegisterHourSession;
 
+use App\DTO\HourSession\HourSessionDTO;
 use App\Enums\WorkTypeEnum;
 use App\Exceptions\HourSessionExistException;
 use App\Exceptions\TimeEntryException;
@@ -29,14 +30,11 @@ class RegitsterHourSessionController extends Controller
         try {
             $employee = $request->user()->employee;
             $workType = WorkTypeEnum::fromValue($request->work_type);
+            $hourSessionDTO = new HourSessionDTO($request->date, $request->start_time, $request->end_time, $request->planned_hours, $workType->value);
 
             $this->hourSessionRegisterService->execute(
                 $employee->id,
-                $request->date,
-                $request->start_time,
-                $request->end_time,
-                $request->planned_hours,
-                $workType->value ?? null);
+                $hourSessionDTO);
 
             return response()->json(['message' => 'Hour worked registered successfully'], 201);
         } catch (HourSessionExistException|TodayDateException|TimeEntryException $exception) {

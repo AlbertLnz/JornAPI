@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 declare(strict_types=1);
 
 namespace App\DTO\Employee;
@@ -6,8 +7,8 @@ namespace App\DTO\Employee;
 use App\DTO\DTOInterface;
 use Illuminate\Database\Eloquent\Model;
 
- readonly class ShowEmployeeDTO implements DTOInterface{
-
+final readonly class ShowEmployeeDTO implements DTOInterface
+{
     public function __construct(
         public string $name,
         public string $company_name,
@@ -15,7 +16,8 @@ use Illuminate\Database\Eloquent\Model;
         public string $overtime_hourly_rate,
         public string $holiday_hourly_rate,
         public ?string $irpf
-    ){}
+    ) {}
+
     public static function toArray(array $data): array
     {
         return [
@@ -39,5 +41,4 @@ use Illuminate\Database\Eloquent\Model;
             $employee->irpf,
         );
     }
-
- }
+}

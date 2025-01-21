@@ -31,14 +31,13 @@ class DashboardService
             return [
                 'total_hours_worked' => $currentMonthSalary['convertTotalHourWorked'],
                 'current_month_salary' => $currentMonthSalary['currentMonthSalary'],
-                //'current_month_hours_session' => $currentMonthHourSession
             ];
         } catch (SalaryNotFoundException $e) {
 
             return [
                 'total_hours_worked' => 0,
                 'current_month_salary' => 0,
-                // 'current_month_hours_session' => []
+
             ];
         }
 
@@ -46,10 +45,8 @@ class DashboardService
 
     /**
      * Summary of getCurrentMonth
-     *
-     * @return array
      */
-    private function getCurrentMonth(string $employeeId)
+    private function getCurrentMonth(string $employeeId): array
     {
         $month = Carbon::now()->format('m');
         $year = Carbon::now()->format('Y');

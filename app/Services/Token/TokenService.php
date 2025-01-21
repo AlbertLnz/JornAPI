@@ -19,7 +19,12 @@ class TokenService
         $this->secret = config('jwt.secret');
     }
 
-    public function generateToken($userId)
+    /**
+     * Summary of generateToken
+     *
+     * @param  mixed  $userId
+     */
+    public function generateToken($userId): string
     {
         $payload = [
             'sub' => $userId,
@@ -31,6 +36,12 @@ class TokenService
         return JWT::encode($payload, $this->secret, 'HS256');
     }
 
+    /**
+     * Summary of decodeToken
+     *
+     * @param  mixed  $token
+     * @return \stdClass|null
+     */
     public function decodeToken($token): ?object
     {
         try {
@@ -53,7 +64,7 @@ class TokenService
         }
     }
 
-    public function generateRefreshToken($userId)
+    public function generateRefreshToken($userId): string
     {
         $refreshToken = Str::random(60); // Genera un refresh token aleatorio
 
@@ -74,7 +85,13 @@ class TokenService
     }
 
     // Nueva función para validar el refresh token
-    public function validateRefreshToken($userId, $refreshToken)
+    /**
+     * Summary of validateRefreshToken
+     *
+     * @param  mixed  $userId
+     * @param  mixed  $refreshToken
+     */
+    public function validateRefreshToken($userId, $refreshToken): bool
     {
         $record = DB::table('jwt_refresh_tokens')
             ->where('user_id', $userId)
@@ -88,8 +105,13 @@ class TokenService
         return false;
     }
 
-    // Opcional: función para revocar un refresh token (por ejemplo, al cerrar sesión)
-    public function revokeRefreshToken($userId, $refreshToken)
+    /**
+     * Summary of revokeRefreshToken
+     *
+     * @param  mixed  $userId
+     * @param  mixed  $refreshToken
+     */
+    public function revokeRefreshToken($userId, $refreshToken): void
     {
         DB::table('jwt_refresh_tokens')
             ->where('user_id', $userId)
@@ -97,8 +119,12 @@ class TokenService
             ->delete();
     }
 
-    // Opcional: función para revocar todos los refresh tokens de un usuario (ej. logout)
-    public function revokeAllRefreshTokens($userId)
+    /**
+     * Summary of revokeAllRefreshTokens
+     *
+     * @param  mixed  $userId
+     */
+    public function revokeAllRefreshTokens($userId): void
     {
         DB::table('jwt_refresh_tokens')
             ->where('user_id', $userId)

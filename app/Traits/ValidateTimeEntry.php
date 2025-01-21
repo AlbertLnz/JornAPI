@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use App\Exceptions\TimeEntryException;
@@ -8,6 +10,14 @@ use Carbon\Carbon;
 
 trait ValidateTimeEntry
 {
+    /**
+     * Summary of validateTimeEntry
+     *
+     * @param  mixed  $startTime
+     * @param  mixed  $endTime
+     *
+     * @throws \App\Exceptions\TimeEntryException
+     */
     public function validateTimeEntry(?string $startTime, ?string $endTime): void
     {
         if ($startTime == null || $endTime == null) {
@@ -28,6 +38,11 @@ trait ValidateTimeEntry
         }
     }
 
+    /**
+     * Summary of validateDateIsToday
+     *
+     * @throws \App\Exceptions\TodayDateException
+     */
     public function validateDateIsToday(string $date): void
     {
         $today = Carbon::today();

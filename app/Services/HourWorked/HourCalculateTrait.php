@@ -9,10 +9,9 @@ use App\Enums\WorkTypeEnum;
 trait HourCalculateTrait
 {
     /**
-     * Calcular las horas extras.
-     * Las horas extras son las horas trabajadas
+     * Summary of calculateRegularOvertimeHours
      */
-    private function calculateRegularOvertimeHours(float $hoursWorked, float $plannedHours, $workType): float
+    private function calculateRegularOvertimeHours(float $hoursWorked, float $plannedHours, string $workType): float
     {
         if (WorkTypeEnum::OVERTIME->value === $workType || WorkTypeEnum::HOLIDAY->value === $workType) {
             return 0;
@@ -28,9 +27,9 @@ trait HourCalculateTrait
     }
 
     /**
-     * Calcular las horas festivas.
+     * Summary of calculateHolidayHours
      */
-    private function calculateHolidayHours(float $hoursWorked, float $overtimeHours, $workType): float
+    private function calculateHolidayHours(float $hoursWorked, string $workType): float
     {
         if (WorkTypeEnum::HOLIDAY->value === $workType) {
             return $hoursWorked;
@@ -40,10 +39,9 @@ trait HourCalculateTrait
     }
 
     /**
-     * Calcular las horas normales.
-     * Las horas normales son las horas trabajadas menos las extras, nocturnas y festivas.
+     * Summary of calculateNormalHours
      */
-    private function calculateNormalHours(float $hoursWorked, float $overtimeHours, $workType): float
+    private function calculateNormalHours(float $hoursWorked, float $overtimeHours, string $workType): float
     {
         if (WorkTypeEnum::HOLIDAY->value === $workType || WorkTypeEnum::OVERTIME->value === $workType) {
 
@@ -53,7 +51,10 @@ trait HourCalculateTrait
         return $hoursWorked - $overtimeHours;
     }
 
-    private function calculateExtraShiftOvertime(float $hoursWorked, $workType): float
+    /**
+     * Summary of calculateExtraShiftOvertime
+     */
+    private function calculateExtraShiftOvertime(float $hoursWorked, string $workType): float
     {
         if (WorkTypeEnum::OVERTIME->value === $workType) {
             return $hoursWorked;

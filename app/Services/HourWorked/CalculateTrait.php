@@ -26,12 +26,12 @@ trait CalculateTrait
         $end = Carbon::parse($endTime);
 
         $hoursWorkedCalculated = $this->verifyDuration($start, $end);
-
+        // Verificar si es festivo y calcular las horas festivas
+        $holidayHours = $this->calculateHolidayHours($hoursWorkedCalculated, $workType);
         // Calcular horas extras
         $regularOvertimeHours = $this->calculateRegularOvertimeHours($hoursWorkedCalculated, $plannedHours, $workType);
-        // Verificar si es festivo y calcular las horas festivas
-        $holidayHours = $this->calculateHolidayHours($hoursWorkedCalculated, $regularOvertimeHours, $workType);
 
+        // Calcular dia complementario
         $extraShiftHours = $this->calculateExtraShiftOvertime($hoursWorkedCalculated, $workType);
         // Calcular las horas normales
         $normalHours = $this->calculateNormalHours(
@@ -46,7 +46,15 @@ trait CalculateTrait
         ];
     }
 
-    private function verifyDuration($start, $end)
+    /**
+     * Summary of verifyDuration
+     *
+     * @param  mixed  $start
+     * @param  mixed  $end
+     *
+     * @throws \App\Exceptions\TimeEntryException
+     */
+    private function verifyDuration($start, $end): mixed
     {
         $maxHoursWorked = 12;
         $minHoursWorked = 2;

@@ -12,6 +12,8 @@ class CurrentMonthHourSessionService
 {
     /**
      * Summary of execute
+     *
+     * @param  string  $empployeeId
      */
     public function execute(string $employeeId, Carbon $startMonth, Carbon $endMonth): Collection
     {

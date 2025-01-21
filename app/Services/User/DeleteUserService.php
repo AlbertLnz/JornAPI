@@ -9,12 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 class DeleteUserService
 {
-    public function __construct() {}
-
     /**
      * Summary of execute
-     * @param string $uuid
-     * @return void
      */
     public function execute(string $uuid): void
     {

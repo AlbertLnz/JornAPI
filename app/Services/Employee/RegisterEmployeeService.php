@@ -20,12 +20,12 @@ class RegisterEmployeeService
 
     /**
      * Summary of execute
-     *@param array $data
      */
     public function execute(array $data): void
     {
-        
-        DB::transaction(function () use ($data, ) {
+
+        DB::transaction(function () use ($data): void {
+
             $user = $this->registerUserService->execute($data['user']['email'], $data['user']['password']);
 
             $user->employee()->create([
@@ -39,16 +39,19 @@ class RegisterEmployeeService
             DB::afterCommit(function () use ($user) {
                 $user->assignRole('employee');
                 $this->sendRegisterNotification($user);
-            }); 
+            });
         });
     }
-    private function sendRegisterNotification(User $user): void {
+
+    /**
+     * Summary of sendRegisterNotification
+     */
+    private function sendRegisterNotification(User $user): void
+    {
         try {
             SendRegisterNotification::dispatch($user);
         } catch (Exception $e) {
             Log::error($e->getMessage());
         }
     }
-
-    
 }
