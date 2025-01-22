@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Service\HourSession;
 
+use App\DTO\HourSession\HourSessionDTO;
 use App\Exceptions\HourSessionNotFoundException;
 use App\Models\Employee;
 use App\Models\HourSession;
@@ -10,7 +11,7 @@ use App\Services\HourSession\FindHourSessionService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
-class HourSessionShowServiceTest extends TestCase
+class ShowHourSessionServiceTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -48,8 +49,8 @@ class HourSessionShowServiceTest extends TestCase
 
     public function test_show_hour_session(): void
     {
-        $hourSession = $this->hourSessionShowService->execute($this->employee->id, $this->randomDate);
-        $this->assertEquals($this->hourSession->date, $hourSession['date']);
+        $findHourSession = $this->hourSessionShowService->execute($this->employee->id, $this->randomDate);
+        $this->assertInstanceOf(HourSessionDTO::class, $findHourSession);
     }
 
     public function test_hour_session_not_found(): void

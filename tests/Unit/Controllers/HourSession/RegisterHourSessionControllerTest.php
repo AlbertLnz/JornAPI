@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\JsonResponse;
 use Tests\TestCase;
 
-class HourSessionRegisterControllerTest extends TestCase
+class RegisterHourSessionControllerTest extends TestCase
 {
     use DatabaseTransactions;
 

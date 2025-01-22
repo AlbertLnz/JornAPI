@@ -5,12 +5,14 @@ namespace Tests\Feature\HourSession;
 use App\Models\Employee;
 use App\Models\HourSession;
 use App\Services\Token\TokenService;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 class ShowHourSessionControllerTest extends TestCase
 {
+    use DatabaseTransactions;
     private Employee $employee;
 
     private HourSession $hourSession;
