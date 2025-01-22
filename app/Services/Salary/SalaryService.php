@@ -28,7 +28,7 @@ class SalaryService implements SalaryServiceInterface
         $dataSalary = $this->calculateSalary($hourWorkedCollection, $employee);
 
         DB::transaction(function () use ($salary, $dataSalary, $employeeId, $prepareDate) {
-            $salary ? $this->insertSalaryToField($salary, $dataSalary) : $this->createNewSalary($employeeId, $prepareDate, $dataSalary);
+            $salary ? $this->updateSalary($salary, $dataSalary) : $this->createNewSalary($employeeId, $prepareDate, $dataSalary);
         });
 
     }
@@ -57,7 +57,7 @@ class SalaryService implements SalaryServiceInterface
 
     }
 
-    private function prepareSalary($employeeId, $startOfMonth, $endOfMonth): Salary
+    private function prepareSalary($employeeId, $startOfMonth, $endOfMonth): ?Salary
     {
         return Salary::where('employee_id', $employeeId)
             ->where(function ($query) use ($startOfMonth, $endOfMonth) {
@@ -67,7 +67,7 @@ class SalaryService implements SalaryServiceInterface
             ->first();
     }
 
-    private function insertSalaryToField($salary, $dataSalary): void
+    private function updateSalary($salary, $dataSalary): void
     {
 
         $salary->total_normal_hours = $dataSalary['total_normal_hours'];
