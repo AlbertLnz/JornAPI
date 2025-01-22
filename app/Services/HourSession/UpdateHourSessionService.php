@@ -37,8 +37,8 @@ class UpdateHourSessionService
         $hourSession = $this->HourSessionExists($employeeId, $carbon);
         $this->validateDateIsToday($date);
 
-        $this->validateTimeEntry($startTime, $endTime);
-        $this->verifyDuration($startTime, $endTime);
+        $this->validateTimeEntry($startTime?? $hourSession->start_time, $endTime?? $hourSession->end_time);
+       // $this->verifyDuration($startTime?? $hourSession->start_time, $endTime?? $hourSession->end_time);
 
 
         DB::transaction(function () use ($employeeId, $startTime, $endTime, $plannedHours, $workType, $hourSession, $date) {

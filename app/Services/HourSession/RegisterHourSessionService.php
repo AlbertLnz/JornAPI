@@ -26,10 +26,8 @@ class RegisterHourSessionService
         // Validaciones
         $this->validateDateIsToday($hourSessionDTO->date);
         $this->validateTimeEntry($hourSessionDTO->startTime, $hourSessionDTO->endTime);
-        $this->verifyDuration($hourSessionDTO->startTime, $hourSessionDTO->endTime);
+        
 
-
-        // Verifica si ya existe una sesión de trabajo para el empleado en la misma fecha
         if ($this->sessionExists($employeeId, $hourSessionDTO->date)) {
             throw new HourSessionExistException;
         }
