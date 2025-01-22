@@ -28,7 +28,7 @@ class ShowUserFoundTest extends TestCase
     public function test_show_user_found()
     {
         $user = UserDTO::fromModel($this->employee->user);
-
+        $this->actingAs($this->employee->user);
         $token = $this->tokenService->generateToken($this->employee->user_id);
         Cache::store('redis')->put("user:{$this->employee->user_id}:token", $token, 3600); //
 

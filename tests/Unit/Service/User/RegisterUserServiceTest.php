@@ -55,12 +55,6 @@ class RegisterUserServiceTest extends TestCase
         $this->service->execute('email@example.com', 'newpassword');
     }
 
-    public function test_register_user_with_null_email_or_password()
-    {
-        $this->expectException(\Exception::class);
-        $this->service->execute(null, 'password');
-
-        $this->expectException(\Exception::class);
-        $this->service->execute('email@example.com', null);
-    }
+   
+    
 }

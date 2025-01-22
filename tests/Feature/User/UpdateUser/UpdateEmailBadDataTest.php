@@ -5,10 +5,11 @@ namespace Tests\Feature\User\UpdateUser;
 use App\Models\Employee;
 use App\Services\Token\TokenService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
-class UpdateUserSuccessTest extends TestCase
+class UpdateEmailBadDataTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -23,25 +24,22 @@ class UpdateUserSuccessTest extends TestCase
         $this->employee = Employee::factory()->create();
     }
 
-    public function test_update_user_success()
+    public function test_update_bad_email()
     {
-        $employee = Employee::factory()->create();
-        $user = $employee->user;
-        $token = $this->tokenService->generateToken($user->id, $user->roles);
+        $user = $this->employee->user;
+
+       $request = new Request();
+        $request->setUserResolver(fn () => $user);
+        $token = $this->tokenService->generateToken($user->id);
         Cache::store('redis')->put("user:{$user->id}:token", $token, 3600); //
 
         $updateUser = $this->withHeaders([
             'Authorization' => 'Bearer '.$token,
         ])->putJson('/api/user/update', [
-            'email' => 'XuqFP@example.com',
-            'password' => 'password',
-
+            'email' => '',
+         
         ]);
-        $updateUser->assertStatus(200);
+        $updateUser->assertStatus(422);
 
-        $updateUser->assertJsonStructure([
-            'message',
-            'user',
-        ]);
     }
 }
