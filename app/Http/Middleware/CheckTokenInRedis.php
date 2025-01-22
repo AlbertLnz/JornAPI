@@ -7,6 +7,7 @@ use App\Services\Token\TokenService;
 use Closure;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
 class CheckTokenInRedis
@@ -26,7 +27,7 @@ class CheckTokenInRedis
             $user = $request->attributes->get('user');
 
             // Check the token in Redis
-            $cachedToken = Redis::get("user:{$user->id}:token");
+            $cachedToken = Cache::store('redis')->get("user:{$user->id}:token");
 
             if (! $cachedToken || $cachedToken !== $token) {
                 throw new InvalidTokenException;

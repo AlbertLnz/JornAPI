@@ -8,6 +8,7 @@ use App\Exceptions\UserIsNotActiveException;
 use App\Exceptions\UserNotFound;
 use App\Models\User;
 use App\Services\Token\TokenService;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Validation\UnauthorizedException;
@@ -25,11 +26,13 @@ class AuthService
     public function execute(string $email, string $password): array
     {
         $user = $this->validateUser($email, $password);
+        $token = Cache::store('redis')->remember("user:{$user->id}:token", 3600, function () use ($user) {
+            return $this->generateToken($user);
+        });
 
-        $tokens = $this->generateTokens($user);
-        $cacheToken = $this->tokenExistsInRedis($user, $tokens);
-
-        return $cacheToken ? ['token' => $cacheToken] : $tokens;
+        return ['token' => $token];
+       
+        
     }
 
     /**
@@ -60,7 +63,7 @@ class AuthService
     /**
      * Genera el token y el refresh token para el usuario.
      */
-    private function generateTokens(User $user): string
+    private function generateToken(User $user): string
     {
         return $this->jwtService->generateToken($user->id);
 
@@ -69,14 +72,5 @@ class AuthService
     /**
      * Summary of RedisExists
      */
-    private function tokenExistsInRedis(User $user, string $token): mixed
-    {
-        if (! Redis::exists("user:{$user->id}:token")) {
-            Redis::set("user:{$user->id}:token", $token, 'EX', 3600);
-
-        }
-
-        return Redis::get("user:{$user->id}:token");
-
-    }
+   
 }
