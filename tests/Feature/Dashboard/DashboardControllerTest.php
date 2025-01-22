@@ -6,6 +6,7 @@ use App\Events\HourSessionRegistered;
 use App\Models\Employee;
 use App\Models\HourSession;
 use App\Models\HourWorked;
+use App\Models\User;
 use App\Services\Salary\SalaryService;
 use App\Services\Token\TokenService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -26,31 +27,36 @@ class DashboardControllerTest extends TestCase
     private HourWorked $hourWorked;
 
     private SalaryService $salaryService;
+    private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->tokenService = new TokenService;
-        $this->employee = Employee::factory()->create();
+        $this->user = User::factory()->create();
+        $this->user->assignRole('employee');
+        $this->employee = Employee::factory()->create(['user_id' => $this->user->id]);
         $this->hourSession = HourSession::factory()->create([
             'employee_id' => $this->employee->id,
         ]);
         $this->hourWorked = HourWorked::factory()->create([
             'hour_session_id' => $this->hourSession->id,
         ]);
-        //   event(new HourSessionRegistered($this->employee->id, $this->hourSession->date));
+        
 
     }
 
     public function test_show_dashboard_success(): void
     {
         $token = $this->tokenService->generateToken($this->employee->user_id);
+        $this->actingAs($this->user);
+        
         Cache::store('redis')->put("user:{$this->employee->user_id}:token", $token, 3600);
         $request = new Request;
         $request->setUserResolver(fn () => $this->employee->user);
         $showDashboard = $this->withHeaders([
             'Authorization' => 'Bearer '.$token,
-        ])->getJson('/api/dashboard');
+        ])->getJson(route('dashboard'));
         $showDashboard->assertStatus(200);
     }
 }
