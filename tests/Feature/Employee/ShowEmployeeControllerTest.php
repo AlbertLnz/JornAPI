@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Employee;
+namespace Tests\Feature\Employee;
 
 use App\Models\Employee;
 use App\Services\Token\TokenService;

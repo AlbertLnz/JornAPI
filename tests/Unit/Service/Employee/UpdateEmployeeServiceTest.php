@@ -40,7 +40,7 @@ class UpdateEmployeeServiceTest extends TestCase
             10.30,
             13.00,
             5.00,
-            $employee->user_id
+            $employee
         );
 
         // Assert: Validar los cambios en la base de datos
@@ -52,22 +52,7 @@ class UpdateEmployeeServiceTest extends TestCase
         $this->assertEquals(5.00, $updatedEmployeeData['irpf']);
     }
 
-    public function test_update_employee_service_throws_user_not_found_exception()
-    {
-        // Assert: Esperamos que se lance la excepción UserNotFound
-        $this->expectException(UserNotFound::class);
-
-        // Act: Ejecutar el servicio con un UUID inexistente
-        $this->service->execute(
-            'Peter',
-            'Facebook',
-            10.00,
-            10.30,
-            13.00,
-            4.00,
-            'non-existing-uuid'
-        );
-    }
+ 
 
     public function test_update_employee_service_with_null_data()
     {
@@ -82,7 +67,7 @@ class UpdateEmployeeServiceTest extends TestCase
             null,
             null,
             null,
-            $employee->user_id
+            $employee
         );
 
         // Assert: Validar que los datos no hayan cambiado

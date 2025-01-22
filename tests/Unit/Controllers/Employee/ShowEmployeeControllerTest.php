@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Controllers\Employee;
 
+use App\DTO\Employee\ShowEmployeeDTO;
 use App\Http\Controllers\v1\Employee\ShowEmployeeController;
 use App\Models\Employee;
 use App\Models\User;
@@ -30,32 +31,30 @@ class ShowEmployeeControllerTest extends TestCase
         $this->user = User::factory()->create();
         Employee::factory()->create(['user_id' => $this->user->id]);
     }
-
     public function test_can_instantiate()
     {
         $this->assertInstanceOf(ShowEmployeeController::class, $this->controller);
     }
-
-    public function test_show_employee_success()
+    public function test_show_employee_returns_dto_instance()
     {
-        // Crear una solicitud con el usuario autenticado
         $request = new Request;
         $request->setUserResolver(fn () => $this->user);
 
-        // Invocar el controlador
         $response = $this->controller->__invoke($request);
 
         // Verificar que el resultado sea un JsonResponse
         $this->assertInstanceOf(JsonResponse::class, $response);
 
-        // Decodificar el contenido JSON de la respuesta
         $responseData = $response->getData();
 
         $this->assertEquals('Employee found successfully', $responseData->message);
 
-        // Verificar que los datos del empleado sean correctos
+        $this->assertInstanceOf(ShowEmployeeDTO::class, ShowEmployeeDTO::fromModel($this->user->employee));
+
+        // Verificar que los datos en el DTO coincidan con el modelo del empleado
         $employee = $this->user->employee;
-        $this->assertNotNull($responseData->employee);
         $this->assertEquals($employee->name, $responseData->employee->name);
+        $this->assertEquals($employee->company_name, $responseData->employee->company_name);
+        $this->assertEquals((string) $employee->irpf, $responseData->employee->irpf);
     }
 }
