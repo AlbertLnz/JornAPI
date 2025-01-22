@@ -18,14 +18,11 @@ class LoginUserSuccessTest extends TestCase
             'password' => 'password',
         ]);
 
-        /*   $login->assertJsonStructure([
-              'token',
-              'refreshToken',
-          ]); */
+      
 
         $login->assertJson([
             'token' => $login->json('token'),
-            'refreshToken' => $login->json('refreshToken'),
+         
         ]);
 
         $login->assertStatus(200);

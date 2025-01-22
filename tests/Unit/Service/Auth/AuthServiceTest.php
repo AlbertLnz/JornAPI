@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Service\Auth;
 
+use App\Exceptions\UserIsNotActiveException;
 use App\Exceptions\UserNotFound;
 use App\Models\User;
 use App\Services\Auth\AuthService;
@@ -52,7 +53,7 @@ class AuthServiceTest extends TestCase
 
         $user->is_active = false;
         $user->save();
-        $this->expectException(UnauthorizedException::class);
+        $this->expectException(UserIsNotActiveException::class);
         $this->authService->execute('user@example.com', 'password');
     }
 }
