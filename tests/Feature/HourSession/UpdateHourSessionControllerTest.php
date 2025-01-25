@@ -62,4 +62,6 @@ class UpdateHourSessionControllerTest extends TestCase
             'planned_hours' => 8,
         ]);
     }
+
+
 }

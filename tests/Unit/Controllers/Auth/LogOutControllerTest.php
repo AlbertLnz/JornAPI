@@ -82,7 +82,6 @@ class LogOutControllerTest extends TestCase
         try {
             $this->controller->__invoke($request);
         } catch (HttpResponseException $e) {
-            // Verificar que la excepción contenga la respuesta correcta
             $response = $e->getResponse();
             $this->assertInstanceOf(JsonResponse::class, $response);
             $this->assertEquals(401, $response->getStatusCode());

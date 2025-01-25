@@ -36,7 +36,7 @@ class RegitsterHourSessionController extends Controller
                 $employee->id,
                 $hourSessionDTO);
 
-            return response()->json(['message' => 'Hour worked registered successfully'], 201);
+            return response()->json(['message' => 'Hour session registered successfully'], 201);
         } catch (HourSessionExistException|TodayDateException|TimeEntryException $exception) {
             return response()->json(['message' => $exception->getMessage()], $exception->getCode());
         }

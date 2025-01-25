@@ -47,4 +47,24 @@ class UpdateEmployeeControllerTest extends TestCase
         ]);
 
     }
+
+    public function test_update_employee_empty_values(): void
+    {
+        $token = $this->tokenService->generateToken($this->employee->user_id);
+        Cache::store('redis')->put("user:{$this->employee->user_id}:token", $token, 3600);
+        $updateEmployee = $this->withHeaders([
+            'Authorization' => 'Bearer '.$token,
+        ])->putJson('/api/employee', [
+          
+        ]);
+
+        $updateEmployee->assertStatus(status: 200);
+        $updateEmployee->assertJsonStructure([
+            'message',
+            'employee',
+        ]);
+        $updateEmployee->assertJson([
+            'message' => 'Employee updated successfully',
+        ]);
+    }
 }

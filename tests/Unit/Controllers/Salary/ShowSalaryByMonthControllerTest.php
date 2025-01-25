@@ -95,5 +95,6 @@ class ShowSalaryByMonthControllerTest extends TestCase
             return $user;
         });
         $this->showSalaryByMonthController->__invoke($request);
+        
     }
 }

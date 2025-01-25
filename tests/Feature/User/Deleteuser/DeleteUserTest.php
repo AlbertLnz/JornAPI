@@ -23,7 +23,7 @@ class DeleteUserTest extends TestCase
     public function test_delete_user()
     {
         $user = $this->employee->user;
-        $token = $this->tokenService->generateToken($user->id, $user->roles);
+        $token = $this->tokenService->generateToken($user->id);
         Cache::store('redis')->put("user:{$user->id}:token", $token, 3600); //
 
         $deleteUser = $this->withHeaders([

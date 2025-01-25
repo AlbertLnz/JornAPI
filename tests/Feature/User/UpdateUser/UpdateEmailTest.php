@@ -33,7 +33,7 @@ class UpdateEmailTest extends TestCase
         Cache::store('redis')->put("user:{$user->id}:token", $token, 3600); //
 
         $updateUser = $this->withHeaders([
-            'Authorization' => 'Bearer '.$token,
+            'Authorization' => "Bearer $token",
         ])->putJson('/api/user/update', [
             'email' => 'XuqFP@example.com',
           

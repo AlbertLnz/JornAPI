@@ -26,7 +26,7 @@ class ShowUserNotFoundTest extends TestCase
     public function test_show_user_not_found()
     {
         $uuid = '12345678-1234-1234-1234-123456789012';
-        $token = $this->tokenService->generateToken($uuid, $this->employee->user->roles);
+        $token = $this->tokenService->generateToken($uuid);
         Cache::store('redis')->put("user:{$uuid}:token", $token, 3600); //
 
         $showUser = $this->withHeaders([

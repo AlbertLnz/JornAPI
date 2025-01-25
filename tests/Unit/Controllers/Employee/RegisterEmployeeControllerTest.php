@@ -117,6 +117,8 @@ class RegisterEmployeeControllerTest extends TestCase
         $this->expectException(HttpResponseException::class);
 
         // Act
-        $this->controller->__invoke($request);
+     $response =   $this->controller->__invoke($request);
+     $this->assertEquals(201, $response->status());
+
     }
 }

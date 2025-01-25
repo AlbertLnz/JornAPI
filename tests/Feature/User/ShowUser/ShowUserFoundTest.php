@@ -28,7 +28,7 @@ class ShowUserFoundTest extends TestCase
     public function test_show_user_found()
     {
         $user = UserDTO::fromModel($this->employee->user);
-        $this->actingAs($this->employee->user);
+       // $this->actingAs($this->employee->user->auth()->user());
         $token = $this->tokenService->generateToken($this->employee->user_id);
         Cache::store('redis')->put("user:{$this->employee->user_id}:token", $token, 3600); //
 
@@ -40,6 +40,11 @@ class ShowUserFoundTest extends TestCase
         $showUser->assertJsonStructure([
             'message',
             'user',
+        ]);
+        $showUser->assertJson([
+            'message' => 'User found successfully',
+            'user' => UserDTO::toArray($this->employee->user->toArray()),
+       
         ]);
 
     }

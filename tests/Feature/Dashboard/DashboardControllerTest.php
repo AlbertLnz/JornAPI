@@ -49,8 +49,26 @@ class DashboardControllerTest extends TestCase
     public function test_show_dashboard_success(): void
     {
         $token = $this->tokenService->generateToken($this->employee->user_id);
-        $this->actingAs($this->user);
         
+        Cache::store('redis')->put("user:{$this->employee->user_id}:token", $token, 3600);
+        $request = new Request;
+        $request->setUserResolver(fn () => $this->employee->user);
+        $showDashboard = $this->withHeaders([
+            'Authorization' => 'Bearer '.$token,
+        ])->getJson(route('dashboard'));
+        $showDashboard->assertStatus(200);
+    }
+
+
+    public function test_show_dashboard_unauthenticated(): void
+    {
+        $showDashboard = $this->getJson(route('dashboard'));
+        $showDashboard->assertStatus(401);
+    }
+
+    public function test_show_dashboard_not_hour_session(): void
+    {
+        $token = $this->tokenService->generateToken($this->employee->user_id);
         Cache::store('redis')->put("user:{$this->employee->user_id}:token", $token, 3600);
         $request = new Request;
         $request->setUserResolver(fn () => $this->employee->user);

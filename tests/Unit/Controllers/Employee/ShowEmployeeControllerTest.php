@@ -53,6 +53,8 @@ class ShowEmployeeControllerTest extends TestCase
 
         // Verificar que los datos en el DTO coincidan con el modelo del empleado
         $employee = $this->user->employee;
+        $this->assertEquals(200, $response->status());
+
         $this->assertEquals($employee->name, $responseData->employee->name);
         $this->assertEquals($employee->company_name, $responseData->employee->company_name);
         $this->assertEquals((string) $employee->irpf, $responseData->employee->irpf);
