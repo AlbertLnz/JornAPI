@@ -22,7 +22,11 @@ namespace App\Annotations\Swagger;
  * @OA\Server(
  *     url="http://127.0.0.1:8000/api",
  *     description="Local development server"
- * )
+ * ),
+ * @OA\Server(
+    *     url="https://jornalia.fly.dev/api",
+    *     description="Production server"
+ )
  *
  * @OA\SecurityScheme(
  *     type="http",
