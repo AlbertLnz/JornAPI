@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Support\Facades\Cache;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,6 +21,13 @@ return Application::configure(basePath: dirname(__DIR__))
             'token_redis' => App\Http\Middleware\CheckTokenInRedis::class,
             'jwt.auth' => \App\Http\Middleware\JwtAuthMiddleware::class,
             'is_active' => App\Http\Middleware\CheckUserIsActive::class,
+            'ip_block' => App\Http\Middleware\CheckBlockedIpRedisMiddleware::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions) {})->create();
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->render(function (ThrottleRequestsException $e, $request) {
+$ip = $request->ip();
+            Cache::put("blocked_ip_{$ip}", true, now()->addMinutes(30));
+            return response(['message' => 'Too Many Attempts. Locked for 30 minutes, try again later'], 429);
+        });
+    })->create();

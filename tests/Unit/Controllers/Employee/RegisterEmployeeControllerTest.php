@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Controllers\Employee;
 
-use App\Exceptions\UserAlreadyExists;
+use App\DTO\Employee\RegisterEmployeeDTO;
+use App\Exceptions\NullDataException;
+use App\Exceptions\UserAlReadyExists;
 use App\Http\Controllers\v1\Employee\RegisterEmployeeController;
 use App\Http\Requests\RegisterEmployeeRequest;
 use App\Services\Employee\RegisterEmployeeService;
@@ -49,18 +51,11 @@ class RegisterEmployeeControllerTest extends TestCase
             'irpf' => 5.0,
         ]);
 
+        $data = RegisterEmployeeDTO::toArray($request->all());
+
         $this->service->shouldReceive('execute')
             ->once()
-            ->with(
-                $request->name,
-                $request->email,
-                $request->company_name,
-                $request->password,
-                $request->normal_hourly_rate,
-                $request->overtime_hourly_rate,
-                $request->holiday_hourly_rate,
-                $request->irpf
-            );
+            ->with($data);
 
         // Act
         $response = $this->controller->__invoke($request);
@@ -85,24 +80,45 @@ class RegisterEmployeeControllerTest extends TestCase
             'irpf' => 5.0,
         ]);
 
+        $data = RegisterEmployeeDTO::toArray($request->all());
+
         $this->service->shouldReceive('execute')
             ->once()
-            ->with(
-                $request->name,
-                $request->email,
-                $request->company_name,
-                $request->password,
-                $request->normal_hourly_rate,
-                $request->overtime_hourly_rate,
-                $request->holiday_hourly_rate,
-                $request->irpf
-            )
-            ->andThrow(new UserAlreadyExists);
+            ->with($data)
+            ->andThrow(new UserAlReadyExists());
 
         $this->expectException(HttpResponseException::class);
 
         // Act
-        $response = $this->controller->__invoke($request);
-        $this->assertEquals(409, $response->getStatusCode());
+        $this->controller->__invoke($request);
+    }
+
+    public function test_register_employee_throws_null_data_exception(): void
+    {
+        // Arrange
+        $request = new RegisterEmployeeRequest([
+            'name' => null,
+            'email' => null,
+            'company_name' => null,
+            'password' => null,
+            'normal_hourly_rate' => null,
+            'overtime_hourly_rate' => null,
+            'holiday_hourly_rate' => null,
+            'irpf' => null,
+        ]);
+
+        $data = RegisterEmployeeDTO::toArray($request->all());
+
+        $this->service->shouldReceive('execute')
+            ->once()
+            ->with($data)
+            ->andThrow(new NullDataException('Null data provided', 422));
+
+        $this->expectException(HttpResponseException::class);
+
+        // Act
+     $response =   $this->controller->__invoke($request);
+     $this->assertEquals(201, $response->status());
+
     }
 }

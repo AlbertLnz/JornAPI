@@ -45,8 +45,8 @@ class ShowSalaryByMonthControllerTest extends TestCase
         $request = new Request;
         $request->setUserResolver(fn () => $this->employee->user);
         $showSalaryByMonth = $this->withHeaders([
-            'Authorization' => 'Bearer '.$token,
-        ])->getJson('/api/salary?year='.'2024'.'&month='.'10');
+            'Authorization' => "Bearer $token",
+        ])->getJson("/api/salary?year=2024&month=10");
         $showSalaryByMonth->assertStatus(200);
 
     }
@@ -58,8 +58,8 @@ class ShowSalaryByMonthControllerTest extends TestCase
         $request = new Request;
         $request->setUserResolver(fn () => $this->employee->user);
         $showSalaryByMonth = $this->withHeaders([
-            'Authorization' => 'Bearer '.$token,
-        ])->getJson('/api/salary?year='.'2024'.'&month='.'11');
+            'Authorization' => "Bearer $token",
+        ])->getJson("/api/salary?year=2024&month=11");
         $showSalaryByMonth->assertStatus(404);
 
     }

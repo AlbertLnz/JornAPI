@@ -56,7 +56,7 @@ class HourWorkedUpdateServiceTest extends TestCase
             $this->hourSession->planned_hours,
             WorkTypeEnum::OVERTIME->value
         );
-        $this->assertDatabaseHas('hour_workeds', [
+        $this->assertDatabaseHas('hours_worked', [
             'hour_session_id' => $this->hourSession->id,
             'normal_hours' => 0,
             'overtime_hours' => 8,
@@ -73,7 +73,7 @@ class HourWorkedUpdateServiceTest extends TestCase
             $this->hourSession->planned_hours,
             WorkTypeEnum::HOLIDAY->value
         );
-        $this->assertDatabaseHas('hour_workeds', [
+        $this->assertDatabaseHas('hours_worked', [
             'hour_session_id' => $this->hourSession->id,
             'normal_hours' => 0,
             'overtime_hours' => 0,

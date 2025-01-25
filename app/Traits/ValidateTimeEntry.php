@@ -10,6 +10,7 @@ use Carbon\Carbon;
 
 trait ValidateTimeEntry
 {
+    
     /**
      * Summary of validateTimeEntry
      *
@@ -36,6 +37,9 @@ trait ValidateTimeEntry
         if ($start > $end) {
             throw new TimeEntryException("'The start time cannot be greater than the end time'");
         }
+
+        $this->verifyDuration($start, $end);
+        
     }
 
     /**
@@ -51,5 +55,28 @@ trait ValidateTimeEntry
         if ($date > $today) {
             throw new TodayDateException;
         }
+    }
+
+    private function verifyDuration($start, $end): mixed
+    {
+        $maxHoursWorked = 12;
+        $minHoursWorked = 2;
+        if ($end < $start) {
+            // Añadir un día a la hora de fin
+            throw new TimeEntryException('The start time cannot be greater than the end time');
+        }
+
+        if ($end <= $start || $start > $end) {
+            throw new TimeEntryException('The start time cannot be greater than the end time');
+        }
+        $hoursWorkedCalculated = $this->diffInHours($start, $end);
+
+        if ($hoursWorkedCalculated >= $maxHoursWorked || $hoursWorkedCalculated < $minHoursWorked) {
+            throw new TimeEntryException(
+                "The hours worked must be between {$minHoursWorked} and {$maxHoursWorked}. You provided {$hoursWorkedCalculated}."
+            );
+        }
+
+        return $hoursWorkedCalculated;
     }
 }

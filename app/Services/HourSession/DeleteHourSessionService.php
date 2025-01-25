@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\HourSession;
 
-use App\Events\HourSessionUpdatedEvent;
+use App\Events\UpdatedHourSessionEvent;
 use App\Exceptions\HourSessionNotFoundException;
 use App\Models\HourSession;
 use Illuminate\Support\Facades\DB;
@@ -22,11 +22,11 @@ class DeleteHourSessionService
         if (! $hourSession) {
             throw new HourSessionNotFoundException;
         }
-        DB::transaction(function () use ($hourSession, $employeeId, $date) {
+        DB::transaction(function () use ($hourSession) {
             $hourSession->delete();
 
-            DB::afterCommit(function () use ($employeeId, $date) {
-                event(new HourSessionUpdatedEvent($employeeId, $date));
+            DB::afterCommit(function () use ( $hourSession) {
+                event(new UpdatedHourSessionEvent( $hourSession));
             });
         });
 

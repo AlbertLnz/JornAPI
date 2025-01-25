@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
-class UpdateUserBadDataTest extends TestCase
+class UpdateEmailTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -23,19 +23,27 @@ class UpdateUserBadDataTest extends TestCase
         $this->employee = Employee::factory()->create();
     }
 
-    public function test_update_user_bad_data()
+    public function test_update_email_success()
     {
-        $user = $this->employee->user;
-        $token = $this->tokenService->generateToken($user->id, $user->roles);
+        $employee = Employee::factory()->create();
+        $user = $employee->user;
+
+        $this->actingAs($user);
+        $token = $this->tokenService->generateToken($user->id);
         Cache::store('redis')->put("user:{$user->id}:token", $token, 3600); //
 
         $updateUser = $this->withHeaders([
-            'Authorization' => 'Bearer '.$token,
+            'Authorization' => "Bearer $token",
         ])->putJson('/api/user/update', [
-            'email' => '',
-            'password' => '',
-        ]);
-        $updateUser->assertStatus(422);
+            'email' => 'XuqFP@example.com',
+          
 
+        ]);
+        $updateUser->assertStatus(200);
+
+        $updateUser->assertJsonStructure([
+            'message',
+            'user',
+        ]);
     }
 }

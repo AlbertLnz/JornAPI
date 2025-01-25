@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Service\Employee;
 
+use App\DTO\Employee\RegisterEmployeeDTO;
 use App\Models\User;
 use App\Services\Employee\RegisterEmployeeService;
 use App\Services\User\RegisterUserService;
@@ -34,8 +35,19 @@ class RegisterEmployeeServiceTest extends TestCase
 
     public function testregister_employee_servicewithvaliddata()
     {
+        $data = [
+            'email' => 'peter@peter.com',
+            'password' => '12345678',
+            'name' => 'peter',
+            'company_name' => 'comapany',
+            'normal_hourly_rate' => 1,
+            'overtime_hourly_rate' => 1,
+            'holiday_hourly_rate' => 1,
+            'irpf' => 1,
+        ];
+        
 
-        $this->service->execute('peter', 'peter@peter.com', 'comapany', '12345678', 1, 1, 1, 1);
+        $this->service->execute(RegisterEmployeeDTO::toArray($data));
 
         $this->assertDatabaseHas('employees', [
             'name' => 'peter',

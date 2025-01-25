@@ -3,13 +3,13 @@
 namespace App\Jobs;
 
 use App\Models\HourSession;
-use App\Services\HourWorked\HourWorkedUpdateService;
+use App\Services\HourWorked\HourWorkedEntryService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 
-class UpdateHourWorked implements ShouldQueue
+class HourWorkedEntryJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable;
 
@@ -24,9 +24,9 @@ class UpdateHourWorked implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(HourWorkedUpdateService $hourWorkedUpdateService): void
+    public function handle(HourWorkedEntryService $hourWorkedEntryService): void
     {
-        $hourWorkedUpdateService->execute(
+        $hourWorkedEntryService->execute(
             $this->hourSession->id,
             $this->hourSession->start_time,
             $this->hourSession->end_time,

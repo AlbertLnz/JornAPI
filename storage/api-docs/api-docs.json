@@ -19,6 +19,10 @@
         {
             "url": "http://127.0.0.1:8000/api",
             "description": "Local development server"
+        },
+        {
+            "url": "https://jornalia.fly.dev/api",
+            "description": "Production server"
         }
     ],
     "paths": {
@@ -637,7 +641,7 @@
                             }
                         }
                     },
-                    "400": {
+                    "422": {
                         "description": "Invalid input",
                         "content": {
                             "application/json": {
@@ -645,7 +649,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Invalid input data"
+                                            "example": "Unprocessable Content"
                                         }
                                     },
                                     "type": "object"

@@ -2,11 +2,12 @@
 
 namespace App\Events;
 
+use App\Models\HourSession;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class HourSessionUpdatedEvent
+class UpdatedHourSessionEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -16,7 +17,7 @@ class HourSessionUpdatedEvent
     /**
      * Summary of __construct
      */
-    public function __construct(private string $employeeId, private string $date)
+    public function __construct( private HourSession $hourSession)
     {
         //
     }
@@ -28,7 +29,7 @@ class HourSessionUpdatedEvent
      */
     public function getEmployeeId()
     {
-        return $this->employeeId;
+        return $this->hourSession->employee_id;
     }
 
     /**
@@ -38,6 +39,16 @@ class HourSessionUpdatedEvent
      */
     public function getDate()
     {
-        return $this->date;
+        return $this->hourSession->date;
+    }
+
+    /**
+     * Summary of getHourSession
+     *
+     * @return \App\Models\HourSession
+     */
+    public function getHourSession(): HourSession
+    {
+        return $this->hourSession;
     }
 }

@@ -25,7 +25,7 @@ trait CalculateTrait
         $start = Carbon::parse($startTime);
         $end = Carbon::parse($endTime);
 
-        $hoursWorkedCalculated = $this->verifyDuration($start, $end);
+        $hoursWorkedCalculated = $this->diffInHours($start, $end);
         // Verificar si es festivo y calcular las horas festivas
         $holidayHours = $this->calculateHolidayHours($hoursWorkedCalculated, $workType);
         // Calcular horas extras
@@ -46,34 +46,13 @@ trait CalculateTrait
         ];
     }
 
-    /**
-     * Summary of verifyDuration
-     *
-     * @param  mixed  $start
-     * @param  mixed  $end
-     *
-     * @throws \App\Exceptions\TimeEntryException
-     */
-    private function verifyDuration($start, $end): mixed
+    private function diffInHours($start, $end)
     {
-        $maxHoursWorked = 12;
-        $minHoursWorked = 2;
-        if ($end < $start) {
-            // Añadir un día a la hora de fin
-            throw new TimeEntryException('The start time cannot be greater than the end time');
-        }
-
-        if ($end <= $start || $start > $end) {
-            throw new TimeEntryException('The start time cannot be greater than the end time');
-        }
-        $hoursWorkedCalculated = $start->floatDiffInHours($end);
-
-        if ($hoursWorkedCalculated >= $maxHoursWorked || $hoursWorkedCalculated < $minHoursWorked) {
-            throw new TimeEntryException(
-                "The hours worked must be between {$minHoursWorked} and {$maxHoursWorked}. You provided {$hoursWorkedCalculated}."
-            );
-        }
-
-        return $hoursWorkedCalculated;
+        $start = Carbon::parse($start);
+        $end = Carbon::parse($end);
+        return (float) $start->floatDiffInHours($end);
     }
+
+   
+  
 }

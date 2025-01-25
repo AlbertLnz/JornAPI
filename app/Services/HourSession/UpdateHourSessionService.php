@@ -6,23 +6,21 @@ namespace App\Services\HourSession;
 
 use App\DTO\HourSession\HourSessionDTO;
 use App\Enums\WorkTypeEnum;
-use App\Events\HourSessionUpdatedEvent;
+
+use App\Events\UpdatedHourSessionEvent;
 use App\Exceptions\HourSessionNotFoundException;
 use App\Models\HourSession;
-use App\Services\HourWorked\HourWorkedUpdateService;
+use App\Services\HourWorked\CalculateTrait;
+
 use App\Traits\ValidateTimeEntry;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class UpdateHourSessionService
 {
-    use ValidateTimeEntry;
+    use ValidateTimeEntry, CalculateTrait;
 
-    /**
-     * Summary of __construct
-     */
-    public function __construct(private HourWorkedUpdateService $hourWorkedUpdateService) {}
-
+  
     /**
      * Summary of execute
      *
@@ -30,6 +28,7 @@ class UpdateHourSessionService
      * @param  mixed  $endTime
      * @param  mixed  $plannedHours
      * @param  mixed  $workType
+     * @return array
      */
     public function execute(string $employeeId, ?string $date, ?string $startTime, ?string $endTime, ?int $plannedHours, ?string $workType): array
     {
@@ -38,16 +37,17 @@ class UpdateHourSessionService
         $hourSession = $this->HourSessionExists($employeeId, $carbon);
         $this->validateDateIsToday($date);
 
-        $this->validateTimeEntry($startTime, $endTime);
+        $this->validateTimeEntry($startTime?? $hourSession->start_time, $endTime?? $hourSession->end_time);
+       // $this->verifyDuration($startTime?? $hourSession->start_time, $endTime?? $hourSession->end_time);
+
 
         DB::transaction(function () use ($employeeId, $startTime, $endTime, $plannedHours, $workType, $hourSession, $date) {
 
             $this->insertDataToFields($hourSession, $startTime, $endTime, $plannedHours, $workType);
 
-            DB::afterCommit(function () use ($employeeId, $date, $hourSession) {
-                $this->hourWorkedUpdateService->execute($hourSession->id, (string) $hourSession->start_time, (string) $hourSession->end_time, $hourSession->planned_hours, $hourSession->work_type);
+            DB::afterCommit(function () use ( $hourSession) {
 
-                event(new HourSessionUpdatedEvent($employeeId, $date));
+               event(new UpdatedHourSessionEvent( $hourSession));
 
             });
         });
@@ -73,6 +73,12 @@ class UpdateHourSessionService
 
     /**
      * Summary of insertDataToFields
+     * @param \App\Models\HourSession $hourSession
+     * @param mixed $startTime
+     * @param mixed $endTime
+     * @param mixed $plannedHours
+     * @param mixed $workType
+     * @return void
      */
     private function insertDataToFields(HourSession $hourSession, ?string $startTime, ?string $endTime, ?int $plannedHours, ?string $workType): void
     {

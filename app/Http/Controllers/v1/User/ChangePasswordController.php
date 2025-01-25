@@ -8,6 +8,7 @@ use App\Exceptions\ChangePassWordException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Services\User\ChangePasswordService;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ChangePasswordController extends Controller
 {
@@ -28,7 +29,7 @@ class ChangePasswordController extends Controller
 
             return response()->json(['message' => 'Password changed successfully'], 200);
         } catch (ChangePassWordException $e) {
-            return response()->json(['message' => $e->getMessage()], $e->getCode());
+            throw new HttpResponseException(response()->json(['message' => $e->getMessage()], $e->getCode()));
         }
 
     }

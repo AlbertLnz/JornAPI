@@ -15,7 +15,7 @@ final readonly class ShowEmployeeDTO implements DTOInterface
         public string $normal_hourly_rate,
         public string $overtime_hourly_rate,
         public string $holiday_hourly_rate,
-        public ?string $irpf
+        public ?float $irpf
     ) {}
 
     public static function toArray(array $data): array
@@ -38,7 +38,7 @@ final readonly class ShowEmployeeDTO implements DTOInterface
             $employee->normal_hourly_rate,
             $employee->overtime_hourly_rate,
             $employee->holiday_hourly_rate,
-            $employee->irpf,
+             $employee->irpf,
         );
     }
 }

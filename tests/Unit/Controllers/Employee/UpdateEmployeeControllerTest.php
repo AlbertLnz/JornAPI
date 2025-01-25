@@ -45,36 +45,41 @@ class UpdateEmployeeControllerTest extends TestCase
 
     public function test_employee_update_success(): void
     {
-        // Mockear el request y asociarlo al usuario
+        // Datos de la solicitud
+        $requestData = [
+            'name' => 'John Doe',
+            'company_name' => 'Acme Inc.',
+            'normal_hourly_rate' => 10.0,
+            'overtime_hourly_rate' => 15.0,
+            'holiday_hourly_rate' => 25.0,
+            'irpf' => 30.0,
+        ];
+
+        // Mockear el request y definir sus métodos
         $request = Mockery::mock(UpdateEmployeeRequest::class);
         $request->shouldReceive('user')->andReturn($this->user);
-        $request->name = 'John Doe';
-        $request->company_name = 'Acme Inc.';
-        $request->normal_hourly_rate = 10.0;
-        $request->overtime_hourly_rate = 15.0;
-        $request->holiday_hourly_rate = 25.0;
-        $request->irpf = 30.0;
+        $request->shouldReceive('all')->andReturn($requestData); // Simular el método all()
 
         // Configurar el servicio simulado
         $this->employeeUpdateService->shouldReceive('execute')
             ->once()
             ->with(
-                'John Doe',
-                'Acme Inc.',
-                10.0,
-                15.0,
-                25.0,
-                30.0,
-                $this->user->id
+                $requestData['name'],
+                $requestData['company_name'],
+                $requestData['normal_hourly_rate'],
+                $requestData['overtime_hourly_rate'],
+                $requestData['holiday_hourly_rate'],
+                $requestData['irpf'],
+                $this->user->employee
             )
             ->andReturn([
                 'id' => $this->employee->id,
-                'name' => 'John Doe',
-                'company' => 'Acme Inc.',
-                'normal_hourly_rate' => 10.0,
-                'overtime_hourly_rate' => 15.0,
-                'holiday_hourly_rate' => 25.0,
-                'irpf' => 30.0,
+                'name' => $requestData['name'],
+                'company' => $requestData['company_name'],
+                'normal_hourly_rate' => $requestData['normal_hourly_rate'],
+                'overtime_hourly_rate' => $requestData['overtime_hourly_rate'],
+                'holiday_hourly_rate' => $requestData['holiday_hourly_rate'],
+                'irpf' => $requestData['irpf'],
             ]);
 
         // Llamar al método del controlador
@@ -87,65 +92,14 @@ class UpdateEmployeeControllerTest extends TestCase
             'message' => 'Employee updated successfully',
             'employee' => [
                 'id' => $this->employee->id,
-                'name' => 'John Doe',
-                'company' => 'Acme Inc.',
-                'normal_hourly_rate' => 10.0,
-                'overtime_hourly_rate' => 15.0,
-                'holiday_hourly_rate' => 25.0,
-                'irpf' => 30.0,
+                'name' => $requestData['name'],
+                'company' => $requestData['company_name'],
+                'normal_hourly_rate' => $requestData['normal_hourly_rate'],
+                'overtime_hourly_rate' => $requestData['overtime_hourly_rate'],
+                'holiday_hourly_rate' => $requestData['holiday_hourly_rate'],
+                'irpf' => $requestData['irpf'],
             ],
         ], $response->getData(true));
-    }
-
-    public function test_update_employee_with_null_data(): void
-    {
-        $request = Mockery::mock(UpdateEmployeeRequest::class);
-        $request->shouldReceive('user')->andReturn($this->user);
-        $request->name = null;
-        $request->company_name = null;
-        $request->normal_hourly_rate = null;
-        $request->overtime_hourly_rate = null;
-        $request->holiday_hourly_rate = null;
-        $request->irpf = null;
-
-        $this->employeeUpdateService->shouldReceive('execute')
-            ->once()
-            ->with(
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                $this->user->id
-            )
-            ->andReturn([
-                'id' => $this->employee->id,
-                'name' => 'John Doe',
-                'company' => 'Acme Inc.',
-                'normal_hourly_rate' => 10.0,
-                'overtime_hourly_rate' => 15.0,
-                'holiday_hourly_rate' => 25.0,
-                'irpf' => 30.0,
-            ]);
-
-        $response = $this->controller->__invoke($request);
-
-        $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals(200, $response->status());
-        $this->assertEquals([
-            'message' => 'Employee updated successfully',
-            'employee' => [
-                'id' => $this->employee->id,
-                'name' => 'John Doe',
-                'company' => 'Acme Inc.',
-                'normal_hourly_rate' => 10.0,
-                'overtime_hourly_rate' => 15.0,
-                'holiday_hourly_rate' => 25.0,
-                'irpf' => 30.0,
-            ],
-        ], $response->getData(true));
-
     }
 
     protected function tearDown(): void

@@ -2,9 +2,10 @@
 
 namespace App\Events;
 
+use App\Models\HourSession;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class HourSessionRegistered
+class RegisteredHourSessionEvent
 {
     use Dispatchable;
 
@@ -16,7 +17,7 @@ class HourSessionRegistered
      *
      * @param  \App\Models\HourSession  $hourSession
      */
-    public function __construct(private string $employeeId, private string $date)
+    public function __construct( private HourSession $hourSession)
     {
         //
     }
@@ -29,7 +30,7 @@ class HourSessionRegistered
     public function getEmployeeId()
     {
 
-        return $this->employeeId;
+        return $this->hourSession->employee_id;
     }
 
     /**
@@ -39,6 +40,16 @@ class HourSessionRegistered
      */
     public function getDate()
     {
-        return $this->date;
+        return $this->hourSession->date;
+    }
+
+    /**
+     * Summary of getHourSession
+     *
+     * @return \App\Models\HourSession
+     */
+    public function getHourSession()
+    {
+        return $this->hourSession;
     }
 }

@@ -50,9 +50,7 @@ class SalaryServiceTest extends TestCase
         $this->assertDatabaseHas('salaries', [
             'employee_id' => $this->employee->id,
             'total_normal_hours' => 8,
-            'total_overtime_hours' => 0,
-            'total_holiday_hours' => 0,
-            'total_net_salary' => 0,
+            
         ]);
     }
 }

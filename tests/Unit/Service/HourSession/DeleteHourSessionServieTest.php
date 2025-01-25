@@ -3,7 +3,7 @@
 namespace Tests\Unit\Services\HourSession;
 
 use App\Enums\WorkTypeEnum;
-use App\Events\HourSessionUpdatedEvent;
+use App\Events\UpdatedHourSessionEvent;
 use App\Exceptions\HourSessionNotFoundException;
 use App\Models\Employee;
 use App\Models\HourSession;
@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class HourSessionDeleteServiceTest extends TestCase
+class DeleteHourSessionServieTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -69,13 +69,13 @@ class HourSessionDeleteServiceTest extends TestCase
      */
     public function test_execute_deletes_hour_session_when_found()
     {
-        Event::fake(HourSessionUpdatedEvent::class);
+        Event::fake(UpdatedHourSessionEvent::class);
 
         $this->service->execute($this->employee->id, '2024-10-13');
 
         // Verificar que la sesión de trabajo se haya eliminado correctamente
         $this->assertNull(HourSession::find($this->hourSession->id));
 
-        Event::assertDispatched(HourSessionUpdatedEvent::class);
+        Event::assertDispatched(UpdatedHourSessionEvent::class);
     }
 }

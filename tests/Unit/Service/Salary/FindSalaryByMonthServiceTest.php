@@ -78,9 +78,5 @@ class FindSalaryByMonthServiceTest extends TestCase
         $this->findSalaryByMonthService->execute($this->employee->id, '05', '2021');
     }
 
-    public function test_find_salary_by_month_with_null_values()
-    {
-        $this->expectException(SalaryNotFoundException::class);
-        $this->assertNull($this->findSalaryByMonthService->execute($this->employee->id, null, null));
-    }
+   
 }

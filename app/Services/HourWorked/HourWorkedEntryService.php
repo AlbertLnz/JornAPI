@@ -21,7 +21,7 @@ class HourWorkedEntryService
 
         // Validar la entrada de tiempo
         $this->validateTimeEntry($startTime, $endTime);
-
+        
         $hoursList = $this->calculate($startTime, $endTime, $plannedHours, $workType);
 
         DB::transaction(function () use ($hourSessionId, $hoursList) {

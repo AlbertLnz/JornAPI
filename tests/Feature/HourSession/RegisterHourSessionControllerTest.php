@@ -35,7 +35,7 @@ class RegisterHourSessionControllerTest extends TestCase
         $request->setUserResolver(fn () => $this->employee->user);
 
         $register = $this->withHeaders([
-            'Authorization' => 'Bearer '.$token,
+            'Authorization' => "Bearer $token",
         ])->postJson('/api/hour_session', [
             'date' => '2024-02-13',
             'start_time' => '09:00',
@@ -50,7 +50,7 @@ class RegisterHourSessionControllerTest extends TestCase
             'message',
         ]);
         $register->assertJson([
-            'message' => 'Hour worked registered successfully',
+            'message' => 'Hour session registered successfully',
         ]);
     }
 
