@@ -264,8 +264,9 @@ Este comando creará y configurará automáticamente los contenedores de la apli
 ---
 
 
-## Licencia
-Este proyecto está bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+## Licencia  
+Este código está bajo una licencia de uso educativo. Consulta [LICENSE.md](./LICENSE.md) para más detalles.
+
 
 ---
 
